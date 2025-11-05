@@ -5,6 +5,7 @@ import type { QueryClient } from '@tanstack/react-query';
 import { getUserQueryOptions } from '~/lib/auth';
 import type { components } from '~/lib/api-schema';
 import { NotFound } from '~/components/section/NotFound';
+import { Toaster } from 'sonner';
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -27,6 +28,7 @@ function RootComponent() {
   return (
     <>
       <Outlet />
+      <Toaster />
       <ReactQueryDevtools buttonPosition="top-right" />
       <TanStackRouterDevtools position="bottom-right" />
     </>
