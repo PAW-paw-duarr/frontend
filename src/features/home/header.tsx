@@ -1,16 +1,22 @@
-
 export function Header() {
   return (
-    <header className="w-full">
-      <img src="/header.webp" alt="headerImage" className="w-full top-0 left-0 right-0 z-10 fixed"/>
-      <div className="absolute w-full top-32 left-0 right-0 z-20">
-        <div className="py-[245px] flex flex-col items-center space-y-4">
-          <h1 className="text-6xl font-bold text-center text-secondary">Capstone Project DTETI</h1>
-          <div className="mx-[550px]">
-          <p className="text-[24px] font-normal text-secondary w-full text-center">Platform resmi untuk dokumentasi, kolaborasi, dan publikasi proyek akhir mahasiswa DTETI UGM. Wadah integrasi inovasi, teknologi, dan kolaborasi antar mahasiswa menuju solusi nyata bagi masyarakat.</p>
-          </div>
+    <header className="relative h-[650px] w-full">
+      {/* Background Image */}
+      <img src="/header.webp" alt="Header background" className="absolute inset-0 z-0 w-full object-cover" />
+
+      {/* Overlay */}
+      <div className="absolute inset-0 z-10" />
+
+      {/* Content - Centered */}
+      <div className="absolute inset-0 top-[100px] z-20 flex items-center justify-center">
+        <div className="max-w-5xl space-y-6 px-8 text-center">
+          <h1 className="text-6xl font-bold text-white drop-shadow-lg">Capstone Project DTETI</h1>
+          <p className="text-xl leading-relaxed font-normal text-white drop-shadow-md">
+            Platform resmi untuk dokumentasi, kolaborasi, dan publikasi proyek akhir mahasiswa DTETI UGM. Wadah
+            integrasi inovasi, teknologi, dan kolaborasi antar mahasiswa menuju solusi nyata bagi masyarakat.
+          </p>
         </div>
       </div>
     </header>
-  )
+  );
 }

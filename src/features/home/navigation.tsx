@@ -2,13 +2,18 @@ import { Avatar, AvatarImage } from "../../components/ui/avatar"
 import { Input } from "~/components/ui/input"
 import { Search } from "lucide-react"
 import { cn } from "~/lib/utils"
+import { useQuery } from "@tanstack/react-query"
+import { getUserQueryOptions } from "~/lib/auth"
+
 
 export function Navigation({ className }: React.ComponentProps<'input'>) {
+  const user = useQuery(getUserQueryOptions())
+
   return (
     <nav className={cn("px-[100px] py-6 bg-transparent", className)}>
       <div className="w-full bg-white/40 backdrop-blur-sm flex items-center p-4 rounded-3xl shadow-lg">
         {/* Logo Section - Fixed Width */}
-        <div className="flex items-center space-x-4 px-[14px] py-[12px] w-[250px]">
+        <div className="flex items-center space-x-4 px-3.5 py-3 w-[250px]">
           <img src="/logo.svg" alt="Logo" className="w-10 h-10" />
           <div className="font-bold text-xl">ReCapstone</div>
         </div>
@@ -30,7 +35,7 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
             <AvatarImage src="/logo.svg" alt="User Avatar" />
           </Avatar>
           <div>
-            <div className="font-semibold text-sm">Nasihuy123</div>
+            <div className="font-semibold text-sm">{user?.data?.name}</div>
             <div className="flex items-center space-x-2 text-xs text-primary">
               <span>Anggota</span>
               <span className="text-primary">•</span>
