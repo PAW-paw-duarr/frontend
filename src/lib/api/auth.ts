@@ -2,8 +2,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { ApiClient } from 'src/lib/api-client';
-import { getUserQueryOptions } from 'src/lib/auth';
 import { useNavigate } from '@tanstack/react-router';
+import { getCurrentUserQuery } from './user';
+
 
 export const LoginWithEmailInputSchema = z.object({
   email: z.email('Invalid email address'),
@@ -30,7 +31,7 @@ export function useLoginWithEmail() {
     },
     onSuccess: async () => {
       await queryClient.refetchQueries({
-        queryKey: getUserQueryOptions().queryKey,
+        queryKey: getCurrentUserQuery().queryKey,
       });
       navigate({
         to: '/',

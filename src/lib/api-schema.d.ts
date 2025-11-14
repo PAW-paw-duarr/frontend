@@ -311,7 +311,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        get: operations["get-user"];
         put?: never;
         post?: never;
         delete?: never;
@@ -322,27 +322,6 @@ export interface paths {
          * @description  Updates the profile information for the authenticated user
          */
         patch: operations["patch-api-user"];
-        trace?: never;
-    };
-    "/user/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List All Users
-         * @description Retrieves a list of all users
-         *     Nonadmin : cannot use this
-         */
-        get: operations["get-user"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
         trace?: never;
     };
     "/auth/signin/password": {
@@ -429,44 +408,6 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** @enum {string} */
-        CategoryCapstone: "Kesehatan" | "Pengelolaan Sampah" | "Smart City" | "Transportasi Ramah Lingkungan";
-        "data-user-short": {
-            id?: string;
-            name?: string;
-        };
-        "signup-password-body": {
-            email: string;
-            password: string;
-            name: string;
-        };
-        "signin-password-body": {
-            email: string;
-            password: string;
-        };
-        RespGenerateNewTeam: {
-            success_count: number;
-            error_count: number;
-            data?: Record<string, never>[];
-            error_data?: {
-                name: string;
-                leader_email: string;
-                category: components["schemas"]["CategoryCapstone"];
-                error: string;
-            }[];
-            period: number;
-        };
-        "data-title-short": {
-            id?: string;
-            title?: string;
-            desc?: string;
-            photo_url?: string;
-        };
-        "data-team-new": {
-            name: string;
-            leader_email: string;
-            category: components["schemas"]["CategoryCapstone"];
-        };
         "data-team": {
             id?: string;
             name?: string;
@@ -477,13 +418,28 @@ export interface components {
             code?: string;
             member?: components["schemas"]["data-user-short"][];
         };
-        DefaultErrors: {
-            status: number;
-            error?: string;
-            message?: string;
-            details?: {
-                [key: string]: unknown;
-            };
+        "data-team-short": {
+            id?: string;
+            name?: string;
+            category?: components["schemas"]["CategoryCapstone"];
+            period?: number;
+        };
+        "data-team-new": {
+            name: string;
+            leader_email: string;
+            category: components["schemas"]["CategoryCapstone"];
+        };
+        RespGenerateNewTeam: {
+            success_count: number;
+            error_count: number;
+            data?: components["schemas"]["data-team"][];
+            error_data?: {
+                name: string;
+                leader_email: string;
+                category: components["schemas"]["CategoryCapstone"];
+                error: string;
+            }[];
+            period: number;
         };
         "data-user": {
             id?: string;
@@ -492,6 +448,22 @@ export interface components {
             name?: string;
             email?: string;
             google_id?: string;
+        };
+        "data-user-short": {
+            id?: string;
+            name?: string;
+        };
+        "data-submission": {
+            id?: string;
+            team_id?: string;
+            grand_design_url?: string;
+            team_target_id?: string;
+            accepted?: boolean;
+        };
+        "data-submission-short": {
+            id?: string;
+            team_id?: string;
+            team_target_id?: string;
         };
         "data-title": {
             id?: string;
@@ -502,18 +474,31 @@ export interface components {
             proposal_url?: string;
             is_taken?: boolean;
         };
-        "data-submission-short": {
+        "data-title-short": {
             id?: string;
-            team_id?: string;
-            team_target_id?: string;
+            title?: string;
+            desc?: string;
+            photo_url?: string;
         };
-        "data-submission": {
-            id?: string;
-            team_id?: string;
-            grand_design_url?: string;
-            team_target_id?: string;
-            accepted?: boolean;
+        "signin-password-body": {
+            email: string;
+            password: string;
         };
+        "signup-password-body": {
+            email: string;
+            password: string;
+            name: string;
+        };
+        DefaultErrors: {
+            status: number;
+            error?: string;
+            message?: string;
+            details?: {
+                [key: string]: unknown;
+            };
+        };
+        /** @enum {string} */
+        CategoryCapstone: "Kesehatan" | "Pengelolaan Sampah" | "Smart City" | "Transportasi Ramah Lingkungan";
     };
     responses: never;
     parameters: never;
@@ -564,12 +549,12 @@ export interface operations {
                      * Format: binary
                      * @example
                      */
-                    photo_file: string;
+                    photo_file: File;
                     /**
                      * Format: binary
                      * @example
                      */
-                    proposal_file: string;
+                    proposal_file: File;
                     /** @example  */
                     title: string;
                     /** @example  */
@@ -628,12 +613,12 @@ export interface operations {
                      * Format: binary
                      * @example
                      */
-                    photo_file?: string;
+                    photo_file?: File;
                     /**
                      * Format: binary
                      * @example
                      */
-                    proposal_file?: string;
+                    proposal_file?: File;
                     /** @example  */
                     title?: string;
                     /** @example  */
@@ -909,7 +894,7 @@ export interface operations {
                      * Format: binary
                      * @example
                      */
-                    grand_design: string;
+                    grand_design: File;
                 };
             };
         };
@@ -971,7 +956,7 @@ export interface operations {
                  *     } */
                 "application/json": {
                     id: string;
-                    accept: string;
+                    accept: boolean;
                 };
             };
         };
@@ -1032,7 +1017,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": components["schemas"]["data-team"];
                 };
             };
             401: {
@@ -1061,7 +1046,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": components["schemas"]["data-team"];
                 };
             };
             401: {
@@ -1158,7 +1143,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": components["schemas"]["data-team"];
                 };
             };
             400: {
@@ -1269,7 +1254,7 @@ export interface operations {
                  *     } */
                 "application/json": {
                     new_period?: boolean;
-                    team_data: Record<string, never>[];
+                    team_data: components["schemas"]["data-team-new"][];
                 };
             };
         };
@@ -1448,7 +1433,7 @@ export interface operations {
                      * Format: binary
                      * @example
                      */
-                    cv_file?: string;
+                    cv_file?: File;
                 };
             };
         };

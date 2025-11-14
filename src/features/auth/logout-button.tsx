@@ -1,5 +1,5 @@
 import { Button } from '~/components/ui/button';
-import { useLogout } from './api-auth';
+import { useLogout } from '../../lib/api/auth';
 
 export function LogoutButton() {
   const mutation = useLogout();
