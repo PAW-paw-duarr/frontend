@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import Navigation from '~/components/ui/custom/navigation'
+import { Home } from '~/features/home/home'
+
 
 export const Route = createFileRoute('/title')({
   component: RouteComponent,
@@ -7,6 +8,8 @@ export const Route = createFileRoute('/title')({
 
 function RouteComponent() {
   return (
-    <Navigation />
+    <>
+      <Home />
+    </>
   )
 }
