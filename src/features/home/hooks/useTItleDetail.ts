@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useDropzone } from 'react-dropzone';
+import { useDropzone, type DropzoneInputProps, type DropzoneRootProps } from 'react-dropzone';
 
 interface UseTitleDetailReturn {
   uploadedFile: File | null;
   uploadProgress: number;
   isDragActive: boolean;
-  getRootProps: () => any;
-  getInputProps: () => any;
+  getRootProps: <T extends DropzoneRootProps>(props?: T) => T;
+  getInputProps: <T extends DropzoneInputProps>(props?: T) => T;
   handleRemoveFile: () => void;
   handleFileClick: () => void;
 }

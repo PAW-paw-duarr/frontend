@@ -1,9 +1,8 @@
-import * as React from 'react';
 import { Sheet, SheetContent, SheetHeader } from '~/components/ui/sheet';
 import { Button } from '~/components/ui/button';
 import { Badge } from '~/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
-import { Upload, Trash2, Plus, FileText, Crown, User } from 'lucide-react';
+import { Upload, Trash2, FileText, Crown, User } from 'lucide-react';
 import { cn } from '~/lib/utils';
 import { MdKeyboardDoubleArrowRight } from 'react-icons/md';
 import { HiExternalLink } from 'react-icons/hi';
@@ -35,8 +34,8 @@ export function CardTitleDetail({
   description,
   developedBy = 'Tim EcoTech Innovators',
   teamMembers = [],
-  proposalFile,
-  photos = [],
+  // proposalFile,
+  // photos = [],
 }: CardTitleDetailProps) {
   // Use custom hook
   const { uploadedFile, uploadProgress, isDragActive, getRootProps, getInputProps, handleRemoveFile, handleFileClick } =
@@ -89,9 +88,9 @@ export function CardTitleDetail({
                   )}
                 >
                   {member.role === 'Ketua' ? (
-                    <Crown className="h-6 w-6 flex-shrink-0" />
+                    <Crown className="h-6 w-6 shrink-0" />
                   ) : (
-                    <User className="h-6 w-6 flex-shrink-0" />
+                    <User className="h-6 w-6 shrink-0" />
                   )}
                   <span>{member.name}</span>
                 </div>
@@ -176,7 +175,7 @@ export function CardTitleDetail({
                                 {uploadedFile.name}
                               </button>
                               {uploadProgress === 100 && (
-                                <div className="flex-shrink-0 rounded-full bg-green-100 p-1">
+                                <div className="shrink-0 rounded-full bg-green-100 p-1">
                                   <svg className="h-3 w-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                                     <path
                                       fillRule="evenodd"
@@ -191,7 +190,7 @@ export function CardTitleDetail({
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 flex-shrink-0 text-red-500 hover:bg-red-50 hover:text-red-600"
+                            className="h-8 w-8 shrink-0 text-red-500 hover:bg-red-50 hover:text-red-600"
                             onClick={handleRemoveFile}
                           >
                             <Trash2 className="h-4 w-4" />

@@ -10,7 +10,7 @@
     "typecheck": "react-router typegen && tsc",
     "openapi": "npx openapi-typescript https://raw.githubusercontent.com/PAW-paw-duarr/openapi/refs/heads/main/openapi.json -o ./src/lib/api-schema.d.ts",
     "prepare": "husky",
-    "check": "",
+    "check": "tsc --noEmit && npm run lint",
     "lint": "eslint src/** --ext .ts,.tsx",
     "lint:fix": "eslint src/** --ext .ts,.tsx --fix",
     "lint-staged": "lint-staged"
