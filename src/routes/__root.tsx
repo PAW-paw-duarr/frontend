@@ -2,7 +2,7 @@ import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { QueryClient } from '@tanstack/react-query';
-import { getUserQueryOptions } from '~/lib/auth';
+import { getCurrentUserQuery } from '~/lib/api/user';
 import type { components } from '~/lib/api-schema';
 import { NotFound } from '~/components/section/NotFound';
 import { Toaster } from 'sonner';
@@ -13,7 +13,7 @@ export const Route = createRootRouteWithContext<{
 }>()({
   beforeLoad: async ({ context }) => {
     const user = await context.queryClient.fetchQuery({
-      ...getUserQueryOptions(),
+      ...getCurrentUserQuery(),
     });
 
     return { user };
