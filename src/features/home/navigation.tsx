@@ -3,11 +3,11 @@ import { Input } from "~/components/ui/input"
 import { Search } from "lucide-react"
 import { cn } from "~/lib/utils"
 import { useQuery } from "@tanstack/react-query"
-import { getUserQueryOptions } from "~/lib/auth"
+import { getCurrentUserQuery } from '~/lib/api/user';
 
 
 export function Navigation({ className }: React.ComponentProps<'input'>) {
-  const user = useQuery(getUserQueryOptions())
+  const user = useQuery(getCurrentUserQuery())
 
   return (
     <nav className={cn("px-[100px] py-6 bg-transparent", className)}>

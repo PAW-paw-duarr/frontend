@@ -10,6 +10,7 @@
     "typecheck": "react-router typegen && tsc",
     "openapi": "npx openapi-typescript https://raw.githubusercontent.com/PAW-paw-duarr/openapi/refs/heads/main/openapi.json -o ./src/lib/api-schema.d.ts",
     "prepare": "husky",
+    "check": "npx tsc --noEmit && npm run lint",
     "lint": "eslint src/** --ext .ts,.tsx",
     "lint:fix": "eslint src/** --ext .ts,.tsx --fix",
     "lint-staged": "lint-staged"
@@ -68,7 +69,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "lint-staged": {
-    "src/**/*.{ts,tsx}": "eslint --ext .ts,.tsx"
+    "src/**/*.{ts,tsx}": "npm run check"
   },
   "prettier": {
     "printWidth": 120,
