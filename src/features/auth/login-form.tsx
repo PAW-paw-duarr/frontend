@@ -4,7 +4,7 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from 'src
 import { Input } from 'src/components/ui/input';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoginWithEmailInputSchema, useLoginWithEmail } from './api-auth';
+import { LoginWithEmailInputSchema, useLoginWithEmail } from '../../lib/api/auth';
 
 export function LoginForm() {
   const { handleSubmit, control } = useForm({

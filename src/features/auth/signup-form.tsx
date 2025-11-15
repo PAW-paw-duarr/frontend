@@ -3,7 +3,7 @@ import { Button } from 'src/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'src/components/ui/card';
 import { Field, FieldDescription, FieldGroup, FieldLabel } from 'src/components/ui/field';
 import { Input } from 'src/components/ui/input';
-import { SignUpWithEmailInputSchema, useSignUpWithEmail } from './api-auth';
+import { SignUpWithEmailInputSchema, useSignUpWithEmail } from '../../lib/api/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export function SignupForm() {
