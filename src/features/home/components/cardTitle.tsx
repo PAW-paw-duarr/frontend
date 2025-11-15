@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { cn } from 'src/lib/utils';
-import { Button } from './button';
-import { Avatar, AvatarImage } from './avatar';
-import { IoArrowForward } from 'react-icons/io5';
+import { Button } from '../../../components/ui/button';
+import { Avatar, AvatarImage } from '../../../components/ui/avatar';
 
 function Card({ className, ...props }: React.ComponentProps<'div'>) {
   return (
@@ -62,11 +61,13 @@ function CardFooter({
   avatarSrc,
   userName,
   userEmail,
+  onClick, // <-- Tambahkan parameter ini
   ...props
 }: React.ComponentProps<'div'> & {
   avatarSrc?: string;
   userName?: string;
   userEmail?: string;
+  onClick?: () => void; // <-- Tambahkan type ini
 }) {
   return (
     <div data-slot="card-footer" className={cn('flex items-center justify-between px-5 pb-5', className)} {...props}>
@@ -75,13 +76,16 @@ function CardFooter({
           <AvatarImage src={avatarSrc || '/logo.svg'} alt={userName || 'User'} />
         </Avatar>
         <div className="flex flex-col">
-          <span className="text-md font-bold">{userName || 'Ketua1'}</span>
+          <span className="text-sm font-semibold">{userName || 'Ketua1'}</span>
           <span className="text-xs text-gray-500">{userEmail || 'ketua1@gmail.com'}</span>
         </div>
       </div>
-      <Button size="lg" className="rounded-[12px] bg-black py-6 text-white hover:bg-gray-800">
-        Detail
-        <IoArrowForward />
+      <Button
+        onClick={onClick} // <-- Tambahkan onClick handler ini
+        className="rounded-xl bg-black px-6 py-6 text-white hover:bg-gray-800"
+        size={'lg'}
+      >
+        Detail →
       </Button>
     </div>
   );

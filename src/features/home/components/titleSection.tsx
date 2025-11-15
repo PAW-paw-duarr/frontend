@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { Button } from '~/components/ui/button';
-import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from '~/components/ui/cardTitle';
+import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './cardTitle';
 import {
   Pagination,
   PaginationContent,
@@ -10,6 +9,9 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '~/components/ui/pagination';
+import { usePagination } from '../hooks/usePagination';
+import { CardTitleDetail } from './cardTitleDetail';
+import { useState } from 'react';
 
 const data = [
   {
@@ -168,41 +170,24 @@ const data = [
 ];
 
 export function TItleSection() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12;
+  const [selectedCard, setSelectedCard] = useState<number | null>(null);
 
-  // Hitung total halaman
-  const totalPages = Math.ceil(data.length / itemsPerPage);
-
-  // Ambil data untuk halaman saat ini
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentData = data.slice(startIndex, endIndex);
-
-  // Handler untuk ganti halaman
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  // Generate array nomor halaman
-  const getPageNumbers = () => {
-    const pages: (number | string)[] = [];
-    if (totalPages <= 5) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      if (currentPage <= 3) {
-        pages.push(1, 2, 3, 4, '...', totalPages);
-      } else if (currentPage >= totalPages - 2) {
-        pages.push(1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
-      } else {
-        pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
-      }
-    }
-    return pages;
-  };
+  const {
+    currentPage,
+    totalPages,
+    currentData,
+    startIndex,
+    gridRef,
+    handlePageChange,
+    getPageNumbers,
+    goToPreviousPage,
+    goToNextPage,
+    canGoPrevious,
+    canGoNext,
+  } = usePagination({
+    data,
+    itemsPerPage: 8,
+  });
 
   return (
     <div className="flex w-full flex-col gap-6 px-4 py-[50px] md:px-16 lg:px-[100px]">
@@ -221,8 +206,8 @@ export function TItleSection() {
       {/* Lines */}
       <hr className="border-t-2 border-gray-300" />
 
-      {/* Card Grid - 5 data per halaman */}
-      <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {/* Card Grid */}
+      <div ref={gridRef} className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {currentData.map((item, index) => (
           <Card key={startIndex + index} className="w-full">
             <CardHeader src={item.gambar} alt={item.judul} />
@@ -230,45 +215,70 @@ export function TItleSection() {
               <CardTitle>{item.judul}</CardTitle>
               <CardDescription>{item.deskripsi}</CardDescription>
             </CardContent>
-            <CardFooter avatarSrc={item.avatar} userName={item.ketua} userEmail={item.email} />
+            <CardFooter
+              avatarSrc={item.avatar}
+              userName={item.ketua}
+              userEmail={item.email}
+              onClick={() => setSelectedCard(startIndex + index)}
+            />
           </Card>
         ))}
       </div>
 
+      {/* Detail Sidebar */}
+      <CardTitleDetail
+        isOpen={selectedCard !== null}
+        onClose={() => setSelectedCard(null)}
+        groupName="SmartBin"
+        title="SmartBin: Tempat Sampah Pintar Berbasis IoT untuk Pemantauan Volume dan Pengelolaan Sampah Kampus."
+        description="SmartBin adalah sistem tempat sampah pintar yang memanfaatkan sensor ultrasonik dan modul Wi-Fi untuk memantau volume sampah secara real-time. Data dikirm ke dashboard web untuk memudahkan petugas kebersihan mengetahui kapan tempat sampah perlu dikosongkan, sehingga meningkatkan efisiensi pengelolaan limbah dengan pengelolaan limbah yang lebih efektif dan berkelanjutan."
+        developedBy="Tim EcoTech Innovators"
+        teamMembers={[
+          { name: 'Ketua Kelompoknya Jokowi', role: 'Ketua', avatar: '/logo.svg' },
+          { name: 'Anggota 1 (Bahrul)', role: 'Anggota', avatar: '/logo.svg' },
+          { name: 'Anggota 2 (Aman)', role: 'Anggota', avatar: '/logo.svg' },
+          { name: 'Anggota 3 (FitriFatrla)', role: 'Anggota', avatar: '/logo.svg' },
+        ]}
+        proposalFile="Proposal.odf"
+        photos={[]}
+      />
+
       {/* Pagination */}
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-              className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-            />
-          </PaginationItem>
-
-          {getPageNumbers().map((page, index) => (
-            <PaginationItem key={index}>
-              {page === '...' ? (
-                <PaginationEllipsis />
-              ) : (
-                <PaginationLink
-                  onClick={() => handlePageChange(page as number)}
-                  isActive={currentPage === page}
-                  className="cursor-pointer"
-                >
-                  {page}
-                </PaginationLink>
-              )}
+      {totalPages > 1 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={goToPreviousPage}
+                className={!canGoPrevious ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+              />
             </PaginationItem>
-          ))}
 
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-              className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+            {getPageNumbers().map((page, index) => (
+              <PaginationItem key={index}>
+                {page === '...' ? (
+                  <PaginationEllipsis />
+                ) : (
+                  <PaginationLink
+                    onClick={() => handlePageChange(page as number)}
+                    isActive={currentPage === page}
+                    className="cursor-pointer"
+                  >
+                    {page}
+                  </PaginationLink>
+                )}
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                onClick={goToNextPage}
+                className={!canGoNext ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 }
