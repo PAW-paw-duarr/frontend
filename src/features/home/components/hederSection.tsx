@@ -1,14 +1,8 @@
 export function Header() {
   return (
-    <header className="relative h-[650px] w-full">
-      {/* Background Image */}
-      <img src="/header.webp" alt="Header background" className="absolute inset-0 z-0 w-full object-cover" />
-
-      {/* Overlay */}
-      <div className="absolute inset-0 z-10" />
-
+    <header className="relative h-[650px] w-full bg-[url('/header.webp')] bg-cover bg-center bg-no-repeat">
       {/* Content - Centered */}
-      <div className="absolute inset-0 top-[100px] z-20 flex items-center justify-center">
+      <div className="absolute inset-0 top-[120px] z-20 flex items-center justify-center">
         <div className="max-w-5xl space-y-6 px-8 text-center">
           <h1 className="text-6xl font-bold text-white drop-shadow-lg">Capstone Project DTETI</h1>
           <p className="text-xl leading-relaxed font-normal text-white drop-shadow-md">

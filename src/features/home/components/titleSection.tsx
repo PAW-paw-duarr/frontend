@@ -186,11 +186,11 @@ export function TItleSection() {
     canGoNext,
   } = usePagination({
     data,
-    itemsPerPage: 8,
+    itemsPerPage: 12,
   });
 
   return (
-    <div className="flex w-full flex-col gap-6 px-4 py-[50px] md:px-16 lg:px-[100px]">
+    <section className="flex w-full flex-col gap-6 px-4 py-32 md:px-16 lg:px-36">
       {/* Header Section Judul */}
       <div className="flex w-full flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col gap-2 md:flex-row md:items-center">
@@ -279,6 +279,6 @@ export function TItleSection() {
           </PaginationContent>
         </Pagination>
       )}
-    </div>
+    </section>
   );
 }
