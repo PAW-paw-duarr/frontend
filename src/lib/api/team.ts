@@ -57,7 +57,8 @@ export function useJoinTeam() {
     });
 }
 
-export function useAccOrRejectSubmission() {
+export function useKickMember(teamdId: string) {
+    const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (id: string) => {
             const { data, error } = await ApiClient.DELETE("/team/kick/{id}", {
@@ -70,6 +71,7 @@ export function useAccOrRejectSubmission() {
         },
         onSuccess: async () => {
             toast.success("Member kicked successfully");
+            await queryClient.refetchQueries(getTeamByIdQuery(teamdId));
         },
         onError: (error) => {
             toast.error(`Kick member failed: ${error.message}`);
