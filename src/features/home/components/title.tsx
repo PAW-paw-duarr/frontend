@@ -15,31 +15,37 @@ import { useQuery } from '@tanstack/react-query';
 import { getAllTitlesQuery } from '~/lib/api/title';
 import { FILE_BASE_URL } from '~/lib/constant';
 import { SidebarTitle } from './sidebarTitle';
-import { useHash } from '@mantine/hooks';
 import { useSearchTitles } from '../hooks/useSearchTitles';
-import { useSearch } from '@tanstack/react-router';
+import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useTitleSidebarStore } from '~/hooks/global';
 
 export function Title() {
   const [isSubmissionOpen, setIsSubmissionOpen] = useState(false);
   const allData = useQuery(getAllTitlesQuery()).data || [];
   const searchParams = useSearch({ from: '/_auth/' });
   const searchQuery = searchParams?.q || '';
+  const navigate = useNavigate();
 
   const { search } = useSearchTitles(allData);
   const data = useMemo(() => search(searchQuery), [search, searchQuery]);
 
-  const [hash, setHash] = useHash();
-  const isOpen = hash.startsWith('#title/');
-  const [open, setOpen] = useState(isOpen);
+  const isOpen = searchParams?.t !== '' && searchParams?.t !== undefined;
+  const stateTitle = useTitleSidebarStore((state) => state.state);
+  const setStateTitle = useTitleSidebarStore((state) => state.setState);
 
   useEffect(() => {
-    setOpen(isOpen);
-  }, [isOpen]);
+    setStateTitle(isOpen);
+  }, [isOpen, setStateTitle]);
 
   function toggleSidebar(titleId: string) {
-    setOpen(false);
-    setHash(`#title/${titleId}`);
-    setOpen(true);
+    setStateTitle(false);
+    navigate({
+      to: '.',
+      search: (old) => ({ ...old, t: titleId }),
+      replace: true,
+      resetScroll: false,
+    });
+    setStateTitle(true);
   }
 
   const {
@@ -61,7 +67,7 @@ export function Title() {
 
   return (
     <>
-      {open && <SidebarTitle opens={open} setOpens={setOpen} />}
+      {stateTitle && <SidebarTitle />}
       <section className="flex w-full flex-col gap-6 px-6 py-16 md:px-20 md:py-32 lg:px-24 xl:px-36">
         <div className="flex w-full flex-row items-center justify-between gap-4">
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:gap-2">
