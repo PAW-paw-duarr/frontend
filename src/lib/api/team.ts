@@ -36,7 +36,7 @@ export function getTeamByIdQuery(id: string) {
 export const joinTeamSchema = z.object({
     code: z.string(),
 });
-export function useCreateSubmission() {
+export function useJoinTeam() {
     return useMutation({
         mutationFn: async (dataInput: z.infer<typeof joinTeamSchema>) => {
             const { data, error } = await ApiClient.POST("/team/join", {
