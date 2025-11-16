@@ -1,29 +1,39 @@
-import { Avatar, AvatarImage } from './avatar';
+import { Avatar, AvatarImage } from '../../../components/ui/avatar';
 import { Input } from '~/components/ui/input';
 import { Search } from 'lucide-react';
 import { cn } from '~/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { getCurrentUserQuery } from '~/lib/api/user';
 import { useState, useEffect } from 'react';
-import { Link } from '@tanstack/react-router';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 
 export function Navigation({ className }: React.ComponentProps<'input'>) {
   const user = useQuery(getCurrentUserQuery());
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
+  const searchParams = useSearch({ from: '/_auth/' });
+  const [searchValue, setSearchValue] = useState(searchParams?.q || '');
 
   useEffect(() => {
     const handleScroll = () => {
-      // Ubah threshold sesuai kebutuhan (misal 100px atau height dari hero section)
-      const scrollThreshold = 580; // Adjust ini sesuai tinggi hero section
+      const scrollThreshold = 580;
       setIsScrolled(window.scrollY > scrollThreshold);
     };
 
-    // Tambahkan event listener
     window.addEventListener('scroll', handleScroll);
 
-    // Cleanup
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    navigate({
+      to: '/',
+      search: { q: value },
+      replace: true,
+    });
+  };
 
   return (
     <nav
@@ -32,10 +42,9 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
       <div
         className={cn(
           'glass flex w-full items-center justify-between gap-6 rounded-2xl p-1 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out md:rounded-3xl md:p-4',
-          isScrolled ? 'outline outline-gray-200' : 'border-none' // Tambah background putih saat scroll
+          isScrolled ? 'outline outline-gray-200' : 'border-none'
         )}
       >
-        {/* Logo Section - Fixed Width */}
         <div className="flex items-center space-x-4 px-3.5 py-3">
           <img
             src="/logo.svg"
@@ -52,7 +61,6 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
           </div>
         </div>
 
-        {/* Search Section - Centered */}
         <div className="hidden flex-1 justify-center md:flex">
           <div className="relative w-full max-w-[850px] text-white">
             <Search
@@ -63,6 +71,8 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
             />
             <Input
               placeholder="Cari Capstone Project..."
+              value={searchValue}
+              onChange={handleSearchChange}
               className={cn(
                 'h-[50px] rounded-[12px] border-white pl-12 transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-blue-500 2xl:w-full',
                 isScrolled
@@ -73,12 +83,7 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
           </div>
         </div>
 
-        {/* User Profile Section - Fixed Width with Link */}
-        <Link
-          // to="/profile"
-          className="flex cursor-pointer items-center justify-end space-x-3 rounded-lg transition-all duration-200 md:px-4"
-          to={'/title'}
-        >
+        <div className="flex cursor-pointer items-center justify-end space-x-3 rounded-lg transition-all duration-200 md:px-4">
           <Avatar className="h-12 w-12 border-2 border-blue-500">
             <AvatarImage src="/logo.svg" alt="User Avatar" />
           </Avatar>
@@ -102,7 +107,7 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
               <span>Nama_Kelompok</span>
             </div>
           </div>
-        </Link>
+        </div>
       </div>
       <div className="relative mt-3 flex w-full md:hidden">
         <Search
@@ -113,6 +118,8 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
         />
         <Input
           placeholder="Cari Capstone Project..."
+          value={searchValue}
+          onChange={handleSearchChange}
           className={cn(
             'glass h-[50px] rounded-[12px] border-white pl-12 transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-blue-500 2xl:w-full',
             isScrolled

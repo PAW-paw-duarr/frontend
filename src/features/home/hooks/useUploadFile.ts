@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDropzone, type DropzoneInputProps, type DropzoneRootProps } from 'react-dropzone';
 
-interface UseTitleDetailReturn {
+interface useUploadFileReturn {
   uploadedFile: File | null;
   uploadProgress: number;
   isDragActive: boolean;
@@ -11,15 +11,13 @@ interface UseTitleDetailReturn {
   handleFileClick: () => void;
 }
 
-export function useTitleDetail(): UseTitleDetailReturn {
+export function useUploadFile(): useUploadFileReturn {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
       'application/pdf': ['.pdf'],
-      'application/msword': ['.doc'],
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
     },
     maxFiles: 1,
     onDrop: (acceptedFiles) => {

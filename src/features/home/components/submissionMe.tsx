@@ -127,13 +127,13 @@ export function SubmissionMe({ isOpen, onClose }: SubmissionMeProps) {
     }).format(date);
   };
 
-  const truncateTitle = (title: string, wordLimit: number = 5) => {
+  const truncateTitle = (title: string, wordLimit = 5) => {
     const words = title.split(' ');
     if (words.length <= wordLimit) return title;
     return words.slice(0, wordLimit).join(' ') + '...';
   };
 
-  const handleOpenFile = (fileUrl: string) => {
+  const _ = (fileUrl: string) => {
     // Buka file PDF di tab baru
     window.open(fileUrl, '_blank');
   };
@@ -237,7 +237,8 @@ export function SubmissionMe({ isOpen, onClose }: SubmissionMeProps) {
                       <AccordionContent className="px-3 pb-3 sm:px-4 sm:pb-4">
                         <div className="space-y-3 pt-2 sm:space-y-4">
                           {/* File Info - Clickable */}
-                          <div
+                          {/* <div
+
                             onClick={() => handleOpenFile(submission.fileUrl)}
                             className="cursor-pointer rounded-lg bg-gray-50 p-2.5 transition-colors hover:bg-gray-100 sm:p-3"
                           >
@@ -249,7 +250,7 @@ export function SubmissionMe({ isOpen, onClose }: SubmissionMeProps) {
                                 <p className="text-[10px] text-gray-500 sm:text-xs">{submission.fileSize}</p>
                               </div>
                             </div>
-                          </div>
+                          </div> */}
 
                           {/* Date Info */}
                           <div className="flex items-center gap-1.5 text-xs text-gray-600 sm:gap-2 sm:text-sm">
