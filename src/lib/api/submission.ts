@@ -35,13 +35,20 @@ export function getSubmissionByIdQuery(id: string) {
 
 export const createSubmissionSchema = z.object({
     team_target_id: z.string(),
-    grand_design: z.instanceof(File),
+    grand_design: z.instanceof(File).nullable(),
 });
 export function useCreateSubmission() {
     return useMutation({
         mutationFn: async (dataInput: z.infer<typeof createSubmissionSchema>) => {
+            if (dataInput.grand_design === null) {
+                throw new Error("Grand design file is required");
+            }
+            const cleanData = {
+                ...dataInput,
+                grand_design: dataInput.grand_design,
+            }
             const { data, error } = await ApiClient.POST("/submission/submit", {
-                body: dataInput,
+                body: cleanData,
                 bodySerializer(body) {
                     const fd = new FormData();
                     for (const name in body) {
