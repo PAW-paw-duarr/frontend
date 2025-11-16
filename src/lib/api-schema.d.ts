@@ -311,6 +311,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /**
+         * List All Users
+         * @description Retrieves a list of all users
+         *     Nonadmin : cannot use this
+         */
         get: operations["get-user"];
         put?: never;
         post?: never;
@@ -409,20 +414,14 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         "data-team": {
-            id?: string;
-            name?: string;
-            leader_email?: string;
+            id: string;
+            name: string;
+            leader_email: string;
             title_id?: string;
-            category?: components["schemas"]["CategoryCapstone"];
-            period?: number;
+            category: components["schemas"]["CategoryCapstone"];
+            period: number;
             code?: string;
             member?: components["schemas"]["data-user-short"][];
-        };
-        "data-team-short": {
-            id?: string;
-            name?: string;
-            category?: components["schemas"]["CategoryCapstone"];
-            period?: number;
         };
         "data-team-new": {
             name: string;
@@ -442,43 +441,45 @@ export interface components {
             period: number;
         };
         "data-user": {
-            id?: string;
+            id: string;
             cv_url?: string;
             team_id?: string;
-            name?: string;
+            name: string;
             email?: string;
             google_id?: string;
         };
         "data-user-short": {
-            id?: string;
-            name?: string;
+            id: string;
+            name: string;
+            email: string;
         };
         "data-submission": {
-            id?: string;
-            team_id?: string;
-            grand_design_url?: string;
-            team_target_id?: string;
-            accepted?: boolean;
+            id: string;
+            team_id: string;
+            grand_design_url: string;
+            team_target_id: string;
+            accepted: boolean;
         };
         "data-submission-short": {
-            id?: string;
-            team_id?: string;
-            team_target_id?: string;
+            id: string;
+            team_id: string;
+            team_target_id: string;
         };
         "data-title": {
-            id?: string;
-            title?: string;
-            desc?: string;
-            description?: string;
-            photo_url?: string;
+            id: string;
+            title: string;
+            desc: string;
+            description: string;
+            photo_url: string;
             proposal_url?: string;
-            is_taken?: boolean;
+            is_taken: boolean;
+            team_id: string;
         };
         "data-title-short": {
-            id?: string;
-            title?: string;
-            desc?: string;
-            photo_url?: string;
+            id: string;
+            title: string;
+            desc: string;
+            photo_url: string;
         };
         "signin-password-body": {
             email: string;
@@ -489,6 +490,8 @@ export interface components {
             password: string;
             name: string;
         };
+        /** @enum {string} */
+        CategoryCapstone: "Kesehatan" | "Pengelolaan Sampah" | "Smart City" | "Transportasi Ramah Lingkungan";
         DefaultErrors: {
             status: number;
             error?: string;
@@ -497,8 +500,6 @@ export interface components {
                 [key: string]: unknown;
             };
         };
-        /** @enum {string} */
-        CategoryCapstone: "Kesehatan" | "Pengelolaan Sampah" | "Smart City" | "Transportasi Ramah Lingkungan";
     };
     responses: never;
     parameters: never;
@@ -1410,6 +1411,33 @@ export interface operations {
             };
         };
     };
+    "get-user": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["data-user-short"][];
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DefaultErrors"];
+                };
+            };
+        };
+    };
     "patch-api-user": {
         parameters: {
             query?: never;
@@ -1463,33 +1491,6 @@ export interface operations {
                 };
             };
             500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DefaultErrors"];
-                };
-            };
-        };
-    };
-    "get-user": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["data-user-short"][];
-                };
-            };
-            401: {
                 headers: {
                     [name: string]: unknown;
                 };

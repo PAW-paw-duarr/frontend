@@ -11,7 +11,11 @@ export function NotFound() {
       </EmptyHeader>
       <EmptyContent>
         <Button size="sm">
-          <Link to="/">Go back home</Link>
+          <Link
+            to="/"
+          >
+            Go back home
+          </Link>
         </Button>
       </EmptyContent>
     </Empty>
