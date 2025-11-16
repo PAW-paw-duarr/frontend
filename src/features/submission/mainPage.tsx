@@ -1,6 +1,6 @@
-import { Header } from '../home/components/hederSection';
-import { Navigation } from '~/components/ui/navigation';
-import { FooterSection } from '../home/components/footerSection';
+import { Header } from '../home/components/header';
+import { Navigation } from '../home/components/navigation';
+import { Footer } from '../home/components/footer';
 import { SubmissionSection } from './components/submissionSection';
 import { useSubmissions } from '~/features/submission/hooks/useSubmission';
 
@@ -20,7 +20,7 @@ export function MainPage() {
         />
       </main>
 
-      <FooterSection />
+      <Footer />
     </div>
   );
 }
