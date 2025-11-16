@@ -1,14 +1,14 @@
 import { FooterSection } from './components/footerSection';
 import { Header } from './components/hederSection';
-import { TItleSection } from './components/titleSection';
 import { Navigation } from '~/components/ui/navigation';
+import { TitleSection } from './components/titleSection';
 
 export function MainPage() {
   return (
     <>
       <Navigation />
       <Header />
-      <TItleSection />
+      <TitleSection />
       <FooterSection />
     </>
   );
