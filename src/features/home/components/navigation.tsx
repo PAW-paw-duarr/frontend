@@ -1,18 +1,26 @@
-import { Avatar, AvatarImage } from '../../../components/ui/avatar';
+import { Avatar } from '~/components/ui/avatar';
 import { Input } from '~/components/ui/input';
 import { Search } from 'lucide-react';
-import { cn } from '~/lib/utils';
+import { cn, getAlias } from '~/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { getCurrentUserQuery } from '~/lib/api/user';
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearch } from '@tanstack/react-router';
+import { AvatarFallback } from '@radix-ui/react-avatar';
+import { getTeamByIdQuery } from '~/lib/api/team';
+import { useMyProfileDialogStore } from '~/hooks/global';
+import { DialogProfile } from '~/features/profile/components/profile-dialog';
 
 export function Navigation({ className }: React.ComponentProps<'input'>) {
   const user = useQuery(getCurrentUserQuery());
+  const { data: teamData } = useQuery(getTeamByIdQuery(user?.data?.team_id || ''));
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const searchParams = useSearch({ from: '/_auth/' });
   const [searchValue, setSearchValue] = useState(searchParams?.q || '');
+  const isOpen = searchParams?.p === 'me';
+  const stateMyProfile = useMyProfileDialogStore((state) => state.state);
+  const setStateMyProfile = useMyProfileDialogStore((state) => state.setState);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +33,10 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    setStateMyProfile(isOpen);
+  }, [isOpen, setStateMyProfile]);
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchValue(value);
@@ -35,10 +47,22 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
     });
   };
 
+  function toggleProfileDialog() {
+    setStateMyProfile(false);
+    navigate({
+      to: '/',
+      search: (old) => ({ ...old, p: 'me' }),
+      replace: true,
+      resetScroll: false,
+    });
+    setStateMyProfile(true);
+  }
+
   return (
     <nav
       className={cn('fixed top-0 right-0 left-0 z-50 bg-transparent px-6 py-6 md:px-20 lg:px-24 xl:px-36', className)}
     >
+      {stateMyProfile && <DialogProfile />}
       <div
         className={cn(
           'glass flex w-full items-center justify-between gap-6 rounded-2xl p-1 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out md:rounded-3xl md:p-4',
@@ -83,10 +107,14 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
           </div>
         </div>
 
-        <div className="flex cursor-pointer items-center justify-end space-x-3 rounded-lg transition-all duration-200 md:px-4">
-          <Avatar className="h-12 w-12 border-2 border-blue-500">
-            <AvatarImage src="/logo.svg" alt="User Avatar" />
+        <button
+          className="flex cursor-pointer items-center justify-end space-x-3 rounded-lg transition-all duration-200 md:px-4"
+          onClick={() => toggleProfileDialog()}
+        >
+          <Avatar className="flex h-12 w-12 items-center justify-center border-2 border-blue-500 bg-blue-100">
+            <AvatarFallback className="text-blue-700">{getAlias(user?.data?.name ?? '')}</AvatarFallback>
           </Avatar>
+
           <div className="hidden md:flex md:flex-col">
             <div
               className={cn(
@@ -102,12 +130,12 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
                 isScrolled ? 'text-primary' : 'text-white'
               )}
             >
-              <span>Anggota</span>
+              <span>{teamData?.leader_email === user?.data?.email ? 'Ketua' : 'Anggota'}</span>
               <span>•</span>
-              <span>Nama_Kelompok</span>
+              <span>{teamData?.name}</span>
             </div>
           </div>
-        </div>
+        </button>
       </div>
       <div className="relative mt-3 flex w-full md:hidden">
         <Search

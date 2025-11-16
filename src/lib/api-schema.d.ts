@@ -409,6 +409,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/period": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Period
+         * @description get current period
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            current_period: string;
+                        };
+                    };
+                };
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["DefaultErrors"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -422,6 +470,12 @@ export interface components {
             period: number;
             code?: string;
             member?: components["schemas"]["data-user-short"][];
+        };
+        "data-team-short": {
+            id: string;
+            name: string;
+            category: components["schemas"]["CategoryCapstone"];
+            period: number;
         };
         "data-team-new": {
             name: string;
@@ -490,8 +544,6 @@ export interface components {
             password: string;
             name: string;
         };
-        /** @enum {string} */
-        CategoryCapstone: "Kesehatan" | "Pengelolaan Sampah" | "Smart City" | "Transportasi Ramah Lingkungan";
         DefaultErrors: {
             status: number;
             error?: string;
@@ -500,6 +552,8 @@ export interface components {
                 [key: string]: unknown;
             };
         };
+        /** @enum {string} */
+        CategoryCapstone: "Kesehatan" | "Pengelolaan Sampah" | "Smart City" | "Transportasi Ramah Lingkungan";
     };
     responses: never;
     parameters: never;
@@ -1450,11 +1504,6 @@ export interface operations {
                 "multipart/form-data": {
                     /** @example  */
                     name?: string;
-                    /**
-                     * Format: email
-                     * @example
-                     */
-                    email?: string;
                     /** @example  */
                     password?: string;
                     /**

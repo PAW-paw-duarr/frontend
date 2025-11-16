@@ -9,7 +9,9 @@ import { z } from 'zod';
 
 export const Route = createFileRoute('/_auth/')({
   validateSearch: z.object({
-    q: z.string().optional(),
+    q: z.string().optional(), // query
+    p: z.string().optional(), // profile
+    t: z.string().optional(), // title
   }),
   loader: async ({ context: { queryClient }, location: { hash } }) => {
     if (!hash.startsWith('#title/')) {
