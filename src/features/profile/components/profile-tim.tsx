@@ -1,9 +1,9 @@
 import { Button } from '~/components/ui/button';
-import { FileText, X, ExternalLink, Users, CheckCircle2, Clock } from 'lucide-react';
+import { FileText, X, ExternalLink, Users, CheckCircle2, Clock, Trash2 } from 'lucide-react';
 import { getTeamByIdQuery, useKickMember } from '~/lib/api/team';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { getCurrentUserQuery } from '~/lib/api/user';
-import { getAllSubmissionQuery, getSubmissionByIdQuery } from '~/lib/api/submission';
+import { getAllSubmissionQuery, getSubmissionByIdQuery, useDeleteSubmission } from '~/lib/api/submission';
 import { Input } from '~/components/ui/input';
 import { Field, FieldLabel } from '~/components/ui/field';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
@@ -62,7 +62,7 @@ export function ProfileTim() {
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
-                {isCaptain && <TableHead className="w-[100px]">Action</TableHead>}
+                {isCaptain && <TableHead className="w-[100px]">Delete</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -131,6 +131,14 @@ export function ProfileTim() {
 function SubmissionDetails({ submissionId }: { submissionId: string }) {
   const { data } = useSuspenseQuery(getSubmissionByIdQuery(submissionId));
   const { data: teamTarget } = useSuspenseQuery(getTeamByIdQuery(data?.team_id || ''));
+  const { data: accountData } = useQuery(getCurrentUserQuery());
+  const { data: teamData } = useQuery(getTeamByIdQuery(accountData?.team_id || ''));
+  const deleteSubmissionMutation = useDeleteSubmission();
+  const isCaptain = teamData?.leader_email === accountData?.email;
+
+  const handleDelete = () => {
+    deleteSubmissionMutation.mutate(submissionId);
+  };
 
   const getStatusBadge = (accepted: boolean | undefined) => {
     if (accepted === true) {
@@ -185,6 +193,22 @@ function SubmissionDetails({ submissionId }: { submissionId: string }) {
           <p className="text-sm text-gray-500">No URL provided</p>
         )}
       </div>
+
+      {isCaptain && (
+        <div className="flex justify-end border-t pt-4">
+          <Button
+            type="button"
+            variant="destructive"
+            size="sm"
+            onClick={handleDelete}
+            disabled={deleteSubmissionMutation.isPending}
+            className="gap-2"
+          >
+            <Trash2 className="h-4 w-4" />
+            {deleteSubmissionMutation.isPending ? 'Deleting...' : 'Delete Submission'}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

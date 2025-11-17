@@ -44,7 +44,7 @@ export function SubmissionSection() {
           <h1 className="text-3xl font-bold">
             {filteredData.length} Tim - Mengajukan Penerusan {searchQuery && `untuk "${searchQuery}"`}
           </h1>
-          <Button className="bg-black text-white hover:bg-black/90" onClick={() => setStateMyTitle(true)}>
+          <Button className="rounded-lg bg-black py-4 text-sm text-white hover:bg-gray-800 sm:py-5 sm:text-base md:py-6" onClick={() => setStateMyTitle(true)} size={"lg"}>
             Capstone saya
           </Button>
         </div>

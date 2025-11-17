@@ -102,7 +102,7 @@ export function NavigationBase({
         </div>
 
         <button
-          className="flex cursor-pointer items-center justify-end space-x-3 rounded-lg transition-all duration-200 md:px-4"
+          className="flex cursor-pointer items-center justify-start space-x-3 rounded-lg transition-all duration-200 md:px-4"
           onClick={onProfileClick}
         >
           <Avatar className="flex h-12 w-12 items-center justify-center border-2 border-blue-500 bg-blue-100">
@@ -112,7 +112,7 @@ export function NavigationBase({
           <div className="hidden md:flex md:flex-col">
             <div
               className={cn(
-                'text-md font-bold transition-colors duration-200',
+                'text-start text-md font-bold transition-colors duration-200',
                 isScrolled ? 'text-primary' : 'text-white'
               )}
             >
