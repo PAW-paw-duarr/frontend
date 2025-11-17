@@ -6,6 +6,5 @@ export const Route = createFileRoute('/_auth/admin/titles')({
 });
 
 function RouteComponent() {
-
   return <TitlesTable />;
 }

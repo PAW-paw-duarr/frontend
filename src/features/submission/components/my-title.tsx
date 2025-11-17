@@ -71,7 +71,7 @@ export function MyTitle() {
   return (
     <Dialog open={stateMyTitle} onOpenChange={handleOpenChange}>
       <DialogContent className="max-h-[80vh] overflow-y-auto bg-white sm:max-w-[600px]">
-        <ScrollArea className="h-[500px] rounded-md border p-4 m-2">
+        <ScrollArea className="m-2 h-[500px] rounded-md border p-4">
           <DialogHeader>
             <DialogTitle className="text-xl font-semibold">Edit Capstone Title</DialogTitle>
           </DialogHeader>

@@ -18,7 +18,7 @@ import { getAllSubmissionQuery, getSubmissionByIdQuery, useDeleteSubmission } fr
 
 const createColumns = (
   onDelete: (id: string) => void,
-  onViewDetails: (submission: { id: string; team_id: string; team_target_id: string }) => void,
+  onViewDetails: (submission: { id: string; team_id: string; team_target_id: string }) => void
 ): ColumnDef<{ id: string; team_id: string; team_target_id: string }>[] => [
   {
     id: 'select',

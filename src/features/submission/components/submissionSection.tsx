@@ -44,7 +44,11 @@ export function SubmissionSection() {
           <h1 className="text-3xl font-bold">
             {filteredData.length} Team - Submitting Forward {searchQuery && `for "${searchQuery}"`}
           </h1>
-          <Button className="rounded-lg bg-black py-4 text-sm text-white hover:bg-gray-800 sm:py-5 sm:text-base md:py-6" onClick={() => setStateMyTitle(true)} size={"lg"}>
+          <Button
+            className="rounded-lg bg-black py-4 text-sm text-white hover:bg-gray-800 sm:py-5 sm:text-base md:py-6"
+            onClick={() => setStateMyTitle(true)}
+            size={'lg'}
+          >
             My Capstone
           </Button>
         </div>

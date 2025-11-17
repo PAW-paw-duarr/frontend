@@ -40,9 +40,7 @@ export function SignupTitleForm() {
                 <Controller
                   name="title"
                   control={control}
-                  render={({ field }) => (
-                    <Input {...field} id="title" type="text" placeholder="Your project title" />
-                  )}
+                  render={({ field }) => <Input {...field} id="title" type="text" placeholder="Your project title" />}
                 />
                 {errors.title && <FieldDescription className="text-red-500">{errors.title.message}</FieldDescription>}
               </Field>
@@ -63,7 +61,12 @@ export function SignupTitleForm() {
                   name="description"
                   control={control}
                   render={({ field }) => (
-                    <Input {...field} id="description" type="textarea" placeholder="Provide a detailed description of your project, its objectives, and expected outcomes" />
+                    <Input
+                      {...field}
+                      id="description"
+                      type="textarea"
+                      placeholder="Provide a detailed description of your project, its objectives, and expected outcomes"
+                    />
                   )}
                 />
                 {errors.description && (
