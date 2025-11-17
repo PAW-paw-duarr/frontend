@@ -18,6 +18,8 @@ import { createSubmissionSchema, useCreateSubmission } from '~/lib/api/submissio
 import { useProfileDialogStore, useTitleSidebarStore } from '~/hooks/global';
 import { ProfileOrangT } from '~/features/profile/components/profile-dialog-orang';
 import { MemberTeam } from '~/components/list/member-team';
+import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
+import { Info } from 'lucide-react';
 
 export function SidebarTitle() {
   const uploadFile = useUploadFile();
@@ -86,12 +88,27 @@ export function SidebarTitle() {
               onClick={onClose}
               className="h-9 w-9 cursor-pointer rounded-full bg-gray-100 p-1.5 transition-colors hover:bg-gray-200 sm:h-11 sm:w-11 sm:p-2 md:h-[45px] md:w-[45px]"
             />
-            <Badge
-              variant="secondary"
-              className="rounded-lg bg-blue-100 px-3 py-1 text-xs font-bold italic sm:px-4 sm:py-1.5 sm:text-sm md:text-base lg:text-lg"
-            >
-              {dataTeam.category}
-            </Badge>
+            <div className="mt-4 flex items-center gap-3">
+              <Badge
+                variant="secondary"
+                className="rounded-lg bg-blue-100 px-3 py-1 text-xs font-bold italic sm:px-4 sm:py-1.5 sm:text-sm md:text-base lg:text-lg"
+              >
+                {dataTeam.category}
+              </Badge>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="shrink-0 rounded-full p-1 transition-colors hover:bg-gray-100">
+                    <Info className="h-4 w-4 text-gray-500 sm:h-5 sm:w-5" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 text-sm">
+                  <p className="mb-1 font-semibold">About Proposals</p>
+                  <p className="text-gray-600">
+                    Team proposals will only be visible after your team is accepted for Capstone continuation.
+                  </p>
+                </PopoverContent>
+              </Popover>
+            </div>
           </SheetHeader>
 
           <form
@@ -108,23 +125,23 @@ export function SidebarTitle() {
           >
             <div className="space-y-4 py-4 sm:space-y-5 sm:py-5 md:space-y-6 md:py-6">
               <div>
-                <h1 className="mb-2 text-xl leading-tight font-extrabold sm:mb-3 sm:text-2xl md:text-3xl md:leading-normal">
+                <h1 className="text-xl leading-tight font-extrabold sm:text-2xl md:text-3xl md:leading-normal">
                   {dataTitle.title}
                 </h1>
 
                 <div>
-                  <h3 className="mb-2 text-lg font-bold sm:text-xl md:text-2xl">Deskripsi</h3>
+                  <h3 className="mb-2 text-lg font-bold sm:text-xl md:text-2xl">Description</h3>
                   <p className="text-base leading-relaxed text-gray-600">{dataTitle.description}</p>
                 </div>
 
                 <div className="flex flex-wrap gap-1 pt-1 text-base sm:pt-2">
-                  <p className="">oleh</p>
+                  <p className="">by</p>
                   <p className="font-semibold">{dataTeam.name}</p>
                 </div>
               </div>
 
               <div>
-                <h3 className="mb-2 text-lg font-bold sm:mb-3 sm:text-xl md:text-2xl">Anggota Tim</h3>
+                <h3 className="mb-2 text-lg font-bold sm:mb-3 sm:text-xl md:text-2xl">Team Members</h3>
                 <div className="flex w-fit flex-col items-start gap-2">
                   <MemberTeam
                     dataMember={dataTeam?.member || []}
@@ -136,28 +153,7 @@ export function SidebarTitle() {
 
               <div>
                 <div className="mb-2 flex items-center justify-between sm:mb-3">
-                  <h3 className="text-lg font-bold sm:text-xl md:text-2xl">Proposal</h3>
-                  <a
-                    href={FILE_BASE_URL + dataTitle.proposal_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md bg-black p-1.5 text-white hover:bg-gray-800 hover:text-gray-200 sm:h-9 sm:w-9 sm:p-2 md:h-10 md:w-10"
-                  >
-                    <HiExternalLink className="h-full w-full" />
-                  </a>
-                </div>
-                <div className="aspect-video w-full overflow-hidden rounded-lg bg-gray-200">
-                  <iframe
-                    src={FILE_BASE_URL + dataTitle.proposal_url}
-                    className="h-full w-full border-0"
-                    title="Proposal PDF Preview"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <div className="mb-2 flex items-center justify-between sm:mb-3">
-                  <h3 className="text-lg font-bold sm:text-xl md:text-2xl">Foto</h3>
+                  <h3 className="text-lg font-bold sm:text-xl md:text-2xl">Photo</h3>
                   <a
                     href={FILE_BASE_URL + dataTitle.photo_url}
                     target="_blank"
@@ -168,19 +164,38 @@ export function SidebarTitle() {
                   </a>
                 </div>
                 <div className="aspect-video w-full overflow-hidden rounded-lg bg-gray-200">
-                  <img
-                    src={FILE_BASE_URL + dataTitle.photo_url}
-                    alt="Foto Preview"
-                    className="h-full w-full object-cover"
-                  />
+                  <img src={FILE_BASE_URL + dataTitle.photo_url} alt="Preview" className="h-full w-full object-cover" />
                 </div>
               </div>
+
+              {dataTitle.proposal_url && (
+                <div>
+                  <div className="mb-2 flex items-center justify-between sm:mb-3">
+                    <h3 className="text-lg font-bold sm:text-xl md:text-2xl">Proposal</h3>
+                    <a
+                      href={FILE_BASE_URL + dataTitle.proposal_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md bg-black p-1.5 text-white hover:bg-gray-800 hover:text-gray-200 sm:h-9 sm:w-9 sm:p-2 md:h-10 md:w-10"
+                    >
+                      <HiExternalLink className="h-full w-full" />
+                    </a>
+                  </div>
+                  <div className="aspect-video w-full overflow-hidden rounded-lg bg-gray-200">
+                    <iframe
+                      src={FILE_BASE_URL + dataTitle.proposal_url}
+                      className="h-full w-full border-0"
+                      title="Proposal PDF Preview"
+                    />
+                  </div>
+                </div>
+              )}
 
               <div className="space-y-3">
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="upload" className="rounded-lg border border-gray-200">
                     <AccordionTrigger className="px-3 hover:no-underline sm:px-4">
-                      <span className="text-xs font-medium sm:text-sm">Ajukan Kelanjutan Capstone</span>
+                      <span className="text-xs font-medium sm:text-sm">Apply for Capstone Continuation</span>
                     </AccordionTrigger>
                     <AccordionContent className="px-3 pb-3 sm:px-4 sm:pb-4">
                       <Controller
@@ -223,24 +238,23 @@ export function SidebarTitle() {
                               </div>
                               <div className="text-center">
                                 <p className="text-xs font-medium sm:text-sm">
-                                  {uploadFile.isDragActive
-                                    ? 'Lepaskan file di sini...'
-                                    : 'Unggah Grand Design Tim Anda'}
+                                  {uploadFile.isDragActive ? 'Drop file here...' : "Upload Your Team's Grand Design"}
                                 </p>
                                 <p className="mt-1 px-4 text-[10px] text-gray-500 sm:text-xs">
                                   {uploadFile.isDragActive ? (
-                                    'Drop file untuk upload'
+                                    'Drop file to upload'
                                   ) : (
                                     <>
-                                      Kirimkan dokumen grand design sebagai referensi awal proyek tim Anda.
+                                      Submit the grand design document as an initial reference for your team&aposs
+                                      project.
                                       <br className="hidden sm:block" />
-                                      File akan digunakan untuk verifikasi dan dokumentasi Capstone.
+                                      The file will be used for Capstone verification and documentation.
                                     </>
                                   )}
                                 </p>
                               </div>
                               <Button type="button" variant="outline" className="rounded-lg text-xs sm:text-sm">
-                                Unggah File
+                                Upload File
                               </Button>
                             </div>
                             {uploadFile.uploadedFile && (
@@ -310,7 +324,7 @@ export function SidebarTitle() {
                 className="w-full rounded-lg bg-black py-4 text-sm text-white hover:bg-gray-800 sm:py-5 sm:text-base md:py-6"
                 loading={mutation.isPending}
               >
-                Kirim Pengajuan
+                Submit Application
               </Button>
             </div>
           </form>

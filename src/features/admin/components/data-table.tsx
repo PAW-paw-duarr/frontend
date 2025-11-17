@@ -13,6 +13,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { useState, useMemo } from 'react';
+import Fuse from 'fuse.js';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
 import { Button } from '~/components/ui/button';
@@ -23,12 +25,13 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
-import { ChevronDown, Trash2, Plus } from 'lucide-react';
+import { ChevronDown, Trash2 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  searchKey?: string;
+  searchKey: string;
   searchPlaceholder?: string;
   onBulkDelete?: (selectedIds: string[]) => void;
 }
@@ -44,9 +47,43 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [searchQuery, setSearchQuery] = useState('');
+  const [pageSize, setPageSize] = useState(10);
+  const [pageIndex, setPageIndex] = useState(0);
 
+  console.log('DataTable render with data:', data);
+
+  const fuse = useMemo(() => {
+    if (!Array.isArray(data) || data.length === 0) return null;
+    const options = {
+      keys: [searchKey],
+      threshold: 0.9,
+      includeScore: true,
+      ignoreLocation: true,
+      minMatchCharLength: 2,
+      findAllMatches: true,
+      useExtendedSearch: true,
+    };
+    return new Fuse(data, options);
+  }, [data, searchKey]);
+
+  const filteredData = useMemo(() => {
+    const q = (searchQuery || '').trim();
+    if (!q || !fuse) return data;
+
+    let searchTerm = q;
+    if (q.includes('-')) {
+      const hasDigitsAfterLastHyphen = /-\d+$/.test(q);
+      searchTerm = hasDigitsAfterLastHyphen ? `="${q}"` : `^${q}`;
+    }
+
+    const results = fuse.search(searchTerm);
+    return results.map((r) => r.item);
+  }, [data, searchQuery, fuse]);
+
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -58,7 +95,7 @@ export function DataTable<TData, TValue>({
     onRowSelectionChange: setRowSelection,
     initialState: {
       pagination: {
-        pageSize: 6, // Set 6 rows per page
+        pageSize: 10,
       },
     },
     state: {
@@ -66,6 +103,17 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination: {
+        pageIndex,
+        pageSize,
+      },
+    },
+    onPaginationChange: (updater) => {
+      if (typeof updater === 'function') {
+        const newState = updater({ pageIndex, pageSize });
+        setPageIndex(newState.pageIndex);
+        setPageSize(newState.pageSize);
+      }
     },
   });
 
@@ -86,15 +134,15 @@ export function DataTable<TData, TValue>({
           {searchKey && (
             <Input
               placeholder={searchPlaceholder}
-              value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ''}
-              onChange={(event) => table.getColumn(searchKey)?.setFilterValue(event.target.value)}
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
               className="h-10 w-full max-w-sm border-gray-300 focus-visible:ring-gray-400"
             />
           )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="h-10 gap-2 border-gray-300">
-                Nama <ChevronDown className="h-4 w-4" />
+                Filter <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-[200px]">
@@ -126,9 +174,6 @@ export function DataTable<TData, TValue>({
             disabled={Object.keys(rowSelection).length === 0}
           >
             <Trash2 className="h-4 w-4" />
-          </Button>
-          <Button className="h-10 gap-2 bg-black hover:bg-gray-800">
-            Import <Plus className="h-4 w-4" />
           </Button>
         </div>
       </div>
@@ -177,11 +222,28 @@ export function DataTable<TData, TValue>({
 
       {/* Pagination */}
       <div className="flex items-center justify-between">
-        <div className="text-sm text-gray-600">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-          selected.
+        <div className="flex items-center space-x-2">
+          <p className="text-sm text-gray-700">Rows per page</p>
+          <Select
+            value={pageSize.toString()}
+            onValueChange={(value) => {
+              setPageSize(Number(value));
+              table.setPageSize(Number(value));
+            }}
+          >
+            <SelectTrigger className="w-[70px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="5">5</SelectItem>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="25">25</SelectItem>
+              <SelectItem value="50">50</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-        <div className="flex items-center gap-2">
+
+        <div className="flex items-center space-x-2">
           <Button
             variant="outline"
             size="sm"

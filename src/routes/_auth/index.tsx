@@ -13,10 +13,12 @@ export const Route = createFileRoute('/_auth/')({
     s: z.string().optional(), // submission
   }),
   loader: async ({ context: { queryClient, user } }) => {
-    const testAdmin = await queryClient.fetchQuery(getAllUsersQuery());
     if (!user?.team_id) {
+      const testAdmin = await queryClient.fetchQuery(getAllUsersQuery());
       if (testAdmin.length === 0) {
-        return redirect({ to: '/join' });
+        throw redirect({ to: '/join' });
+      } else {
+        throw redirect({ to: '/admin' });
       }
     }
     const currentPeriod = await queryClient.ensureQueryData(getCurrentPeriod());
@@ -26,11 +28,11 @@ export const Route = createFileRoute('/_auth/')({
 
     if (isOldPeriod) {
       if (!currentTeam?.title_id && currentTeam?.leader_email === user?.email) {
-        return redirect({ to: '/title' });
+        throw redirect({ to: '/title' });
       }
-      return redirect({ to: '/s' });
+      throw redirect({ to: '/s' });
     } else {
-      return redirect({ to: '/t' });
+      throw redirect({ to: '/t' });
     }
   },
   component: RouteComponent,

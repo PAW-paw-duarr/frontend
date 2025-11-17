@@ -1,7 +1,7 @@
 import { Button } from '~/components/ui/button';
 import { FileText, X, ExternalLink, Users, CheckCircle2, Clock, Trash2 } from 'lucide-react';
 import { getTeamByIdQuery, useKickMember } from '~/lib/api/team';
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getCurrentUserQuery } from '~/lib/api/user';
 import { getAllSubmissionQuery, getSubmissionByIdQuery, useDeleteSubmission } from '~/lib/api/submission';
 import { Input } from '~/components/ui/input';
@@ -129,8 +129,8 @@ export function ProfileTim() {
 }
 
 function SubmissionDetails({ submissionId }: { submissionId: string }) {
-  const { data } = useSuspenseQuery(getSubmissionByIdQuery(submissionId));
-  const { data: teamTarget } = useSuspenseQuery(getTeamByIdQuery(data?.team_id || ''));
+  const { data, isLoading } = useQuery(getSubmissionByIdQuery(submissionId));
+  const { data: teamTarget } = useQuery(getTeamByIdQuery(data?.team_id || ''));
   const { data: accountData } = useQuery(getCurrentUserQuery());
   const { data: teamData } = useQuery(getTeamByIdQuery(accountData?.team_id || ''));
   const deleteSubmissionMutation = useDeleteSubmission();
@@ -156,6 +156,18 @@ function SubmissionDetails({ submissionId }: { submissionId: string }) {
       </Badge>
     );
   };
+
+  if (isLoading) {
+    return (
+      <div className="rounded-lg border bg-gray-50/50 p-4 text-center text-gray-500">Loading submission details...</div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="rounded-lg border bg-gray-50/50 p-4 text-center text-gray-500">No submission data found</div>
+    );
+  }
 
   return (
     <div className="space-y-4 rounded-lg border bg-gray-50/50 p-4">

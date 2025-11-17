@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import MiniSearch from 'minisearch';
+import Fuse from 'fuse.js';
 
 interface Title {
     id: string;
@@ -9,31 +9,34 @@ interface Title {
 }
 
 export function useSearchTitles(titles: Title[]) {
-    const miniSearch = useMemo(() => {
-        const ms = new MiniSearch<Title>({
-            fields: ['title', 'desc'],
-            storeFields: ['id', 'title', 'desc', 'photo_url'],
-            searchOptions: {
-                boost: { title: 2 },
-                fuzzy: 0.2,
-                prefix: true,
-            },
-        });
-
-        if (titles.length > 0) {
-            ms.addAll(titles);
-        }
-
-        return ms;
+    const fuse = useMemo(() => {
+        if (!Array.isArray(titles) || titles.length === 0) return null;
+        const options = {
+            keys: ['title', 'desc'],
+            threshold: 0.9,
+            includeScore: true,
+            ignoreLocation: true,
+            minMatchCharLength: 2,
+            findAllMatches: true,
+            useExtendedSearch: true,
+        };
+        return new Fuse(titles, options);
     }, [titles]);
 
     const search = (query: string): Title[] => {
-        if (!query.trim()) {
+        const q = query.trim();
+        if (!q || !fuse) {
             return titles;
         }
 
-        const results = miniSearch.search(query);
-        return results.map((result) => result as unknown as Title);
+        let searchTerm = q;
+        if (q.includes('-')) {
+            const hasDigitsAfterLastHyphen = /-\d+$/.test(q);
+            searchTerm = hasDigitsAfterLastHyphen ? `="${q}"` : `^${q}`;
+        }
+
+        const results = fuse.search(searchTerm);
+        return results.map((r) => r.item);
     };
 
     return { search };

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Users, BookOpen, FileText, User as UserIcon } from 'lucide-react';
+import { Users, BookOpen, FileText, Users2, User, UserPlus } from 'lucide-react';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from '~/components/ui/sidebar';
 import { NavMain } from './nav-main';
 import { TeamSwitcher } from './team-switcher';
@@ -25,27 +25,39 @@ const data = {
   ],
   navMain: [
     {
-      title: 'Tim Capstone',
+      title: 'Capstone Teams',
       url: '/admin/teams',
       icon: Users,
       isActive: false,
     },
     {
-      title: 'Judul Capstone',
+      title: 'New Capstone Teams',
+      url: '/admin/newteam',
+      icon: UserPlus,
+      isActive: false,
+    },
+    {
+      title: 'Capstone Titles',
       url: '/admin/titles',
       icon: BookOpen,
       isActive: false,
     },
     {
-      title: 'Pengajuan',
+      title: 'Capstone Submissions',
       url: '/admin/submissions',
       icon: FileText,
       isActive: false,
     },
     {
-      title: 'User',
+      title: 'User Management',
       url: '/admin/users',
-      icon: UserIcon,
+      icon: Users2,
+      isActive: false,
+    },
+    {
+      title: 'My Account',
+      url: '/admin/myaccount',
+      icon: User,
       isActive: false,
     },
   ],

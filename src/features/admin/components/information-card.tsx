@@ -1,42 +1,67 @@
+import { useQuery } from '@tanstack/react-query';
 import { Users, FileText, UserCheck } from 'lucide-react';
-
-interface CardData {
-  id: string;
-  title: string;
-  value: number;
-  icon: React.ReactNode;
-  bgColor: string;
-  iconBgColor: string;
-}
-
-const cardsData: CardData[] = [
-  {
-    id: '1',
-    title: 'Total Tim Capstone',
-    value: 64,
-    icon: <Users className="h-8 w-8" />,
-    bgColor: 'bg-blue-50 border-2 border-blue-100',
-    iconBgColor: 'bg-blue-100 text-blue-600 border border-blue-200',
-  },
-  {
-    id: '2',
-    title: 'Pengajuan Capstone',
-    value: 34,
-    icon: <FileText className="h-8 w-8" />,
-    bgColor: 'bg-yellow-50 border-2 border-yellow-100',
-    iconBgColor: 'bg-yellow-100 text-yellow-600 border border-yellow-200',
-  },
-  {
-    id: '3',
-    title: 'Total Pengguna Aktif',
-    value: 120,
-    icon: <UserCheck className="h-8 w-8" />,
-    bgColor: 'bg-green-50 border-2 border-green-100',
-    iconBgColor: 'bg-green-100 text-green-600 border border-green-200',
-  },
-];
+import { getCurrentPeriod } from '~/lib/api/config';
+import { getAllSubmissionQuery } from '~/lib/api/submission';
+import { getAllTeamQuery } from '~/lib/api/team';
+import { getAllTitlesQuery } from '~/lib/api/title';
+import { getAllUsersQuery } from '~/lib/api/user';
 
 export function InformationCard() {
+  const { data: submissionsData } = useQuery(getAllSubmissionQuery());
+  const { data: teamsData } = useQuery(getAllTeamQuery());
+  const { data: titlesData } = useQuery(getAllTitlesQuery());
+  const { data: usersData } = useQuery(getAllUsersQuery());
+  const { data: periodData } = useQuery(getCurrentPeriod());
+  const currentPeriod = periodData?.current_period;
+
+  const submissionsCount = Array.isArray(submissionsData) ? submissionsData.length : 0;
+  const teamsCount = Array.isArray(teamsData) ? teamsData.length : 0;
+  const titlesCount = Array.isArray(titlesData) ? titlesData.length : 0;
+  const usersCount = Array.isArray(usersData) ? usersData.length : 0;
+
+  const cardsData = [
+    {
+      id: 'submissions',
+      title: 'Total Submissions',
+      value: submissionsCount,
+      icon: <FileText className="h-8 w-8 text-blue-600" />,
+      bgColor: 'bg-blue-50',
+      iconBgColor: 'bg-blue-100',
+    },
+    {
+      id: 'teams',
+      title: 'Total Teams',
+      value: teamsCount,
+      icon: <Users className="h-8 w-8 text-green-600" />,
+      bgColor: 'bg-green-50',
+      iconBgColor: 'bg-green-100',
+    },
+    {
+      id: 'titles',
+      title: 'Total Titles',
+      value: titlesCount,
+      icon: <FileText className="h-8 w-8 text-purple-600" />,
+      bgColor: 'bg-purple-50',
+      iconBgColor: 'bg-purple-100',
+    },
+    {
+      id: 'users',
+      title: 'Total Users',
+      value: usersCount,
+      icon: <UserCheck className="h-8 w-8 text-orange-600" />,
+      bgColor: 'bg-orange-50',
+      iconBgColor: 'bg-orange-100',
+    },
+    {
+      id: 'period',
+      title: 'Current Period',
+      value: currentPeriod ?? '-',
+      icon: <FileText className="h-8 w-8 text-indigo-600" />,
+      bgColor: 'bg-indigo-50',
+      iconBgColor: 'bg-indigo-100',
+    },
+  ];
+
   return (
     <div className="grid gap-8 px-12 md:grid-cols-3">
       {cardsData.map((card) => (

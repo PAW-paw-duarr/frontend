@@ -3,16 +3,25 @@ import { DataTable } from '../components/data-table';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '~/components/ui/checkbox';
 import { Button } from '~/components/ui/button';
-import { MoreHorizontal, Pencil } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
-import type { TeamCapstone } from './admin';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '~/components/ui/dialog';
+import { Badge } from '~/components/ui/badge';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { Spinner } from '~/components/ui/spinner';
+import { useQuery } from '@tanstack/react-query';
+import { getAllTeamQuery, getTeamByIdQuery, useDeleteTeam } from '~/lib/api/team';
+import type { components } from '~/lib/api-schema';
 
-const createColumns = (onDelete: (id: string) => void): ColumnDef<TeamCapstone>[] => [
+const createColumns = (
+  onDelete: (id: string) => void,
+  onViewDetails: (team: components['schemas']['data-team-short']) => void
+): ColumnDef<components['schemas']['data-team-short']>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -33,31 +42,21 @@ const createColumns = (onDelete: (id: string) => void): ColumnDef<TeamCapstone>[
     enableHiding: false,
   },
   {
-    accessorKey: 'nama',
-    header: 'Nama',
-    cell: ({ row }) => <div className="font-semibold text-gray-900">{row.getValue('nama')}</div>,
+    accessorKey: 'name',
+    header: 'Name',
+    cell: ({ row }) => <div className="font-semibold text-gray-900">{row.original.name}</div>,
     enableSorting: false,
   },
   {
-    accessorKey: 'kategori',
-    header: 'Kategori',
-    cell: ({ row }) => <div className="text-sm text-gray-700">{row.getValue('kategori')}</div>,
+    accessorKey: 'category',
+    header: 'Category',
+    cell: ({ row }) => <div className="text-sm text-gray-700">{row.original.category}</div>,
     enableSorting: false,
   },
   {
-    accessorKey: 'totalAnggota',
-    header: () => <div className="text-center">Total Anggota</div>,
-    cell: ({ row }) => (
-      <div className="flex items-center justify-center">
-        <span className="font-medium text-gray-900">{row.getValue('totalAnggota')}</span>
-      </div>
-    ),
-    enableSorting: false,
-  },
-  {
-    accessorKey: 'ketua',
-    header: 'Ketua',
-    cell: ({ row }) => <div className="text-sm text-gray-700">{row.getValue('ketua')}</div>,
+    accessorKey: 'leader email',
+    header: 'Leader Email',
+    cell: ({ row }) => <div className="text-sm text-gray-700">{row.original.leader_email}</div>,
     enableSorting: false,
   },
   {
@@ -65,7 +64,7 @@ const createColumns = (onDelete: (id: string) => void): ColumnDef<TeamCapstone>[
     header: () => <div className="text-center">Period</div>,
     cell: ({ row }) => (
       <div className="flex items-center justify-center">
-        <span className="font-medium text-gray-900">{row.getValue('period')}</span>
+        <span className="font-medium text-gray-900">{row.original.period}</span>
       </div>
     ),
     enableSorting: false,
@@ -78,9 +77,6 @@ const createColumns = (onDelete: (id: string) => void): ColumnDef<TeamCapstone>[
 
       return (
         <div className="flex items-center justify-center gap-1">
-          <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-gray-100">
-            <Pencil className="h-4 w-4 text-gray-600" />
-          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0 hover:bg-gray-100">
@@ -89,7 +85,7 @@ const createColumns = (onDelete: (id: string) => void): ColumnDef<TeamCapstone>[
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => navigator.clipboard.writeText(team.id)}>Copy team ID</DropdownMenuItem>
-              <DropdownMenuItem>View details</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onViewDetails(team)}>View details</DropdownMenuItem>
               <DropdownMenuItem className="text-red-600" onClick={() => onDelete(team.id)}>
                 Delete team
               </DropdownMenuItem>
@@ -103,122 +99,109 @@ const createColumns = (onDelete: (id: string) => void): ColumnDef<TeamCapstone>[
 ];
 
 export function TeamsTable() {
-  const [tableData, setTableData] = useState<TeamCapstone[]>([
-    {
-      id: '1',
-      nama: 'Kelompok 1',
-      kategori: 'Kategori 1',
-      totalAnggota: 3,
-      ketua: 'ketua1@mail.ugm.ac.id',
-      period: 1,
-    },
-    {
-      id: '2',
-      nama: 'Kelompok 2',
-      kategori: 'Kategori 2',
-      totalAnggota: 4,
-      ketua: 'ketua2@mail.ugm.ac.id',
-      period: 1,
-    },
-    {
-      id: '3',
-      nama: 'Kelompok 3',
-      kategori: 'Kategori 1',
-      totalAnggota: 3,
-      ketua: 'ketua3@mail.ugm.ac.id',
-      period: 2,
-    },
-    {
-      id: '4',
-      nama: 'Kelompok 4',
-      kategori: 'Kategori 3',
-      totalAnggota: 5,
-      ketua: 'ketua4@mail.ugm.ac.id',
-      period: 1,
-    },
-    {
-      id: '5',
-      nama: 'Kelompok 5',
-      kategori: 'Kategori 2',
-      totalAnggota: 3,
-      ketua: 'ketua5@mail.ugm.ac.id',
-      period: 2,
-    },
-    {
-      id: '6',
-      nama: 'Kelompok 6',
-      kategori: 'Kategori 1',
-      totalAnggota: 4,
-      ketua: 'ketua6@mail.ugm.ac.id',
-      period: 3,
-    },
-    {
-      id: '7',
-      nama: 'Kelompok 7',
-      kategori: 'Kategori 3',
-      totalAnggota: 3,
-      ketua: 'ketua7@mail.ugm.ac.id',
-      period: 1,
-    },
-    {
-      id: '8',
-      nama: 'Kelompok 8',
-      kategori: 'Kategori 2',
-      totalAnggota: 5,
-      ketua: 'ketua8@mail.ugm.ac.id',
-      period: 2,
-    },
-    {
-      id: '9',
-      nama: 'Kelompok 9',
-      kategori: 'Kategori 1',
-      totalAnggota: 3,
-      ketua: 'ketua9@mail.ugm.ac.id',
-      period: 1,
-    },
-    {
-      id: '10',
-      nama: 'Kelompok 10',
-      kategori: 'Kategori 3',
-      totalAnggota: 4,
-      ketua: 'ketua10@mail.ugm.ac.id',
-      period: 2,
-    },
-    {
-      id: '11',
-      nama: 'Kelompok 11',
-      kategori: 'Kategori 2',
-      totalAnggota: 3,
-      ketua: 'ketua11@mail.ugm.ac.id',
-      period: 1,
-    },
-    {
-      id: '12',
-      nama: 'Kelompok 12',
-      kategori: 'Kategori 1',
-      totalAnggota: 5,
-      ketua: 'ketua12@mail.ugm.ac.id',
-      period: 3,
-    },
-  ]);
+  const { data: teamsData, isLoading } = useQuery(getAllTeamQuery());
+  const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const deleteMutation = useDeleteTeam();
+
+  const { data: selectedTeamData } = useQuery({
+    ...getTeamByIdQuery(selectedTeamId || ''),
+    enabled: !!selectedTeamId && isDetailsOpen,
+  });
 
   const handleDelete = (id: string) => {
-    setTableData((prev) => prev.filter((item) => item.id !== id));
+    deleteMutation.mutate(id);
   };
 
   const handleBulkDelete = (selectedIds: string[]) => {
-    setTableData((prev) => prev.filter((item) => !selectedIds.includes(item.id)));
+    selectedIds.forEach((id) => {
+      deleteMutation.mutate(id);
+    });
   };
+
+  const handleViewDetails = (team: components['schemas']['data-team-short']) => {
+    setSelectedTeamId(team.id);
+    setIsDetailsOpen(true);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <Spinner />
+      </div>
+    );
+  }
+
+  const teams = Array.isArray(teamsData) ? teamsData : teamsData ? [teamsData] : [];
 
   return (
     <div className="w-full space-y-4 px-12">
       <DataTable
-        columns={createColumns(handleDelete)}
-        data={tableData}
-        searchKey="nama"
-        searchPlaceholder="Filter by nama..."
+        columns={createColumns(handleDelete, handleViewDetails)}
+        data={teams}
+        searchKey="name"
+        searchPlaceholder="Filter by name..."
         onBulkDelete={handleBulkDelete}
       />
+
+      <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Team Details</DialogTitle>
+          </DialogHeader>
+          {selectedTeamData && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Team Name</p>
+                  <p className="text-base font-semibold wrap-break-word">{selectedTeamData.name}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Category</p>
+                  <Badge variant="secondary" className="mt-1">
+                    {selectedTeamData.category}
+                  </Badge>
+                </div>
+                <div className="md:col-span-2">
+                  <p className="text-sm font-medium text-gray-500">Leader Email</p>
+                  <p className="text-base break-all">{selectedTeamData.leader_email}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Period</p>
+                  <p className="text-base">{selectedTeamData.period}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Team Code</p>
+                  <p className="font-mono text-base break-all">{selectedTeamData.code}</p>
+                </div>
+                <div className="md:col-span-2">
+                  <p className="text-sm font-medium text-gray-500">Team ID</p>
+                  <p className="font-mono text-sm break-all">{selectedTeamData.id}</p>
+                </div>
+              </div>
+              <div>
+                <p className="mb-2 text-sm font-medium text-gray-500">
+                  Members ({selectedTeamData.member?.length || 0})
+                </p>
+                <ScrollArea className="h-60 rounded-md border">
+                  <div className="space-y-2 p-4">
+                    {selectedTeamData.member && selectedTeamData.member.length > 0 ? (
+                      selectedTeamData.member.map((member) => (
+                        <div key={member.id} className="rounded-lg border p-3">
+                          <div className="font-medium wrap-break-word">{member.name}</div>
+                          <div className="text-sm break-all text-gray-600">{member.email}</div>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-center text-gray-500">No members yet</p>
+                    )}
+                  </div>
+                </ScrollArea>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

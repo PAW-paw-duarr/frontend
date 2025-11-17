@@ -22,12 +22,12 @@ export const Route = createFileRoute('/_auth/t')({
     const titleId = hash.replace('#title/', '');
 
     if (!titleId || titleId.trim() === '') {
-      return redirect({ to: '.', hash: '' });
+      throw redirect({ to: '.', hash: '' });
     }
 
     const titleData = await queryClient.ensureQueryData(getTitleByIdQuery(titleId));
     if (!titleData) {
-      return redirect({ to: '.', hash: '' });
+      throw redirect({ to: '.', hash: '' });
     }
     await queryClient.ensureQueryData(getTeamByIdQuery(titleData.team_id ?? ''));
     await queryClient.ensureQueryData(getCurrentPeriod());

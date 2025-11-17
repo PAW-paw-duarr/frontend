@@ -1,6 +1,6 @@
 import { Avatar } from '~/components/ui/avatar';
 import { Input } from '~/components/ui/input';
-import { Search } from 'lucide-react';
+import { Search, LogOut } from 'lucide-react';
 import { cn, getAlias } from '~/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { getCurrentUserQuery } from '~/lib/api/user';
@@ -9,6 +9,7 @@ import { AvatarFallback } from '@radix-ui/react-avatar';
 import { getTeamByIdQuery } from '~/lib/api/team';
 import { useMyProfileDialogStore } from '~/hooks/global';
 import { DialogProfile } from '~/features/profile/components/profile-dialog';
+import { useLogout } from '~/lib/api/auth';
 
 interface NavigationBaseProps {
   className?: string;
@@ -32,6 +33,7 @@ export function NavigationBase({
   const [isScrolled, setIsScrolled] = useState(false);
   const stateMyProfile = useMyProfileDialogStore((state) => state.state);
   const setStateMyProfile = useMyProfileDialogStore((state) => state.setState);
+  const logoutMutation = useLogout();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -101,35 +103,50 @@ export function NavigationBase({
           </div>
         </div>
 
-        <button
-          className="flex cursor-pointer items-center justify-start space-x-3 rounded-lg transition-all duration-200 md:px-4"
-          onClick={onProfileClick}
-        >
-          <Avatar className="flex h-12 w-12 items-center justify-center border-2 border-blue-500 bg-blue-100">
-            <AvatarFallback className="text-blue-700">{getAlias(user?.data?.name ?? '')}</AvatarFallback>
-          </Avatar>
+        <div className="flex items-center gap-2">
+          <button
+            className="flex cursor-pointer items-center justify-start space-x-3 rounded-lg transition-all duration-200 md:px-4"
+            onClick={onProfileClick}
+          >
+            <Avatar className="flex h-12 w-12 items-center justify-center border-2 border-blue-500 bg-blue-100">
+              <AvatarFallback className="text-blue-700">{getAlias(user?.data?.name ?? '')}</AvatarFallback>
+            </Avatar>
 
-          <div className="hidden md:flex md:flex-col">
-            <div
-              className={cn(
-                'text-start text-md font-bold transition-colors duration-200',
-                isScrolled ? 'text-primary' : 'text-white'
-              )}
-            >
-              {user?.data?.name}
+            <div className="hidden md:flex md:flex-col">
+              <div
+                className={cn(
+                  'text-md text-start font-bold transition-colors duration-200',
+                  isScrolled ? 'text-primary' : 'text-white'
+                )}
+              >
+                {user?.data?.name}
+              </div>
+              <div
+                className={cn(
+                  'flex items-center space-x-2 text-sm font-medium transition-colors duration-200',
+                  isScrolled ? 'text-primary' : 'text-white'
+                )}
+              >
+                <span>{teamData?.leader_email === user?.data?.email ? 'Leader' : 'Member'}</span>
+                <span>•</span>
+                <span>{teamData?.name}</span>
+              </div>
             </div>
-            <div
-              className={cn(
-                'flex items-center space-x-2 text-sm font-medium transition-colors duration-200',
-                isScrolled ? 'text-primary' : 'text-white'
-              )}
-            >
-              <span>{teamData?.leader_email === user?.data?.email ? 'Ketua' : 'Anggota'}</span>
-              <span>•</span>
-              <span>{teamData?.name}</span>
-            </div>
-          </div>
-        </button>
+          </button>
+
+          <button
+            onClick={() => logoutMutation.mutate()}
+            className={cn(
+              'glass flex h-12 w-12 items-center justify-center rounded-lg shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-105',
+              isScrolled ? 'bg-gray-200/60 hover:bg-gray-300/60' : 'bg-gray-50/30 hover:bg-gray-50/40'
+            )}
+            title="Logout"
+          >
+            <LogOut
+              className={cn('h-5 w-5 transition-colors duration-200', isScrolled ? 'text-primary' : 'text-white')}
+            />
+          </button>
+        </div>
       </div>
       <div className="relative mt-3 flex w-full md:hidden">
         <Search

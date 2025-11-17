@@ -115,10 +115,10 @@ export function useUpdateTitle() {
     });
 }
 
-export function useDeleteTitle(id: string) {
+export function useDeleteTitle() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: async () => {
+        mutationFn: async (id: string) => {
             const { data, error } = await ApiClient.DELETE("/title/{id}", {
                 params: {
                     path: { id },
