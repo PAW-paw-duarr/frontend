@@ -37,7 +37,7 @@ export function NavigationT({ className }: React.ComponentProps<'input'>) {
       isOpen={isOpen}
       onSearchChange={handleSearchChange}
       onProfileClick={toggleProfileDialog}
-      textSearch="Cari Capstone Project..."
+      textSearch="Search Capstone Project..."
     />
   );
 }
@@ -76,7 +76,7 @@ export function NavigationS({ className }: React.ComponentProps<'input'>) {
       isOpen={isOpen}
       onSearchChange={handleSearchChange}
       onProfileClick={toggleProfileDialog}
-      textSearch="Cari Id Submisi..."
+      textSearch="Search Submission Id..."
     />
   );
 }

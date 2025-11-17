@@ -139,7 +139,7 @@ export function NavigationBase({
           )}
         />
         <Input
-          placeholder="Cari Capstone Project..."
+          placeholder="Search Capstone Project..."
           value={searchValue}
           onChange={handleSearchChange}
           className={cn(
