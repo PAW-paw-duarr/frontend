@@ -7,8 +7,8 @@ export function Header() {
             Capstone Project DTETI
           </h1>
           <p className="text-sm leading-relaxed font-normal text-white drop-shadow-md md:text-lg lg:text-xl">
-            Platform resmi untuk dokumentasi, kolaborasi, dan publikasi proyek akhir mahasiswa DTETI UGM. Wadah
-            integrasi inovasi, teknologi, dan kolaborasi antar mahasiswa menuju solusi nyata bagi masyarakat.
+            The official platform for documentation, collaboration, and publication of final projects by DTETI UGM students. 
+            A hub for integrating innovation, technology, and collaboration among students towards real solutions for society.
           </p>
         </div>
       </div>

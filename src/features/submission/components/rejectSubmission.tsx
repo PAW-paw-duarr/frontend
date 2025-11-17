@@ -30,13 +30,13 @@ export function RejectSubmission({ submissionId }: RejectSubmissionProps) {
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button variant="outline" className="flex-1">
-          Tolak
+          Reject
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="max-w-md">
         <AlertDialogHeader className="relative">
           <div className="flex items-start justify-between">
-            <AlertDialogTitle className="text-xl">Konfirmasi</AlertDialogTitle>
+            <AlertDialogTitle className="text-xl">Confirm</AlertDialogTitle>
             <AlertDialogCancel asChild>
               <button className="absolute -top-1 right-0 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none">
                 <X className="text-muted-foreground h-5 w-5" />
@@ -50,16 +50,16 @@ export function RejectSubmission({ submissionId }: RejectSubmissionProps) {
             </div>
           </div>
           <div className="space-y-2 text-center">
-            <h2 className="text-lg font-semibold">Yakin Ingin Menolak Pengajuan Ini?</h2>
+            <h2 className="text-lg font-semibold">Are you sure you want to reject this submission?</h2>
             <AlertDialogDescription className="text-muted-foreground">
-              Menolak pengajuan akan menghapus data tim secara permanen.
+              Rejecting the submission will permanently delete the team data.
             </AlertDialogDescription>
           </div>
         </AlertDialogHeader>
         <AlertDialogFooter className="gap-2 sm:gap-2">
           <AlertDialogCancel asChild>
             <Button variant="outline" className="flex-1">
-              Batal
+              Cancel
             </Button>
           </AlertDialogCancel>
           <AlertDialogAction asChild>
@@ -68,7 +68,7 @@ export function RejectSubmission({ submissionId }: RejectSubmissionProps) {
               className="flex-1 bg-black text-white hover:bg-black/90"
               onClick={handleReject}
             >
-              Ya, Tolak
+              Yes, Reject
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>
