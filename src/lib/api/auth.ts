@@ -5,6 +5,7 @@ import { ApiClient } from 'src/lib/api-client';
 import { useNavigate } from '@tanstack/react-router';
 import { getCurrentUserQuery } from './user';
 
+
 export const LoginWithEmailInputSchema = z.object({
   email: z.email('Invalid email address'),
   password: z
@@ -19,22 +20,14 @@ export function useLoginWithEmail() {
 
   return useMutation({
     mutationFn: async (dataInput: z.infer<typeof LoginWithEmailInputSchema>) => {
-      return toast.promise(
-        (async () => {
-          const { data, error } = await ApiClient.POST('/auth/signin/password', {
-            body: dataInput,
-          });
-          if (error) {
-            throw new Error(error.message);
-          }
-          return data;
-        })(),
-        {
-          loading: 'Signing in...',
-          success: 'Signed in successfully',
-          error: (err) => `SignIn failed: ${err.message}`,
-        }
-      );
+      const { data, error } = await ApiClient.POST('/auth/signin/password', {
+        body: dataInput,
+      });
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return data;
     },
     onSuccess: async () => {
       await queryClient.refetchQueries({
@@ -44,61 +37,57 @@ export function useLoginWithEmail() {
         to: '/',
       });
     },
+    onError: (error) => {
+      toast.error(`Login failed: ${error.message}`);
+    },
   });
 }
 
-export const SignUpWithEmailInputSchema = z
-  .object({
-    name: z
-      .string({
-        error: (issue) => (issue.input === undefined ? 'Name is required' : 'Name must be a string'),
-      })
-      .min(1, { message: 'Name is required' }),
-    email: z.email('Invalid email address'),
-    password: z
-      .string()
-      .min(8)
-      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-      .regex(/[0-9]/, 'Password must contain at least one number')
-      .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
-    confirmPassword: z
-      .string({
-        error: (issue) =>
-          issue.input === undefined ? 'Confirm Password is required' : 'Confirm Password must be a string',
-      })
-      .min(1, { message: 'Confirm Password is required' }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
-    path: ['confirmPassword'],
-  });
+export const SignUpWithEmailInputSchema = z.object({
+  name: z
+    .string({
+      error: (issue) => (issue.input === undefined ? 'Name is required' : 'Name must be a string'),
+    })
+    .min(1, { message: 'Name is required' }),
+  email: z.email('Invalid email address'),
+  password: z
+    .string()
+    .min(8)
+    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+    .regex(/[0-9]/, 'Password must contain at least one number')
+    .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
+  confirmPassword: z
+    .string({
+      error: (issue) =>
+        issue.input === undefined ? 'Confirm Password is required' : 'Confirm Password must be a string',
+    })
+    .min(1, { message: 'Confirm Password is required' }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: 'Passwords do not match',
+  path: ['confirmPassword'],
+});
 export function useSignUpWithEmail() {
   const navigate = useNavigate();
 
   return useMutation({
     mutationFn: async (dataInput: z.infer<typeof SignUpWithEmailInputSchema>) => {
-      return toast.promise(
-        (async () => {
-          const { data, error } = await ApiClient.POST('/auth/signup/password', {
-            body: dataInput,
-          });
-          if (error) {
-            throw new Error(error.message);
-          }
-          return data;
-        })(),
-        {
-          loading: 'Creating account...',
-          success: 'Account created successfully',
-          error: (err) => `Signup failed: ${err.message}`,
-        }
-      );
+      const { data, error } = await ApiClient.POST('/auth/signup/password', {
+        body: dataInput,
+      });
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return data;
     },
     onSuccess: () => {
       navigate({
         to: '/',
       });
+    },
+    onError: (error) => {
+      toast.error(`Signup failed: ${error.message}`);
     },
   });
 }
@@ -109,19 +98,10 @@ export function useLogout() {
 
   return useMutation({
     mutationFn: async () => {
-      return toast.promise(
-        (async () => {
-          const { error } = await ApiClient.POST('/auth/signout');
-          if (error) {
-            throw new Error(error.message);
-          }
-        })(),
-        {
-          loading: 'Logging out...',
-          success: 'Logged out successfully',
-          error: (err) => `Logout failed: ${err.message}`,
-        }
-      );
+      const { error } = await ApiClient.POST('/auth/signout');
+      if (error) {
+        throw new Error(error.message);
+      }
     },
     onSuccess: () => {
       queryClient.clear();
@@ -129,5 +109,9 @@ export function useLogout() {
         to: '/signin',
       });
     },
+    onError: (error) => {
+      toast.error(`Logout failed: ${error.message}`);
+    },
   });
 }
+

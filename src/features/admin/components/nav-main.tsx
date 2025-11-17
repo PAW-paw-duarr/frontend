@@ -1,9 +1,11 @@
 'use client';
 
-import { ChevronRight, type LucideIcon } from 'lucide-react';
+import { ChevronRight, type LucideIcon, LogOut } from 'lucide-react';
 import { Link, useLocation } from '@tanstack/react-router';
 import { cn } from '~/lib/utils';
 import { SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '~/components/ui/sidebar';
+import { useLogout } from '~/lib/api/auth';
+import { Button } from '~/components/ui/button';
 
 export function NavMain({
   items,
@@ -16,10 +18,11 @@ export function NavMain({
   }[];
 }) {
   const location = useLocation();
+  const muatation = useLogout();
 
   return (
-    <SidebarGroup>
-      <SidebarMenu>
+    <SidebarGroup className="flex h-full flex-col">
+      <SidebarMenu className="flex-1">
         {items.map((item) => {
           const isActive = location.pathname === item.url;
           return (
@@ -40,6 +43,14 @@ export function NavMain({
             </SidebarMenuItem>
           );
         })}
+      </SidebarMenu>
+      <SidebarMenu className="mt-auto">
+        <SidebarMenuItem>
+          <Button onClick={() => muatation.mutate()} variant={"destructive"} className='w-full mb-5'>
+            <LogOut className="h-5 w-5 shrink-0" />
+            <span>Logout</span>
+          </Button>
+        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
   );
