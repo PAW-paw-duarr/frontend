@@ -154,6 +154,14 @@ function SubmissionDetails({ submissionId }: { submissionId: string }) {
         </Badge>
       );
     }
+    if (accepted === false) {
+      return (
+        <Badge variant="destructive">
+          <X className="mr-1 h-3 w-3" />
+          Rejected
+        </Badge>
+      );
+    }
     return (
       <Badge variant="secondary">
         <Clock className="mr-1 h-3 w-3" />
