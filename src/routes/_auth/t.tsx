@@ -1,8 +1,8 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import { NavigationT } from '~/features/home/components/navigation';
-import { Footer } from '~/features/home/components/footer';
-import { Header } from '~/features/home/components/header';
-import { Title } from '~/features/home/components/title';
+import { NavigationT } from '~/components/layout/navigation';
+import { Footer } from '~/components/layout/footer';
+import { Header } from '~/components/layout/header';
+import { Title } from '~/features/title/components/title';
 import { getTeamByIdQuery } from '~/lib/api/team';
 import { getTitleByIdQuery } from '~/lib/api/title';
 import { z } from 'zod';

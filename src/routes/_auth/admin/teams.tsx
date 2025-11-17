@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { TeamsTable } from '~/features/admin/components/teams-table';
+import { TeamsTable } from '~/features/admin/table/teams-table';
 
 export const Route = createFileRoute('/_auth/admin/teams')({
   component: RouteComponent,

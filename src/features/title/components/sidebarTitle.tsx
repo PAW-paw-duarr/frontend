@@ -16,7 +16,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createSubmissionSchema, useCreateSubmission } from '~/lib/api/submission';
 import { useProfileDialogStore, useTitleSidebarStore } from '~/hooks/global';
-import { ProfileOrangT } from '~/features/profile/components/profile-dialog-orang';
+import { ProfileOrangT } from '~/features/profile/profile-dialog-orang';
 import { MemberTeam } from '~/components/list/member-team';
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { Info } from 'lucide-react';

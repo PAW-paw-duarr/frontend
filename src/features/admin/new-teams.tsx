@@ -87,7 +87,7 @@ export function NewTeams() {
   };
 
   return (
-    <div className="w-full items-center px-12 py-6">
+    <div className="w-full items-center px-4 py-6 sm:px-6 md:px-8 lg:px-12">
       <form onSubmit={onSubmit} className="mx-auto w-full max-w-4xl space-y-6">
         <FieldGroup>
           <Controller
@@ -113,11 +113,11 @@ export function NewTeams() {
                   maxFiles={1}
                 >
                   <DropzoneEmptyState>
-                    <div className="flex w-full items-center gap-4 p-8">
-                      <div className="bg-muted text-muted-foreground flex size-16 items-center justify-center rounded-lg">
-                        <UploadIcon size={24} />
+                    <div className="flex w-full flex-col items-center gap-3 p-4 sm:flex-row sm:gap-4 sm:p-8">
+                      <div className="bg-muted text-muted-foreground flex size-12 shrink-0 items-center justify-center rounded-lg sm:size-16">
+                        <UploadIcon className="h-5 w-5 sm:h-6 sm:w-6" />
                       </div>
-                      <div className="text-left">
+                      <div className="text-center sm:text-left">
                         <p className="text-sm font-medium">Upload CSV file</p>
                         <p className="text-muted-foreground text-xs">Drag and drop or click to upload</p>
                         <p className="text-muted-foreground text-xs">CSV format only</p>
@@ -134,31 +134,33 @@ export function NewTeams() {
             <Field>
               <FieldLabel>Preview Team Data ({previewData.length} teams)</FieldLabel>
               <div className="overflow-hidden rounded-lg border">
-                <ScrollArea className="h-[400px]">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Leader Email</TableHead>
-                        <TableHead>Category</TableHead>
-                        <TableHead className="w-16">Action</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {previewData.map((team, index) => (
-                        <TableRow key={index}>
-                          <TableCell>{team.name}</TableCell>
-                          <TableCell>{team.leader_email}</TableCell>
-                          <TableCell>{team.category}</TableCell>
-                          <TableCell>
-                            <Button type="button" variant="ghost" size="icon" onClick={() => removeTeam(index)}>
-                              <Trash2Icon size={16} />
-                            </Button>
-                          </TableCell>
+                <ScrollArea className="h-[300px] sm:h-[400px]">
+                  <div className="min-w-[600px]">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Leader Email</TableHead>
+                          <TableHead>Category</TableHead>
+                          <TableHead className="w-16">Action</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHeader>
+                      <TableBody>
+                        {previewData.map((team, index) => (
+                          <TableRow key={index}>
+                            <TableCell className="max-w-[150px] truncate sm:max-w-none">{team.name}</TableCell>
+                            <TableCell className="max-w-[180px] truncate sm:max-w-none">{team.leader_email}</TableCell>
+                            <TableCell className="max-w-[120px] truncate sm:max-w-none">{team.category}</TableCell>
+                            <TableCell>
+                              <Button type="button" variant="ghost" size="icon" onClick={() => removeTeam(index)}>
+                                <Trash2Icon className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 </ScrollArea>
               </div>
             </Field>
@@ -180,7 +182,7 @@ export function NewTeams() {
 
           <FieldGroup>
             <Field>
-              <Button type="submit" disabled={mutation.isPending}>
+              <Button type="submit" disabled={mutation.isPending} className="w-full sm:w-auto">
                 {mutation.isPending ? 'Creating...' : 'Create Teams'}
               </Button>
             </Field>

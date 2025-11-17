@@ -7,7 +7,7 @@ import { getSubmissionByIdQuery } from '~/lib/api/submission';
 import { getTeamByIdQuery } from '~/lib/api/team';
 import { useProfileDialogStore } from '~/hooks/global';
 import { useNavigate } from '@tanstack/react-router';
-import { ProfileOrangS } from '~/features/profile/components/profile-dialog-orang';
+import { ProfileOrangS } from '~/features/profile/profile-dialog-orang';
 import { MemberTeam } from '~/components/list/member-team';
 
 interface SubmissionCardProps {

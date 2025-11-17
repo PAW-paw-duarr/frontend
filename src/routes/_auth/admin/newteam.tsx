@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { NewTeams } from '~/features/admin/components/new-teams';
+import { NewTeams } from '~/features/admin/new-teams';
 
 export const Route = createFileRoute('/_auth/admin/newteam')({
   component: RouteComponent,

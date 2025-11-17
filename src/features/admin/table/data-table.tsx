@@ -1,6 +1,3 @@
-'use client';
-
-import * as React from 'react';
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -43,10 +40,10 @@ export function DataTable<TData, TValue>({
   searchPlaceholder = 'Filter Nama...',
   onBulkDelete,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
@@ -127,9 +124,9 @@ export function DataTable<TData, TValue>({
   };
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full space-y-4 px-2 sm:px-4 md:px-6 lg:px-8">
       {/* Toolbar */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 items-center gap-2">
           {searchKey && (
             <Input
@@ -179,7 +176,7 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-lg border border-gray-200">
+      <div className="w-full overflow-x-auto rounded-lg border border-gray-200">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -221,7 +218,7 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center space-x-2">
           <p className="text-sm text-gray-700">Rows per page</p>
           <Select

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DataTable } from '../components/data-table';
+import { DataTable } from './data-table';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '~/components/ui/checkbox';
 import { Button } from '~/components/ui/button';
@@ -135,7 +135,7 @@ export function TeamsTable() {
   const teams = Array.isArray(teamsData) ? teamsData : teamsData ? [teamsData] : [];
 
   return (
-    <div className="w-full space-y-4 px-12">
+    <div className="w-full space-y-4 px-2 sm:px-4 md:px-6 lg:px-8">
       <DataTable
         columns={createColumns(handleDelete, handleViewDetails)}
         data={teams}

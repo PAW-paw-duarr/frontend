@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { InformationCard } from '~/features/admin/components/information-card';
+import { InformationCard } from '~/features/admin/information-card';
 
 export const Route = createFileRoute('/_auth/admin/')({
   component: RouteComponent,

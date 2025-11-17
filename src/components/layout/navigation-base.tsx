@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import { AvatarFallback } from '@radix-ui/react-avatar';
 import { getTeamByIdQuery } from '~/lib/api/team';
 import { useMyProfileDialogStore } from '~/hooks/global';
-import { DialogProfile } from '~/features/profile/components/profile-dialog';
+import { DialogProfile } from '~/features/profile/profile-dialog';
 import { useLogout } from '~/lib/api/auth';
 
 interface NavigationBaseProps {
@@ -103,13 +103,25 @@ export function NavigationBase({
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 pr-2 sm:gap-2 sm:pr-0">
           <button
             className="flex cursor-pointer items-center justify-start space-x-3 rounded-lg transition-all duration-200 md:px-4"
             onClick={onProfileClick}
           >
-            <Avatar className="flex h-12 w-12 items-center justify-center border-2 border-blue-500 bg-blue-100">
-              <AvatarFallback className="text-blue-700">{getAlias(user?.data?.name ?? '')}</AvatarFallback>
+            <Avatar
+              className={cn(
+                'glass flex h-12 w-12 items-center justify-center rounded-lg border-2 shadow-lg backdrop-blur-sm transition-all duration-200',
+                isScrolled ? 'border-blue-500/40 bg-blue-50/95' : 'border-blue-400/60 bg-white/90'
+              )}
+            >
+              <AvatarFallback
+                className={cn(
+                  'rounded-lg text-base font-bold transition-colors duration-200',
+                  isScrolled ? 'text-blue-900' : 'text-blue-900'
+                )}
+              >
+                {getAlias(user?.data?.name ?? '')}
+              </AvatarFallback>
             </Avatar>
 
             <div className="hidden md:flex md:flex-col">

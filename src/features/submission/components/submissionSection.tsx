@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '~/components/ui/button';
 import { SubmissionCard } from './submissionCard';
-import { usePagination } from '~/features/home/hooks/usePagination';
+import { usePagination } from '~/features/title/hooks/usePagination';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getAllSubmissionQuery } from '~/lib/api/submission';
 import { useSearch } from '@tanstack/react-router';

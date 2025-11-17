@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Header } from '~/features/home/components/header';
-import { NavigationS } from '~/features/home/components/navigation';
-import { Footer } from '~/features/home/components/footer';
+import { Header } from '~/components/layout/header';
+import { NavigationS } from '~/components/layout/navigation';
+import { Footer } from '~/components/layout/footer';
 import { SubmissionSection } from '~/features/submission/components/submissionSection';
 import { z } from 'zod';
 

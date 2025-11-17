@@ -63,9 +63,12 @@ export function InformationCard() {
   ];
 
   return (
-    <div className="grid gap-8 px-12 md:grid-cols-3">
+    <div className="grid gap-8 px-4 sm:px-8 lg:grid-cols-2 md:px-12">
       {cardsData.map((card) => (
-        <div key={card.id} className={`flex items-center gap-4 rounded-2xl ${card.bgColor} px-9 py-12 transition-all`}>
+        <div
+          key={card.id}
+          className={`flex items-center gap-4 rounded-2xl ${card.bgColor} px-6 py-12 transition-all sm:px-9`}
+        >
           {/* Icon */}
           <div className={`flex shrink-0 items-center justify-center rounded-full p-4 ${card.iconBgColor}`}>
             {card.icon}
