@@ -9,6 +9,7 @@ import { useProfileDialogStore } from '~/hooks/global';
 import { useNavigate } from '@tanstack/react-router';
 import { ProfileOrangS } from '~/features/profile/profile-dialog-orang';
 import { MemberTeam } from '~/components/list/member-team';
+import { getCurrentUserQuery } from '~/lib/api/user';
 
 interface SubmissionCardProps {
   submissionId: string;
@@ -16,9 +17,11 @@ interface SubmissionCardProps {
 export function SubmissionCard({ submissionId }: SubmissionCardProps) {
   const { data: submission } = useQuery(getSubmissionByIdQuery(submissionId));
   const { data: teamData } = useQuery(getTeamByIdQuery(submission?.team_id || ''));
+  const { data: currentUser } = useQuery(getCurrentUserQuery());
   const navigate = useNavigate();
   const stateProfile = useProfileDialogStore((state) => state.state);
   const setStateProfile = useProfileDialogStore((state) => state.setState);
+  const isLeader = currentUser?.email === teamData?.leader_email;
 
   function toggleProfileDialog(profileId: string) {
     navigate({
@@ -70,8 +73,8 @@ export function SubmissionCard({ submissionId }: SubmissionCardProps) {
           </div>
         ) : (
           <div className="flex gap-2">
-            <RejectSubmission submissionId={submissionId} />
-            <AcceptSubmission submissionId={submissionId} />
+            <RejectSubmission submissionId={submissionId} disabled={!isLeader} />
+            <AcceptSubmission submissionId={submissionId} disabled={!isLeader} />
           </div>
         )}
       </div>

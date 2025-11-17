@@ -153,8 +153,21 @@ export function SubmissionsTable() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-500">Status</p>
-                  <Badge variant={selectedSubmissionData.accepted ? 'default' : 'secondary'} className="mt-1">
-                    {selectedSubmissionData.accepted ? 'Accepted' : 'Pending'}
+                  <Badge
+                    variant={
+                      selectedSubmissionData.accepted === true
+                        ? 'default'
+                        : selectedSubmissionData.accepted === false
+                          ? 'destructive'
+                          : 'secondary'
+                    }
+                    className="mt-1"
+                  >
+                    {selectedSubmissionData.accepted === true
+                      ? 'Accepted'
+                      : selectedSubmissionData.accepted === false
+                        ? 'Rejected'
+                        : 'Pending'}
                   </Badge>
                 </div>
                 {selectedSubmissionData.grand_design_url && (

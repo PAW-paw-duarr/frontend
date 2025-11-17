@@ -17,8 +17,9 @@ import { toast } from 'sonner';
 
 interface RejectSubmissionProps {
   submissionId: string;
+  disabled: boolean;
 }
-export function RejectSubmission({ submissionId }: RejectSubmissionProps) {
+export function RejectSubmission({ submissionId, disabled }: RejectSubmissionProps) {
   const [open, setOpen] = React.useState(false);
   const mutation = useAccOrRejectSubmission();
 
@@ -32,7 +33,7 @@ export function RejectSubmission({ submissionId }: RejectSubmissionProps) {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" className="flex-1">
+        <Button variant="outline" className="flex-1" disabled={disabled}>
           Reject
         </Button>
       </AlertDialogTrigger>
