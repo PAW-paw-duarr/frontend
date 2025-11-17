@@ -10,7 +10,7 @@ import {
   SidebarMenuItem,
 } from '~/components/ui/sidebar';
 import { useNavigate } from '@tanstack/react-router';
-import { BookOpen, FileText, LucideLayoutDashboard, Users, Users2 } from 'lucide-react';
+import { BookOpen, FileText, LucideLayoutDashboard, UserPlus, Users, Users2 } from 'lucide-react';
 
 const data = {
   navMain: [
@@ -27,7 +27,7 @@ const data = {
     {
       title: 'New Team',
       url: '/admin/newteam',
-      icon: Users,
+      icon: UserPlus,
     },
     {
       title: 'Titles',
