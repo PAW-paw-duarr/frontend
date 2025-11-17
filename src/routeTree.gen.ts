@@ -14,6 +14,12 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AuthIndexRouteImport } from './routes/_auth/index'
 import { Route as AuthTitleRouteImport } from './routes/_auth/title'
+import { Route as AuthAdminRouteImport } from './routes/_auth/admin'
+import { Route as AuthAdminIndexRouteImport } from './routes/_auth/admin/index'
+import { Route as AuthAdminUsersRouteImport } from './routes/_auth/admin/users'
+import { Route as AuthAdminTitlesRouteImport } from './routes/_auth/admin/titles'
+import { Route as AuthAdminTeamsRouteImport } from './routes/_auth/admin/teams'
+import { Route as AuthAdminSubmissionsRouteImport } from './routes/_auth/admin/submissions'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -39,33 +45,111 @@ const AuthTitleRoute = AuthTitleRouteImport.update({
   path: '/title',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthAdminRoute = AuthAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthAdminIndexRoute = AuthAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthAdminRoute,
+} as any)
+const AuthAdminUsersRoute = AuthAdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthAdminRoute,
+} as any)
+const AuthAdminTitlesRoute = AuthAdminTitlesRouteImport.update({
+  id: '/titles',
+  path: '/titles',
+  getParentRoute: () => AuthAdminRoute,
+} as any)
+const AuthAdminTeamsRoute = AuthAdminTeamsRouteImport.update({
+  id: '/teams',
+  path: '/teams',
+  getParentRoute: () => AuthAdminRoute,
+} as any)
+const AuthAdminSubmissionsRoute = AuthAdminSubmissionsRouteImport.update({
+  id: '/submissions',
+  path: '/submissions',
+  getParentRoute: () => AuthAdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/admin': typeof AuthAdminRouteWithChildren
   '/title': typeof AuthTitleRoute
   '/': typeof AuthIndexRoute
+  '/admin/submissions': typeof AuthAdminSubmissionsRoute
+  '/admin/teams': typeof AuthAdminTeamsRoute
+  '/admin/titles': typeof AuthAdminTitlesRoute
+  '/admin/users': typeof AuthAdminUsersRoute
+  '/admin/': typeof AuthAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/title': typeof AuthTitleRoute
   '/': typeof AuthIndexRoute
+  '/admin/submissions': typeof AuthAdminSubmissionsRoute
+  '/admin/teams': typeof AuthAdminTeamsRoute
+  '/admin/titles': typeof AuthAdminTitlesRoute
+  '/admin/users': typeof AuthAdminUsersRoute
+  '/admin': typeof AuthAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/_auth/admin': typeof AuthAdminRouteWithChildren
   '/_auth/title': typeof AuthTitleRoute
   '/_auth/': typeof AuthIndexRoute
+  '/_auth/admin/submissions': typeof AuthAdminSubmissionsRoute
+  '/_auth/admin/teams': typeof AuthAdminTeamsRoute
+  '/_auth/admin/titles': typeof AuthAdminTitlesRoute
+  '/_auth/admin/users': typeof AuthAdminUsersRoute
+  '/_auth/admin/': typeof AuthAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/signup' | '/title' | '/'
+  fullPaths:
+    | '/login'
+    | '/signup'
+    | '/admin'
+    | '/title'
+    | '/'
+    | '/admin/submissions'
+    | '/admin/teams'
+    | '/admin/titles'
+    | '/admin/users'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/signup' | '/title' | '/'
-  id: '__root__' | '/_auth' | '/login' | '/signup' | '/_auth/title' | '/_auth/'
+  to:
+    | '/login'
+    | '/signup'
+    | '/title'
+    | '/'
+    | '/admin/submissions'
+    | '/admin/teams'
+    | '/admin/titles'
+    | '/admin/users'
+    | '/admin'
+  id:
+    | '__root__'
+    | '/_auth'
+    | '/login'
+    | '/signup'
+    | '/_auth/admin'
+    | '/_auth/title'
+    | '/_auth/'
+    | '/_auth/admin/submissions'
+    | '/_auth/admin/teams'
+    | '/_auth/admin/titles'
+    | '/_auth/admin/users'
+    | '/_auth/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -111,15 +195,79 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthTitleRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/admin': {
+      id: '/_auth/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthAdminRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/admin/': {
+      id: '/_auth/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthAdminIndexRouteImport
+      parentRoute: typeof AuthAdminRoute
+    }
+    '/_auth/admin/users': {
+      id: '/_auth/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthAdminUsersRouteImport
+      parentRoute: typeof AuthAdminRoute
+    }
+    '/_auth/admin/titles': {
+      id: '/_auth/admin/titles'
+      path: '/titles'
+      fullPath: '/admin/titles'
+      preLoaderRoute: typeof AuthAdminTitlesRouteImport
+      parentRoute: typeof AuthAdminRoute
+    }
+    '/_auth/admin/teams': {
+      id: '/_auth/admin/teams'
+      path: '/teams'
+      fullPath: '/admin/teams'
+      preLoaderRoute: typeof AuthAdminTeamsRouteImport
+      parentRoute: typeof AuthAdminRoute
+    }
+    '/_auth/admin/submissions': {
+      id: '/_auth/admin/submissions'
+      path: '/submissions'
+      fullPath: '/admin/submissions'
+      preLoaderRoute: typeof AuthAdminSubmissionsRouteImport
+      parentRoute: typeof AuthAdminRoute
+    }
   }
 }
 
+interface AuthAdminRouteChildren {
+  AuthAdminSubmissionsRoute: typeof AuthAdminSubmissionsRoute
+  AuthAdminTeamsRoute: typeof AuthAdminTeamsRoute
+  AuthAdminTitlesRoute: typeof AuthAdminTitlesRoute
+  AuthAdminUsersRoute: typeof AuthAdminUsersRoute
+  AuthAdminIndexRoute: typeof AuthAdminIndexRoute
+}
+
+const AuthAdminRouteChildren: AuthAdminRouteChildren = {
+  AuthAdminSubmissionsRoute: AuthAdminSubmissionsRoute,
+  AuthAdminTeamsRoute: AuthAdminTeamsRoute,
+  AuthAdminTitlesRoute: AuthAdminTitlesRoute,
+  AuthAdminUsersRoute: AuthAdminUsersRoute,
+  AuthAdminIndexRoute: AuthAdminIndexRoute,
+}
+
+const AuthAdminRouteWithChildren = AuthAdminRoute._addFileChildren(
+  AuthAdminRouteChildren,
+)
+
 interface AuthRouteChildren {
+  AuthAdminRoute: typeof AuthAdminRouteWithChildren
   AuthTitleRoute: typeof AuthTitleRoute
   AuthIndexRoute: typeof AuthIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthAdminRoute: AuthAdminRouteWithChildren,
   AuthTitleRoute: AuthTitleRoute,
   AuthIndexRoute: AuthIndexRoute,
 }
