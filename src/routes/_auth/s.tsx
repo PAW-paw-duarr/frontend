@@ -13,6 +13,13 @@ export const Route = createFileRoute('/_auth/s')({
     s: z.string().optional(),
   }),
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        title: 'Submission | ReCapstone',
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {

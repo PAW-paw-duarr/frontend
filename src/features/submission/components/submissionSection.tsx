@@ -5,20 +5,27 @@ import { usePagination } from '~/features/home/hooks/usePagination';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getAllSubmissionQuery } from '~/lib/api/submission';
 import { useSearch } from '@tanstack/react-router';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSearchSubmissions } from '../hooks/useSearchSubmissions';
-import { useMyTitleDialogStore } from '~/hooks/global';
+import { useMyTitleDialogStore, useProfileDialogStore } from '~/hooks/global';
 import { MyTitle } from './my-title';
 
 export function SubmissionSection() {
   const { data: submissionsData } = useSuspenseQuery(getAllSubmissionQuery());
   const searchParams = useSearch({ from: '/_auth/s' });
   const searchQuery = searchParams?.q || '';
+  const isOpen = searchParams?.p !== '' && searchParams?.p !== undefined;
   const stateMyTitle = useMyTitleDialogStore((state) => state.state);
   const setStateMyTitle = useMyTitleDialogStore((state) => state.setState);
 
+  const setStateProfile = useProfileDialogStore((state) => state.setState);
+
   const { search } = useSearchSubmissions(submissionsData);
   const filteredData = useMemo(() => search(searchQuery), [search, searchQuery]);
+
+  useEffect(() => {
+    setStateProfile(isOpen);
+  }, [isOpen, setStateProfile]);
 
   const {
     currentPage,

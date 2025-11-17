@@ -13,6 +13,13 @@ export const Route = createFileRoute('/_auth/join')({
     }
   },
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        title: 'Join Team | ReCapstone',
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {

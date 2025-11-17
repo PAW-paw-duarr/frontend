@@ -33,6 +33,13 @@ export const Route = createFileRoute('/_auth/t')({
     await queryClient.ensureQueryData(getCurrentPeriod());
   },
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        title: 'Title | ReCapstone',
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {

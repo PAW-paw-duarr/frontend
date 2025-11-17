@@ -5,6 +5,13 @@ import { MyAccount } from '~/features/admin/components/my-account';
 
 export const Route = createFileRoute('/_auth/admin/myaccount')({
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        title: 'My Account - Admin | ReCapstone',
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {

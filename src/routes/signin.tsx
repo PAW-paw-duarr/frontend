@@ -3,7 +3,7 @@ import { LoginForm } from '~/features/auth/login-form';
 import { redirect } from '@tanstack/react-router';
 import { z } from 'zod';
 
-export const Route = createFileRoute('/login')({
+export const Route = createFileRoute('/signin')({
   validateSearch: z.object({
     redirect: z.string().optional().catch(''),
   }),
@@ -13,6 +13,13 @@ export const Route = createFileRoute('/login')({
     }
   },
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        title: 'SignIn | ReCapstone',
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {

@@ -157,7 +157,9 @@ export function SignupTitleForm() {
               />
               <FieldGroup>
                 <Field>
-                  <Button type="submit">Save</Button>
+                  <Button type="submit" loading={mutation.isPending}>
+                    Save
+                  </Button>
                 </Field>
               </FieldGroup>
             </FieldGroup>

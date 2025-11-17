@@ -19,14 +19,22 @@ export function useLoginWithEmail() {
 
   return useMutation({
     mutationFn: async (dataInput: z.infer<typeof LoginWithEmailInputSchema>) => {
-      const { data, error } = await ApiClient.POST('/auth/signin/password', {
-        body: dataInput,
-      });
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      return data;
+      return toast.promise(
+        (async () => {
+          const { data, error } = await ApiClient.POST('/auth/signin/password', {
+            body: dataInput,
+          });
+          if (error) {
+            throw new Error(error.message);
+          }
+          return data;
+        })(),
+        {
+          loading: 'Signing in...',
+          success: 'Signed in successfully',
+          error: (err) => `SignIn failed: ${err.message}`,
+        }
+      );
     },
     onSuccess: async () => {
       await queryClient.refetchQueries({
@@ -35,9 +43,6 @@ export function useLoginWithEmail() {
       navigate({
         to: '/',
       });
-    },
-    onError: (error) => {
-      toast.error(`Login failed: ${error.message}`);
     },
   });
 }
@@ -73,22 +78,27 @@ export function useSignUpWithEmail() {
 
   return useMutation({
     mutationFn: async (dataInput: z.infer<typeof SignUpWithEmailInputSchema>) => {
-      const { data, error } = await ApiClient.POST('/auth/signup/password', {
-        body: dataInput,
-      });
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      return data;
+      return toast.promise(
+        (async () => {
+          const { data, error } = await ApiClient.POST('/auth/signup/password', {
+            body: dataInput,
+          });
+          if (error) {
+            throw new Error(error.message);
+          }
+          return data;
+        })(),
+        {
+          loading: 'Creating account...',
+          success: 'Account created successfully',
+          error: (err) => `Signup failed: ${err.message}`,
+        }
+      );
     },
     onSuccess: () => {
       navigate({
         to: '/',
       });
-    },
-    onError: (error) => {
-      toast.error(`Signup failed: ${error.message}`);
     },
   });
 }
@@ -99,19 +109,25 @@ export function useLogout() {
 
   return useMutation({
     mutationFn: async () => {
-      const { error } = await ApiClient.POST('/auth/signout');
-      if (error) {
-        throw new Error(error.message);
-      }
+      return toast.promise(
+        (async () => {
+          const { error } = await ApiClient.POST('/auth/signout');
+          if (error) {
+            throw new Error(error.message);
+          }
+        })(),
+        {
+          loading: 'Logging out...',
+          success: 'Logged out successfully',
+          error: (err) => `Logout failed: ${err.message}`,
+        }
+      );
     },
     onSuccess: () => {
       queryClient.clear();
       navigate({
-        to: '/login',
+        to: '/signin',
       });
-    },
-    onError: (error) => {
-      toast.error(`Logout failed: ${error.message}`);
     },
   });
 }

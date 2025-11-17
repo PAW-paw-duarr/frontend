@@ -3,7 +3,7 @@ export function Header() {
     <header className="relative h-[650px] w-full bg-[url('/header.webp')] bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0 top-[158px] z-20 flex items-center justify-center md:top-[120px]">
         <div className="max-w-5xl px-8 text-center md:gap-6">
-          <h1 className="text-[28px] font-bold text-white drop-shadow-lg md:text-5xl lg:text-6xl">
+          <h1 className="mb-2 text-[28px] font-bold text-white drop-shadow-lg md:text-5xl lg:text-6xl">
             Capstone Project DTETI
           </h1>
           <p className="text-sm leading-relaxed font-normal text-white drop-shadow-md md:text-lg lg:text-xl">

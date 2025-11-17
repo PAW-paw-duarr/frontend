@@ -13,6 +13,13 @@ export const Route = createFileRoute('/signup')({
     }
   },
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        title: 'SignUp | ReCapstone',
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {

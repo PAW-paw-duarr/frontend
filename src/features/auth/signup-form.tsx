@@ -5,6 +5,7 @@ import { Field, FieldDescription, FieldGroup, FieldLabel } from 'src/components/
 import { Input } from 'src/components/ui/input';
 import { SignUpWithEmailInputSchema, useSignUpWithEmail } from '../../lib/api/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
+import GoogleIcon from '~/components/icon/google';
 
 export function SignupForm() {
   const {
@@ -81,12 +82,17 @@ export function SignupForm() {
             </Field>
             <FieldGroup>
               <Field>
-                <Button type="submit">Create Account</Button>
+                <Button type="submit" loading={mutation.isPending}>
+                  Create Account
+                </Button>
                 <Button variant="outline" type="button">
-                  <a href="/api/auth/google">Sign up with Google</a>
+                  <a href="/api/auth/google" className="flex items-center gap-2">
+                    <GoogleIcon className="h-5 w-5" />
+                    Sign up with Google
+                  </a>
                 </Button>
                 <FieldDescription className="px-6 text-center">
-                  Already have an account? <a href="login">Sign in</a>
+                  Already have an account? <a href="signin">Sign in</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>

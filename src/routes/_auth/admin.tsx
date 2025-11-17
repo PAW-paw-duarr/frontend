@@ -10,6 +10,13 @@ export const Route = createFileRoute('/_auth/admin')({
     }
   },
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        title: 'Home - Admin | ReCapstone',
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {

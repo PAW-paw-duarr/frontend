@@ -5,6 +5,7 @@ import { Input } from 'src/components/ui/input';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginWithEmailInputSchema, useLoginWithEmail } from '../../lib/api/auth';
+import GoogleIcon from '~/components/icon/google';
 
 export function LoginForm() {
   const { handleSubmit, control } = useForm({
@@ -20,8 +21,8 @@ export function LoginForm() {
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
-          <CardDescription>Enter your email below to login to your account</CardDescription>
+          <CardTitle>Sign In to your account</CardTitle>
+          <CardDescription>Enter your email below to Sign In to your account</CardDescription>
         </CardHeader>
         <CardContent>
           <form
@@ -60,10 +61,13 @@ export function LoginForm() {
               />
               <Field>
                 <Button type="submit" loading={mutation.isPending}>
-                  Login
+                  Sign In
                 </Button>
                 <Button variant="outline" type="button">
-                  <a href="/api/auth/google">Login with Google</a>
+                  <a href="/api/auth/google" className="flex items-center gap-2">
+                    <GoogleIcon className="h-5 w-5" />
+                    Sign In with Google
+                  </a>
                 </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <a href="signup">Sign up</a>

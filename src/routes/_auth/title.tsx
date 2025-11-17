@@ -15,6 +15,13 @@ export const Route = createFileRoute('/_auth/title')({
     }
   },
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        title: 'Add Title | ReCapstone',
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {

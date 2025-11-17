@@ -3,6 +3,13 @@ import { TitlesTable } from '~/features/admin/components/titles-tabel';
 
 export const Route = createFileRoute('/_auth/admin/titles')({
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      {
+        title: 'Titles - Admin | ReCapstone',
+      },
+    ],
+  }),
 });
 
 function RouteComponent() {

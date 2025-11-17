@@ -87,7 +87,11 @@ export function MyAccount() {
           />
 
           <div className="mt-4 flex justify-end gap-3 border-t border-gray-200 pt-4">
-            <Button type="submit" className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+            <Button
+              type="submit"
+              className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+              loading={mutation.isPending}
+            >
               Save Changes
             </Button>
           </div>

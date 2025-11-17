@@ -8,160 +8,160 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root';
-import { Route as SignupRouteImport } from './routes/signup';
-import { Route as LoginRouteImport } from './routes/login';
-import { Route as AuthRouteImport } from './routes/_auth';
-import { Route as AuthIndexRouteImport } from './routes/_auth/index';
-import { Route as AuthTitleRouteImport } from './routes/_auth/title';
-import { Route as AuthTRouteImport } from './routes/_auth/t';
-import { Route as AuthSRouteImport } from './routes/_auth/s';
-import { Route as AuthJoinRouteImport } from './routes/_auth/join';
-import { Route as AuthAdminRouteImport } from './routes/_auth/admin';
-import { Route as AuthAdminIndexRouteImport } from './routes/_auth/admin/index';
-import { Route as AuthAdminUsersRouteImport } from './routes/_auth/admin/users';
-import { Route as AuthAdminTitlesRouteImport } from './routes/_auth/admin/titles';
-import { Route as AuthAdminTeamsRouteImport } from './routes/_auth/admin/teams';
-import { Route as AuthAdminSubmissionsRouteImport } from './routes/_auth/admin/submissions';
-import { Route as AuthAdminNewteamRouteImport } from './routes/_auth/admin/newteam';
-import { Route as AuthAdminMyaccountRouteImport } from './routes/_auth/admin/myaccount';
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SigninRouteImport } from './routes/signin'
+import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as AuthIndexRouteImport } from './routes/_auth/index'
+import { Route as AuthTitleRouteImport } from './routes/_auth/title'
+import { Route as AuthTRouteImport } from './routes/_auth/t'
+import { Route as AuthSRouteImport } from './routes/_auth/s'
+import { Route as AuthJoinRouteImport } from './routes/_auth/join'
+import { Route as AuthAdminRouteImport } from './routes/_auth/admin'
+import { Route as AuthAdminIndexRouteImport } from './routes/_auth/admin/index'
+import { Route as AuthAdminUsersRouteImport } from './routes/_auth/admin/users'
+import { Route as AuthAdminTitlesRouteImport } from './routes/_auth/admin/titles'
+import { Route as AuthAdminTeamsRouteImport } from './routes/_auth/admin/teams'
+import { Route as AuthAdminSubmissionsRouteImport } from './routes/_auth/admin/submissions'
+import { Route as AuthAdminNewteamRouteImport } from './routes/_auth/admin/newteam'
+import { Route as AuthAdminMyaccountRouteImport } from './routes/_auth/admin/myaccount'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
   getParentRoute: () => rootRouteImport,
-} as any);
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+} as any)
+const SigninRoute = SigninRouteImport.update({
+  id: '/signin',
+  path: '/signin',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AuthIndexRoute = AuthIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
 const AuthTitleRoute = AuthTitleRouteImport.update({
   id: '/title',
   path: '/title',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
 const AuthTRoute = AuthTRouteImport.update({
   id: '/t',
   path: '/t',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
 const AuthSRoute = AuthSRouteImport.update({
   id: '/s',
   path: '/s',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
 const AuthJoinRoute = AuthJoinRouteImport.update({
   id: '/join',
   path: '/join',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
 const AuthAdminRoute = AuthAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
 const AuthAdminIndexRoute = AuthAdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthAdminRoute,
-} as any);
+} as any)
 const AuthAdminUsersRoute = AuthAdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
   getParentRoute: () => AuthAdminRoute,
-} as any);
+} as any)
 const AuthAdminTitlesRoute = AuthAdminTitlesRouteImport.update({
   id: '/titles',
   path: '/titles',
   getParentRoute: () => AuthAdminRoute,
-} as any);
+} as any)
 const AuthAdminTeamsRoute = AuthAdminTeamsRouteImport.update({
   id: '/teams',
   path: '/teams',
   getParentRoute: () => AuthAdminRoute,
-} as any);
+} as any)
 const AuthAdminSubmissionsRoute = AuthAdminSubmissionsRouteImport.update({
   id: '/submissions',
   path: '/submissions',
   getParentRoute: () => AuthAdminRoute,
-} as any);
+} as any)
 const AuthAdminNewteamRoute = AuthAdminNewteamRouteImport.update({
   id: '/newteam',
   path: '/newteam',
   getParentRoute: () => AuthAdminRoute,
-} as any);
+} as any)
 const AuthAdminMyaccountRoute = AuthAdminMyaccountRouteImport.update({
   id: '/myaccount',
   path: '/myaccount',
   getParentRoute: () => AuthAdminRoute,
-} as any);
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/login': typeof LoginRoute;
-  '/signup': typeof SignupRoute;
-  '/admin': typeof AuthAdminRouteWithChildren;
-  '/join': typeof AuthJoinRoute;
-  '/s': typeof AuthSRoute;
-  '/t': typeof AuthTRoute;
-  '/title': typeof AuthTitleRoute;
-  '/': typeof AuthIndexRoute;
-  '/admin/myaccount': typeof AuthAdminMyaccountRoute;
-  '/admin/newteam': typeof AuthAdminNewteamRoute;
-  '/admin/submissions': typeof AuthAdminSubmissionsRoute;
-  '/admin/teams': typeof AuthAdminTeamsRoute;
-  '/admin/titles': typeof AuthAdminTitlesRoute;
-  '/admin/users': typeof AuthAdminUsersRoute;
-  '/admin/': typeof AuthAdminIndexRoute;
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
+  '/admin': typeof AuthAdminRouteWithChildren
+  '/join': typeof AuthJoinRoute
+  '/s': typeof AuthSRoute
+  '/t': typeof AuthTRoute
+  '/title': typeof AuthTitleRoute
+  '/': typeof AuthIndexRoute
+  '/admin/myaccount': typeof AuthAdminMyaccountRoute
+  '/admin/newteam': typeof AuthAdminNewteamRoute
+  '/admin/submissions': typeof AuthAdminSubmissionsRoute
+  '/admin/teams': typeof AuthAdminTeamsRoute
+  '/admin/titles': typeof AuthAdminTitlesRoute
+  '/admin/users': typeof AuthAdminUsersRoute
+  '/admin/': typeof AuthAdminIndexRoute
 }
 export interface FileRoutesByTo {
-  '/login': typeof LoginRoute;
-  '/signup': typeof SignupRoute;
-  '/join': typeof AuthJoinRoute;
-  '/s': typeof AuthSRoute;
-  '/t': typeof AuthTRoute;
-  '/title': typeof AuthTitleRoute;
-  '/': typeof AuthIndexRoute;
-  '/admin/myaccount': typeof AuthAdminMyaccountRoute;
-  '/admin/newteam': typeof AuthAdminNewteamRoute;
-  '/admin/submissions': typeof AuthAdminSubmissionsRoute;
-  '/admin/teams': typeof AuthAdminTeamsRoute;
-  '/admin/titles': typeof AuthAdminTitlesRoute;
-  '/admin/users': typeof AuthAdminUsersRoute;
-  '/admin': typeof AuthAdminIndexRoute;
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
+  '/join': typeof AuthJoinRoute
+  '/s': typeof AuthSRoute
+  '/t': typeof AuthTRoute
+  '/title': typeof AuthTitleRoute
+  '/': typeof AuthIndexRoute
+  '/admin/myaccount': typeof AuthAdminMyaccountRoute
+  '/admin/newteam': typeof AuthAdminNewteamRoute
+  '/admin/submissions': typeof AuthAdminSubmissionsRoute
+  '/admin/teams': typeof AuthAdminTeamsRoute
+  '/admin/titles': typeof AuthAdminTitlesRoute
+  '/admin/users': typeof AuthAdminUsersRoute
+  '/admin': typeof AuthAdminIndexRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  '/_auth': typeof AuthRouteWithChildren;
-  '/login': typeof LoginRoute;
-  '/signup': typeof SignupRoute;
-  '/_auth/admin': typeof AuthAdminRouteWithChildren;
-  '/_auth/join': typeof AuthJoinRoute;
-  '/_auth/s': typeof AuthSRoute;
-  '/_auth/t': typeof AuthTRoute;
-  '/_auth/title': typeof AuthTitleRoute;
-  '/_auth/': typeof AuthIndexRoute;
-  '/_auth/admin/myaccount': typeof AuthAdminMyaccountRoute;
-  '/_auth/admin/newteam': typeof AuthAdminNewteamRoute;
-  '/_auth/admin/submissions': typeof AuthAdminSubmissionsRoute;
-  '/_auth/admin/teams': typeof AuthAdminTeamsRoute;
-  '/_auth/admin/titles': typeof AuthAdminTitlesRoute;
-  '/_auth/admin/users': typeof AuthAdminUsersRoute;
-  '/_auth/admin/': typeof AuthAdminIndexRoute;
+  __root__: typeof rootRouteImport
+  '/_auth': typeof AuthRouteWithChildren
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
+  '/_auth/admin': typeof AuthAdminRouteWithChildren
+  '/_auth/join': typeof AuthJoinRoute
+  '/_auth/s': typeof AuthSRoute
+  '/_auth/t': typeof AuthTRoute
+  '/_auth/title': typeof AuthTitleRoute
+  '/_auth/': typeof AuthIndexRoute
+  '/_auth/admin/myaccount': typeof AuthAdminMyaccountRoute
+  '/_auth/admin/newteam': typeof AuthAdminNewteamRoute
+  '/_auth/admin/submissions': typeof AuthAdminSubmissionsRoute
+  '/_auth/admin/teams': typeof AuthAdminTeamsRoute
+  '/_auth/admin/titles': typeof AuthAdminTitlesRoute
+  '/_auth/admin/users': typeof AuthAdminUsersRoute
+  '/_auth/admin/': typeof AuthAdminIndexRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/login'
+    | '/signin'
     | '/signup'
     | '/admin'
     | '/join'
@@ -175,10 +175,10 @@ export interface FileRouteTypes {
     | '/admin/teams'
     | '/admin/titles'
     | '/admin/users'
-    | '/admin/';
-  fileRoutesByTo: FileRoutesByTo;
+    | '/admin/'
+  fileRoutesByTo: FileRoutesByTo
   to:
-    | '/login'
+    | '/signin'
     | '/signup'
     | '/join'
     | '/s'
@@ -191,11 +191,11 @@ export interface FileRouteTypes {
     | '/admin/teams'
     | '/admin/titles'
     | '/admin/users'
-    | '/admin';
+    | '/admin'
   id:
     | '__root__'
     | '/_auth'
-    | '/login'
+    | '/signin'
     | '/signup'
     | '/_auth/admin'
     | '/_auth/join'
@@ -209,140 +209,140 @@ export interface FileRouteTypes {
     | '/_auth/admin/teams'
     | '/_auth/admin/titles'
     | '/_auth/admin/users'
-    | '/_auth/admin/';
-  fileRoutesById: FileRoutesById;
+    | '/_auth/admin/'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AuthRoute: typeof AuthRouteWithChildren;
-  LoginRoute: typeof LoginRoute;
-  SignupRoute: typeof SignupRoute;
+  AuthRoute: typeof AuthRouteWithChildren
+  SigninRoute: typeof SigninRoute
+  SignupRoute: typeof SignupRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/signup': {
-      id: '/signup';
-      path: '/signup';
-      fullPath: '/signup';
-      preLoaderRoute: typeof SignupRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    '/login': {
-      id: '/login';
-      path: '/login';
-      fullPath: '/login';
-      preLoaderRoute: typeof LoginRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signin': {
+      id: '/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth': {
-      id: '/_auth';
-      path: '';
-      fullPath: '';
-      preLoaderRoute: typeof AuthRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth/': {
-      id: '/_auth/';
-      path: '/';
-      fullPath: '/';
-      preLoaderRoute: typeof AuthIndexRouteImport;
-      parentRoute: typeof AuthRoute;
-    };
+      id: '/_auth/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/title': {
-      id: '/_auth/title';
-      path: '/title';
-      fullPath: '/title';
-      preLoaderRoute: typeof AuthTitleRouteImport;
-      parentRoute: typeof AuthRoute;
-    };
+      id: '/_auth/title'
+      path: '/title'
+      fullPath: '/title'
+      preLoaderRoute: typeof AuthTitleRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/t': {
-      id: '/_auth/t';
-      path: '/t';
-      fullPath: '/t';
-      preLoaderRoute: typeof AuthTRouteImport;
-      parentRoute: typeof AuthRoute;
-    };
+      id: '/_auth/t'
+      path: '/t'
+      fullPath: '/t'
+      preLoaderRoute: typeof AuthTRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/s': {
-      id: '/_auth/s';
-      path: '/s';
-      fullPath: '/s';
-      preLoaderRoute: typeof AuthSRouteImport;
-      parentRoute: typeof AuthRoute;
-    };
+      id: '/_auth/s'
+      path: '/s'
+      fullPath: '/s'
+      preLoaderRoute: typeof AuthSRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/join': {
-      id: '/_auth/join';
-      path: '/join';
-      fullPath: '/join';
-      preLoaderRoute: typeof AuthJoinRouteImport;
-      parentRoute: typeof AuthRoute;
-    };
+      id: '/_auth/join'
+      path: '/join'
+      fullPath: '/join'
+      preLoaderRoute: typeof AuthJoinRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/admin': {
-      id: '/_auth/admin';
-      path: '/admin';
-      fullPath: '/admin';
-      preLoaderRoute: typeof AuthAdminRouteImport;
-      parentRoute: typeof AuthRoute;
-    };
+      id: '/_auth/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthAdminRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/admin/': {
-      id: '/_auth/admin/';
-      path: '/';
-      fullPath: '/admin/';
-      preLoaderRoute: typeof AuthAdminIndexRouteImport;
-      parentRoute: typeof AuthAdminRoute;
-    };
+      id: '/_auth/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthAdminIndexRouteImport
+      parentRoute: typeof AuthAdminRoute
+    }
     '/_auth/admin/users': {
-      id: '/_auth/admin/users';
-      path: '/users';
-      fullPath: '/admin/users';
-      preLoaderRoute: typeof AuthAdminUsersRouteImport;
-      parentRoute: typeof AuthAdminRoute;
-    };
+      id: '/_auth/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthAdminUsersRouteImport
+      parentRoute: typeof AuthAdminRoute
+    }
     '/_auth/admin/titles': {
-      id: '/_auth/admin/titles';
-      path: '/titles';
-      fullPath: '/admin/titles';
-      preLoaderRoute: typeof AuthAdminTitlesRouteImport;
-      parentRoute: typeof AuthAdminRoute;
-    };
+      id: '/_auth/admin/titles'
+      path: '/titles'
+      fullPath: '/admin/titles'
+      preLoaderRoute: typeof AuthAdminTitlesRouteImport
+      parentRoute: typeof AuthAdminRoute
+    }
     '/_auth/admin/teams': {
-      id: '/_auth/admin/teams';
-      path: '/teams';
-      fullPath: '/admin/teams';
-      preLoaderRoute: typeof AuthAdminTeamsRouteImport;
-      parentRoute: typeof AuthAdminRoute;
-    };
+      id: '/_auth/admin/teams'
+      path: '/teams'
+      fullPath: '/admin/teams'
+      preLoaderRoute: typeof AuthAdminTeamsRouteImport
+      parentRoute: typeof AuthAdminRoute
+    }
     '/_auth/admin/submissions': {
-      id: '/_auth/admin/submissions';
-      path: '/submissions';
-      fullPath: '/admin/submissions';
-      preLoaderRoute: typeof AuthAdminSubmissionsRouteImport;
-      parentRoute: typeof AuthAdminRoute;
-    };
+      id: '/_auth/admin/submissions'
+      path: '/submissions'
+      fullPath: '/admin/submissions'
+      preLoaderRoute: typeof AuthAdminSubmissionsRouteImport
+      parentRoute: typeof AuthAdminRoute
+    }
     '/_auth/admin/newteam': {
-      id: '/_auth/admin/newteam';
-      path: '/newteam';
-      fullPath: '/admin/newteam';
-      preLoaderRoute: typeof AuthAdminNewteamRouteImport;
-      parentRoute: typeof AuthAdminRoute;
-    };
+      id: '/_auth/admin/newteam'
+      path: '/newteam'
+      fullPath: '/admin/newteam'
+      preLoaderRoute: typeof AuthAdminNewteamRouteImport
+      parentRoute: typeof AuthAdminRoute
+    }
     '/_auth/admin/myaccount': {
-      id: '/_auth/admin/myaccount';
-      path: '/myaccount';
-      fullPath: '/admin/myaccount';
-      preLoaderRoute: typeof AuthAdminMyaccountRouteImport;
-      parentRoute: typeof AuthAdminRoute;
-    };
+      id: '/_auth/admin/myaccount'
+      path: '/myaccount'
+      fullPath: '/admin/myaccount'
+      preLoaderRoute: typeof AuthAdminMyaccountRouteImport
+      parentRoute: typeof AuthAdminRoute
+    }
   }
 }
 
 interface AuthAdminRouteChildren {
-  AuthAdminMyaccountRoute: typeof AuthAdminMyaccountRoute;
-  AuthAdminNewteamRoute: typeof AuthAdminNewteamRoute;
-  AuthAdminSubmissionsRoute: typeof AuthAdminSubmissionsRoute;
-  AuthAdminTeamsRoute: typeof AuthAdminTeamsRoute;
-  AuthAdminTitlesRoute: typeof AuthAdminTitlesRoute;
-  AuthAdminUsersRoute: typeof AuthAdminUsersRoute;
-  AuthAdminIndexRoute: typeof AuthAdminIndexRoute;
+  AuthAdminMyaccountRoute: typeof AuthAdminMyaccountRoute
+  AuthAdminNewteamRoute: typeof AuthAdminNewteamRoute
+  AuthAdminSubmissionsRoute: typeof AuthAdminSubmissionsRoute
+  AuthAdminTeamsRoute: typeof AuthAdminTeamsRoute
+  AuthAdminTitlesRoute: typeof AuthAdminTitlesRoute
+  AuthAdminUsersRoute: typeof AuthAdminUsersRoute
+  AuthAdminIndexRoute: typeof AuthAdminIndexRoute
 }
 
 const AuthAdminRouteChildren: AuthAdminRouteChildren = {
@@ -353,17 +353,19 @@ const AuthAdminRouteChildren: AuthAdminRouteChildren = {
   AuthAdminTitlesRoute: AuthAdminTitlesRoute,
   AuthAdminUsersRoute: AuthAdminUsersRoute,
   AuthAdminIndexRoute: AuthAdminIndexRoute,
-};
+}
 
-const AuthAdminRouteWithChildren = AuthAdminRoute._addFileChildren(AuthAdminRouteChildren);
+const AuthAdminRouteWithChildren = AuthAdminRoute._addFileChildren(
+  AuthAdminRouteChildren,
+)
 
 interface AuthRouteChildren {
-  AuthAdminRoute: typeof AuthAdminRouteWithChildren;
-  AuthJoinRoute: typeof AuthJoinRoute;
-  AuthSRoute: typeof AuthSRoute;
-  AuthTRoute: typeof AuthTRoute;
-  AuthTitleRoute: typeof AuthTitleRoute;
-  AuthIndexRoute: typeof AuthIndexRoute;
+  AuthAdminRoute: typeof AuthAdminRouteWithChildren
+  AuthJoinRoute: typeof AuthJoinRoute
+  AuthSRoute: typeof AuthSRoute
+  AuthTRoute: typeof AuthTRoute
+  AuthTitleRoute: typeof AuthTitleRoute
+  AuthIndexRoute: typeof AuthIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
@@ -373,13 +375,15 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthTRoute: AuthTRoute,
   AuthTitleRoute: AuthTitleRoute,
   AuthIndexRoute: AuthIndexRoute,
-};
+}
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren);
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
-  LoginRoute: LoginRoute,
+  SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
-};
-export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>();
+}
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()

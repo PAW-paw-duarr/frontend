@@ -45,31 +45,35 @@ export function useCreateTitle() {
 
   return useMutation({
     mutationFn: async (dataInput: z.infer<typeof createTitleSchema>) => {
-      const { data, error } = await ApiClient.POST('/title', {
-        body: dataInput,
-        bodySerializer(body) {
-          const fd = new FormData();
-          for (const name in body) {
-            // @ts-expect-error FormData accepts File
-            fd.append(name, body[name]);
+      return toast.promise(
+        (async () => {
+          const { data, error } = await ApiClient.POST('/title', {
+            body: dataInput,
+            bodySerializer(body) {
+              const fd = new FormData();
+              for (const name in body) {
+                // @ts-expect-error FormData accepts File
+                fd.append(name, body[name]);
+              }
+              return fd;
+            },
+          });
+          if (error) {
+            throw new Error(error.message);
           }
-          return fd;
-        },
-      });
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      return data;
+          return data;
+        })(),
+        {
+          loading: 'Creating title...',
+          success: 'Title created successfully',
+          error: (err) => `Create title failed: ${err.message}`,
+        }
+      );
     },
     onSuccess: async () => {
-      toast.success('Title created successfully');
       await queryClient.refetchQueries({
         queryKey: getAllTitlesQuery().queryKey,
       });
-    },
-    onError: (error) => {
-      toast.error(`Create title failed: ${error.message}`);
     },
   });
 }
@@ -86,31 +90,35 @@ export function useUpdateTitle() {
 
   return useMutation({
     mutationFn: async (dataInput: z.infer<typeof updateTitleSchema>) => {
-      const { data, error } = await ApiClient.PATCH('/title', {
-        body: dataInput,
-        bodySerializer(body) {
-          const fd = new FormData();
-          for (const name in body) {
-            // @ts-expect-error FormData accepts File
-            fd.append(name, body[name]);
+      return toast.promise(
+        (async () => {
+          const { data, error } = await ApiClient.PATCH('/title', {
+            body: dataInput,
+            bodySerializer(body) {
+              const fd = new FormData();
+              for (const name in body) {
+                // @ts-expect-error FormData accepts File
+                fd.append(name, body[name]);
+              }
+              return fd;
+            },
+          });
+          if (error) {
+            throw new Error(error.message);
           }
-          return fd;
-        },
-      });
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      return data;
+          return data;
+        })(),
+        {
+          loading: 'Updating title...',
+          success: 'Title updated successfully',
+          error: (err) => `Update title failed: ${err.message}`,
+        }
+      );
     },
     onSuccess: async () => {
-      toast.success('Title updated successfully');
       await queryClient.refetchQueries({
         queryKey: getAllTitlesQuery().queryKey,
       });
-    },
-    onError: (error) => {
-      toast.error(`Update title failed: ${error.message}`);
     },
   });
 }
@@ -119,24 +127,29 @@ export function useDeleteTitle() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { data, error } = await ApiClient.DELETE('/title/{id}', {
-        params: {
-          path: { id },
-        },
-      });
-      if (error) {
-        throw new Error(error.message);
-      }
-      return data;
+      return toast.promise(
+        (async () => {
+          const { data, error } = await ApiClient.DELETE('/title/{id}', {
+            params: {
+              path: { id },
+            },
+          });
+          if (error) {
+            throw new Error(error.message);
+          }
+          return data;
+        })(),
+        {
+          loading: 'Deleting title...',
+          success: 'Title deleted successfully',
+          error: (err) => `Delete title failed: ${err.message}`,
+        }
+      );
     },
     onSuccess: async () => {
-      toast.success('Title deleted successfully');
       await queryClient.refetchQueries({
         queryKey: getAllTitlesQuery().queryKey,
       });
-    },
-    onError: (error) => {
-      toast.error(`Delete title failed: ${error.message}`);
     },
   });
 }

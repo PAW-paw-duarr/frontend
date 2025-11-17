@@ -39,20 +39,22 @@ export const joinTeamSchema = z.object({
 export function useJoinTeam() {
   return useMutation({
     mutationFn: async (dataInput: z.infer<typeof joinTeamSchema>) => {
-      const { data, error } = await ApiClient.POST('/team/join', {
-        body: dataInput,
-      });
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      return data;
-    },
-    onSuccess: async () => {
-      toast.success('Joined team successfully');
-    },
-    onError: (error) => {
-      toast.error(`Join team failed: ${error.message}`);
+      return toast.promise(
+        (async () => {
+          const { data, error } = await ApiClient.POST('/team/join', {
+            body: dataInput,
+          });
+          if (error) {
+            throw new Error(error.message);
+          }
+          return data;
+        })(),
+        {
+          loading: 'Joining team...',
+          success: 'Joined team successfully',
+          error: (err) => `Join team failed: ${err.message}`,
+        }
+      );
     },
   });
 }
@@ -61,20 +63,25 @@ export function useKickMember(teamdId: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { data, error } = await ApiClient.DELETE('/team/kick/{id}', {
-        params: { path: { id } },
-      });
-      if (error) {
-        throw new Error(error.message);
-      }
-      return data;
+      return toast.promise(
+        (async () => {
+          const { data, error } = await ApiClient.DELETE('/team/kick/{id}', {
+            params: { path: { id } },
+          });
+          if (error) {
+            throw new Error(error.message);
+          }
+          return data;
+        })(),
+        {
+          loading: 'Kicking member...',
+          success: 'Member kicked successfully',
+          error: (err) => `Kick member failed: ${err.message}`,
+        }
+      );
     },
     onSuccess: async () => {
-      toast.success('Member kicked successfully');
       await queryClient.refetchQueries(getTeamByIdQuery(teamdId));
-    },
-    onError: (error) => {
-      toast.error(`Kick member failed: ${error.message}`);
     },
   });
 }
@@ -83,24 +90,29 @@ export function useDeleteTeam() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { data, error } = await ApiClient.DELETE('/team/{id}', {
-        params: {
-          path: { id },
-        },
-      });
-      if (error) {
-        throw new Error(error.message);
-      }
-      return data;
+      return toast.promise(
+        (async () => {
+          const { data, error } = await ApiClient.DELETE('/team/{id}', {
+            params: {
+              path: { id },
+            },
+          });
+          if (error) {
+            throw new Error(error.message);
+          }
+          return data;
+        })(),
+        {
+          loading: 'Deleting team...',
+          success: 'Team deleted successfully',
+          error: (err) => `Delete team failed: ${err.message}`,
+        }
+      );
     },
     onSuccess: async () => {
-      toast.success('Team deleted successfully');
       await queryClient.refetchQueries({
         queryKey: getAllTeamQuery().queryKey,
       });
-    },
-    onError: (error) => {
-      toast.error(`Delete team failed: ${error.message}`);
     },
   });
 }
@@ -119,22 +131,27 @@ export function useCreateTeam() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (dataInput: z.infer<typeof createTeamSchema>) => {
-      const { data, error } = await ApiClient.POST('/team/new', {
-        body: dataInput,
-      });
-      if (error) {
-        throw new Error(error.message);
-      }
-      return data;
+      return toast.promise(
+        (async () => {
+          const { data, error } = await ApiClient.POST('/team/new', {
+            body: dataInput,
+          });
+          if (error) {
+            throw new Error(error.message);
+          }
+          return data;
+        })(),
+        {
+          loading: 'Creating teams...',
+          success: 'Teams created successfully',
+          error: (err) => `Create team failed: ${err.message}`,
+        }
+      );
     },
     onSuccess: async () => {
-      toast.success('Team created successfully');
       await queryClient.refetchQueries({
         queryKey: getAllTeamQuery().queryKey,
       });
-    },
-    onError: (error) => {
-      toast.error(`Create team failed: ${error.message}`);
     },
   });
 }
