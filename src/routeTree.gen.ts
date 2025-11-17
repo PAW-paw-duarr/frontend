@@ -24,7 +24,6 @@ import { Route as AuthAdminTitlesRouteImport } from './routes/_auth/admin/titles
 import { Route as AuthAdminTeamsRouteImport } from './routes/_auth/admin/teams'
 import { Route as AuthAdminSubmissionsRouteImport } from './routes/_auth/admin/submissions'
 import { Route as AuthAdminNewteamRouteImport } from './routes/_auth/admin/newteam'
-import { Route as AuthAdminMyaccountRouteImport } from './routes/_auth/admin/myaccount'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -100,11 +99,6 @@ const AuthAdminNewteamRoute = AuthAdminNewteamRouteImport.update({
   path: '/newteam',
   getParentRoute: () => AuthAdminRoute,
 } as any)
-const AuthAdminMyaccountRoute = AuthAdminMyaccountRouteImport.update({
-  id: '/myaccount',
-  path: '/myaccount',
-  getParentRoute: () => AuthAdminRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/signin': typeof SigninRoute
@@ -115,7 +109,6 @@ export interface FileRoutesByFullPath {
   '/t': typeof AuthTRoute
   '/title': typeof AuthTitleRoute
   '/': typeof AuthIndexRoute
-  '/admin/myaccount': typeof AuthAdminMyaccountRoute
   '/admin/newteam': typeof AuthAdminNewteamRoute
   '/admin/submissions': typeof AuthAdminSubmissionsRoute
   '/admin/teams': typeof AuthAdminTeamsRoute
@@ -131,7 +124,6 @@ export interface FileRoutesByTo {
   '/t': typeof AuthTRoute
   '/title': typeof AuthTitleRoute
   '/': typeof AuthIndexRoute
-  '/admin/myaccount': typeof AuthAdminMyaccountRoute
   '/admin/newteam': typeof AuthAdminNewteamRoute
   '/admin/submissions': typeof AuthAdminSubmissionsRoute
   '/admin/teams': typeof AuthAdminTeamsRoute
@@ -150,7 +142,6 @@ export interface FileRoutesById {
   '/_auth/t': typeof AuthTRoute
   '/_auth/title': typeof AuthTitleRoute
   '/_auth/': typeof AuthIndexRoute
-  '/_auth/admin/myaccount': typeof AuthAdminMyaccountRoute
   '/_auth/admin/newteam': typeof AuthAdminNewteamRoute
   '/_auth/admin/submissions': typeof AuthAdminSubmissionsRoute
   '/_auth/admin/teams': typeof AuthAdminTeamsRoute
@@ -169,7 +160,6 @@ export interface FileRouteTypes {
     | '/t'
     | '/title'
     | '/'
-    | '/admin/myaccount'
     | '/admin/newteam'
     | '/admin/submissions'
     | '/admin/teams'
@@ -185,7 +175,6 @@ export interface FileRouteTypes {
     | '/t'
     | '/title'
     | '/'
-    | '/admin/myaccount'
     | '/admin/newteam'
     | '/admin/submissions'
     | '/admin/teams'
@@ -203,7 +192,6 @@ export interface FileRouteTypes {
     | '/_auth/t'
     | '/_auth/title'
     | '/_auth/'
-    | '/_auth/admin/myaccount'
     | '/_auth/admin/newteam'
     | '/_auth/admin/submissions'
     | '/_auth/admin/teams'
@@ -325,18 +313,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthAdminNewteamRouteImport
       parentRoute: typeof AuthAdminRoute
     }
-    '/_auth/admin/myaccount': {
-      id: '/_auth/admin/myaccount'
-      path: '/myaccount'
-      fullPath: '/admin/myaccount'
-      preLoaderRoute: typeof AuthAdminMyaccountRouteImport
-      parentRoute: typeof AuthAdminRoute
-    }
   }
 }
 
 interface AuthAdminRouteChildren {
-  AuthAdminMyaccountRoute: typeof AuthAdminMyaccountRoute
   AuthAdminNewteamRoute: typeof AuthAdminNewteamRoute
   AuthAdminSubmissionsRoute: typeof AuthAdminSubmissionsRoute
   AuthAdminTeamsRoute: typeof AuthAdminTeamsRoute
@@ -346,7 +326,6 @@ interface AuthAdminRouteChildren {
 }
 
 const AuthAdminRouteChildren: AuthAdminRouteChildren = {
-  AuthAdminMyaccountRoute: AuthAdminMyaccountRoute,
   AuthAdminNewteamRoute: AuthAdminNewteamRoute,
   AuthAdminSubmissionsRoute: AuthAdminSubmissionsRoute,
   AuthAdminTeamsRoute: AuthAdminTeamsRoute,
