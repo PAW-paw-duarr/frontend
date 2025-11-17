@@ -53,14 +53,14 @@ export function JoinTeam() {
       </Card>
       <div className="text-muted-foreground text-center text-sm">
         Want to use a different account?{' '}
-        <Button
+        <button
           type="button"
           onClick={() => logoutMutation.mutate()}
           className="hover:text-foreground underline underline-offset-4"
-          loading={logoutMutation.isPending}
+          disabled={logoutMutation.isPending}
         >
           Logout
-        </Button>
+        </button>
       </div>
     </div>
   );
