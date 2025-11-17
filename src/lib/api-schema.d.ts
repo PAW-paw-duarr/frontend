@@ -54,7 +54,6 @@ export interface paths {
          * Delete a Title
          * @description Permanently deletes a specific capstone title
          *     Nonadmin : cannot use this
-         *
          */
         delete: operations["del-api-title-id"];
         options?: never;
@@ -123,7 +122,6 @@ export interface paths {
         /**
          * Submit a Proposal for a Title
          * @description Allows captain team to submit their project proposal for a chosen title
-         *
          */
         post: operations["post-api-submission-submit"];
         delete?: never;
@@ -324,7 +322,7 @@ export interface paths {
         head?: never;
         /**
          * Update My User Profil
-         * @description  Updates the profile information for the authenticated user
+         * @description Updates the profile information for the authenticated user
          */
         patch: operations["patch-api-user"];
         trace?: never;
@@ -409,7 +407,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/period": {
+    "/config/period": {
         parameters: {
             query?: never;
             header?: never;
@@ -1005,10 +1003,12 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                /** @example {
+                /**
+                 * @example {
                  *       "id": "123",
                  *       "accept": false
-                 *     } */
+                 *     }
+                 */
                 "application/json": {
                     id: string;
                     accept: boolean;
@@ -1184,9 +1184,11 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                /** @example {
+                /**
+                 * @example {
                  *       "id": "123"
-                 *     } */
+                 *     }
+                 */
                 "application/json": {
                     code: string;
                 };
@@ -1297,7 +1299,8 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                /** @example {
+                /**
+                 * @example {
                  *       "new_period": true,
                  *       "team_data": [
                  *         {
@@ -1306,7 +1309,8 @@ export interface operations {
                  *           "category": "Kesehatan"
                  *         }
                  *       ]
-                 *     } */
+                 *     }
+                 */
                 "application/json": {
                     new_period?: boolean;
                     team_data: components["schemas"]["data-team-new"][];
@@ -1558,10 +1562,12 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                /** @example {
+                /**
+                 * @example {
                  *       "email": "string",
                  *       "password": "string"
-                 *     } */
+                 *     }
+                 */
                 "application/json": components["schemas"]["signin-password-body"];
             };
         };

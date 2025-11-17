@@ -1,6 +1,6 @@
 import { DropzoneContent, DropzoneEmptyState, Dropzone } from '~/components/ui/shadcn-io/dropzone';
 import { Input } from '~/components/ui/input';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getCurrentUserQuery, updateMyProfileSchema, useUpdateMyProfile } from '~/lib/api/user';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,7 +10,7 @@ import { Button } from '~/components/ui/button';
 import { FileText, ExternalLink } from 'lucide-react';
 
 export function ProfileDiri() {
-  const { data: accountData } = useSuspenseQuery(getCurrentUserQuery());
+  const { data: accountData } = useQuery(getCurrentUserQuery());
 
   const { handleSubmit, control } = useForm({
     resolver: zodResolver(updateMyProfileSchema),

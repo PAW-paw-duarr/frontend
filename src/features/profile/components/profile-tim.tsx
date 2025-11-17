@@ -1,7 +1,7 @@
 import { Button } from '~/components/ui/button';
 import { FileText, X, ExternalLink, Users, CheckCircle2, Clock } from 'lucide-react';
 import { getTeamByIdQuery, useKickMember } from '~/lib/api/team';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { getCurrentUserQuery } from '~/lib/api/user';
 import { getAllSubmissionQuery, getSubmissionByIdQuery } from '~/lib/api/submission';
 import { Input } from '~/components/ui/input';
@@ -11,9 +11,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/
 import { Badge } from '~/components/ui/badge';
 
 export function ProfileTim() {
-  const { data: accountData } = useSuspenseQuery(getCurrentUserQuery());
-  const { data: teamData } = useSuspenseQuery(getTeamByIdQuery(accountData?.team_id || ''));
-  const { data: submissions } = useSuspenseQuery(getAllSubmissionQuery());
+  const { data: accountData } = useQuery(getCurrentUserQuery());
+  const { data: teamData } = useQuery(getTeamByIdQuery(accountData?.team_id || ''));
+  const { data: submissions } = useQuery(getAllSubmissionQuery());
   const isCaptain = teamData?.leader_email === accountData?.email;
   const mutation = useKickMember(teamData?.id || '');
 

@@ -2,7 +2,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '~/components/ui/sh
 import { Button } from '~/components/ui/button';
 import { Badge } from '~/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
-import { Upload, Trash2, FileText, Crown, User } from 'lucide-react';
+import { Upload, Trash2, FileText } from 'lucide-react';
 import { cn } from '~/lib/utils';
 import { MdKeyboardDoubleArrowRight } from 'react-icons/md';
 import { HiExternalLink } from 'react-icons/hi';
@@ -16,7 +16,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createSubmissionSchema, useCreateSubmission } from '~/lib/api/submission';
 import { useProfileDialogStore, useTitleSidebarStore } from '~/hooks/global';
-import { ProfileOrang } from '~/features/profile/components/profile-dialog-orang';
+import { ProfileOrangT } from '~/features/profile/components/profile-dialog-orang';
+import { MemberTeam } from '~/components/list/member-team';
 
 export function SidebarTitle() {
   const uploadFile = useUploadFile();
@@ -24,7 +25,7 @@ export function SidebarTitle() {
   const setStateTitle = useTitleSidebarStore((state) => state.setState);
 
   const navigate = useNavigate();
-  const searchParams = useSearch({ from: '/_auth/' });
+  const searchParams = useSearch({ from: '/_auth/t' });
   const titleId = searchParams?.t || '';
   const { data: dataTitle } = useQuery(getTitleByIdQuery(titleId));
   const { data: dataTeam } = useQuery(getTeamByIdQuery(dataTitle?.team_id || ''));
@@ -57,7 +58,6 @@ export function SidebarTitle() {
     }
   };
 
-
   function toggleProfileDialog(profileId: string) {
     navigate({
       to: '.',
@@ -74,11 +74,11 @@ export function SidebarTitle() {
 
   return (
     <>
-      {stateProfile && <ProfileOrang />}
+      {stateProfile && <ProfileOrangT />}
       <Sheet open={stateTitle} onOpenChange={handleOpenChange}>
         <SheetContent
           side="right"
-          className="border-primary w-full overflow-y-auto border-2 px-6 py-6 sm:max-w-xl sm:px-6 sm:py-8 md:max-w-2xl md:rounded-l-2xl md:px-10 lg:max-w-3xl lg:px-20 lg:py-12 [&>button]:hidden z-80"
+          className="border-primary w-full overflow-y-auto border-2 px-6 py-6 sm:max-w-xl sm:px-6 sm:py-8 md:max-w-2xl md:rounded-l-2xl md:px-10 lg:max-w-3xl lg:px-20 lg:py-12 [&>button]:hidden"
         >
           <SheetHeader className="justify-between border-b pb-3 sm:pb-4">
             <SheetTitle hidden>{dataTitle.title}</SheetTitle>
@@ -126,25 +126,11 @@ export function SidebarTitle() {
               <div>
                 <h3 className="mb-2 text-lg font-bold sm:mb-3 sm:text-xl md:text-2xl">Anggota Tim</h3>
                 <div className="flex w-fit flex-col items-start gap-2">
-                  {dataTeam.member?.map((member, index) => (
-                    <button
-                      onClick={() => toggleProfileDialog(member.id)}
-                      key={index}
-                      className={cn(
-                        'flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-all sm:w-auto sm:gap-3 sm:rounded-2xl sm:px-4 sm:py-3 sm:text-base',
-                        member.email === dataTeam.leader_email
-                          ? 'bg-black text-white hover:bg-gray-800'
-                          : 'border-2 border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:bg-gray-50'
-                      )}
-                    >
-                      {member.email === dataTeam.leader_email ? (
-                        <Crown className="h-4 w-4 shrink-0 sm:h-5 sm:w-5 md:h-6 md:w-6" />
-                      ) : (
-                        <User className="h-4 w-4 shrink-0 sm:h-5 sm:w-5 md:h-6 md:w-6" />
-                      )}
-                      <span className="truncate">{member.name}</span>
-                    </button>
-                  ))}
+                  <MemberTeam
+                    dataMember={dataTeam?.member || []}
+                    leaderEmail={dataTeam?.leader_email}
+                    toggleProfileDialog={toggleProfileDialog}
+                  />
                 </div>
               </div>
 
