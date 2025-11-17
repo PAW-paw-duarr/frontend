@@ -9,6 +9,7 @@ import { Dropzone, DropzoneContent, DropzoneEmptyState } from '~/components/ui/s
 import { toast } from 'sonner';
 import { UploadIcon } from 'lucide-react';
 import { useLogout } from '~/lib/api/auth';
+import { Textarea } from '~/components/ui/textarea';
 
 export function SignupTitleForm() {
   const {
@@ -27,7 +28,7 @@ export function SignupTitleForm() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
           <CardTitle>Title Data</CardTitle>
@@ -52,7 +53,7 @@ export function SignupTitleForm() {
                 {errors.title && <FieldDescription className="text-red-500">{errors.title.message}</FieldDescription>}
               </Field>
               <Field>
-                <FieldLabel htmlFor="desc">Concise Description</FieldLabel>
+                <FieldLabel htmlFor="desc">Summary</FieldLabel>
                 <Controller
                   name="desc"
                   control={control}
@@ -63,15 +64,14 @@ export function SignupTitleForm() {
                 {errors.desc && <FieldDescription className="text-red-500">{errors.desc.message}</FieldDescription>}
               </Field>
               <Field>
-                <FieldLabel htmlFor="description">Complete Description</FieldLabel>
+                <FieldLabel htmlFor="description">Details</FieldLabel>
                 <Controller
                   name="description"
                   control={control}
                   render={({ field }) => (
-                    <Input
+                    <Textarea
                       {...field}
                       id="description"
-                      type="textarea"
                       placeholder="Provide a detailed description of your project, its objectives, and expected outcomes"
                     />
                   )}
@@ -104,11 +104,11 @@ export function SignupTitleForm() {
                       maxFiles={1}
                     >
                       <DropzoneEmptyState>
-                        <div className="flex w-full items-center gap-4 p-8">
-                          <div className="bg-muted text-muted-foreground flex size-16 items-center justify-center rounded-lg">
-                            <UploadIcon size={24} />
+                        <div className="flex w-full flex-col items-center gap-3 p-4 sm:flex-row sm:gap-4 sm:p-8">
+                          <div className="bg-muted text-muted-foreground flex size-12 shrink-0 items-center justify-center rounded-lg sm:size-16">
+                            <UploadIcon className="h-5 w-5 sm:h-6 sm:w-6" />
                           </div>
-                          <div className="text-left">
+                          <div className="text-center sm:text-left">
                             <p className="text-sm font-medium">Upload a file</p>
                             <p className="text-muted-foreground text-xs">Drag and drop or click to upload</p>
                             <p className="text-muted-foreground text-xs">JPG, PNG, SVG</p>
