@@ -433,7 +433,7 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
-                            current_period: string;
+                            current_period: number;
                         };
                     };
                 };
@@ -466,14 +466,17 @@ export interface components {
             title_id?: string;
             category: components["schemas"]["CategoryCapstone"];
             period: number;
-            code?: string;
-            member?: components["schemas"]["data-user-short"][];
+            code: string;
+            member: components["schemas"]["data-user-short"][];
         };
         "data-team-short": {
             id: string;
             name: string;
+            leader_email: string;
             category: components["schemas"]["CategoryCapstone"];
+            title_id?: string;
             period: number;
+            code: string;
         };
         "data-team-new": {
             name: string;
@@ -499,6 +502,7 @@ export interface components {
             name: string;
             email?: string;
             google_id?: string;
+            is_admin?: boolean;
         };
         "data-user-short": {
             id: string;
@@ -542,6 +546,8 @@ export interface components {
             password: string;
             name: string;
         };
+        /** @enum {string} */
+        CategoryCapstone: "Kesehatan" | "Pengelolaan Sampah" | "Smart City" | "Transportasi Ramah Lingkungan";
         DefaultErrors: {
             status: number;
             error?: string;
@@ -550,8 +556,6 @@ export interface components {
                 [key: string]: unknown;
             };
         };
-        /** @enum {string} */
-        CategoryCapstone: "Kesehatan" | "Pengelolaan Sampah" | "Smart City" | "Transportasi Ramah Lingkungan";
     };
     responses: never;
     parameters: never;
@@ -1072,7 +1076,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["data-team"];
+                    "application/json": components["schemas"]["data-team-short"];
                 };
             };
             401: {

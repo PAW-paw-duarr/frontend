@@ -4,10 +4,10 @@ import { getAllUsersQuery } from '~/lib/api/user';
 
 export const Route = createFileRoute('/_auth/join')({
   loader: async ({ context: { user, queryClient } }) => {
-    const testAdmin = await queryClient.fetchQuery(getAllUsersQuery());
     if (user?.team_id) {
       throw redirect({ to: '/' });
     }
+    const testAdmin = await queryClient.fetchQuery(getAllUsersQuery());
     if (testAdmin.length > 0) {
       throw redirect({ to: '/' });
     }

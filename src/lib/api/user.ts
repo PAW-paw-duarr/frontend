@@ -126,3 +126,29 @@ export function useUpdateMyProfile() {
         },
     });
 }
+
+export function useDeleteUser() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (id: string) => {
+            const { data, error } = await ApiClient.DELETE("/user/{id}", {
+                params: {
+                    path: { id },
+                }
+            });
+            if (error) {
+                throw new Error(error.message);
+            }
+            return data;
+        },
+        onSuccess: async () => {
+            toast.success("User deleted successfully");
+            await queryClient.refetchQueries({
+                queryKey: getAllUsersQuery().queryKey,
+            });
+        },
+        onError: (error) => {
+            toast.error(`Delete user failed: ${error.message}`);
+        }
+    })
+}
