@@ -22,8 +22,8 @@ export function SignupTitleForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Data Judul</CardTitle>
-        <CardDescription>Masukkan informasi proyek Anda di form berikut.</CardDescription>
+        <CardTitle>Title Data</CardTitle>
+        <CardDescription>Enter your title data below.</CardDescription>
       </CardHeader>
       <CardContent>
         <form
@@ -33,32 +33,32 @@ export function SignupTitleForm() {
         >
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="title">Judul Proyek</FieldLabel>
+              <FieldLabel htmlFor="title">Project Title</FieldLabel>
               <Controller
                 name="title"
                 control={control}
-                render={({ field }) => <Input {...field} id="title" type="text" placeholder="Masukkan judul proyek" />}
+                render={({ field }) => <Input {...field} id="title" type="text" placeholder="Your project title" />}
               />
               {errors.title && <FieldDescription className="text-red-500">{errors.title.message}</FieldDescription>}
             </Field>
             <Field>
-              <FieldLabel htmlFor="desc">Deskripsi Singkat</FieldLabel>
+              <FieldLabel htmlFor="desc">Short Description</FieldLabel>
               <Controller
                 name="desc"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} id="desc" type="text" placeholder="Masukkan deskripsi singkat" />
+                  <Input {...field} id="desc" type="text" placeholder="A concise summary of your project" />
                 )}
               />
               {errors.desc && <FieldDescription className="text-red-500">{errors.desc.message}</FieldDescription>}
             </Field>
             <Field>
-              <FieldLabel htmlFor="description">Deskripsi Lengkap</FieldLabel>
+              <FieldLabel htmlFor="description">Detailed Description</FieldLabel>
               <Controller
                 name="description"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} id="description" type="textarea" placeholder="Masukkan deskripsi lengkap" />
+                  <Input {...field} id="description" type="textarea" placeholder="Provide a detailed description of your project, its objectives, and expected outcomes" />
                 )}
               />
               {errors.description && (
@@ -71,7 +71,7 @@ export function SignupTitleForm() {
               control={control}
               render={({ field: { onChange, value }, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="photo file">Unggah Foto</FieldLabel>
+                  <FieldLabel htmlFor="photo file">Photo</FieldLabel>
                   <Dropzone
                     accept={{
                       'image/png': [],
@@ -113,7 +113,7 @@ export function SignupTitleForm() {
               control={control}
               render={({ field: { onChange, value }, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="proposal file">Unggah Dokumen Proposal</FieldLabel>
+                  <FieldLabel htmlFor="proposal file">Proposal Document</FieldLabel>
 
                   <Dropzone
                     accept={{
@@ -149,7 +149,7 @@ export function SignupTitleForm() {
             />
             <FieldGroup>
               <Field>
-                <Button type="submit">Simpan</Button>
+                <Button type="submit">Save</Button>
               </Field>
             </FieldGroup>
           </FieldGroup>
