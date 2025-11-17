@@ -74,7 +74,7 @@ export function ProfileOrangBase({ profileId, onClose }: ProfileOrangBaseProps) 
               )}
             </div>
           )}
-        </ScrollArea>
+        </ScrollArea> 
       </DialogContent>
     </Dialog>
   );

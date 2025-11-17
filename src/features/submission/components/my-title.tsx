@@ -21,6 +21,8 @@ export function MyTitle() {
   const { data: teamData } = useQuery(getTeamByIdQuery(accountData?.team_id || ''));
   const { data: capstoneData } = useQuery(getTitleByIdQuery(teamData?.title_id || ''));
 
+  const isLeader = accountData?.email === teamData?.leader_email;
+
   const { handleSubmit, control, reset } = useForm({
     resolver: zodResolver(updateTitleSchema),
     defaultValues: {
@@ -78,7 +80,7 @@ export function MyTitle() {
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="title">Title</FieldLabel>
-                <Input id="title" {...field} aria-invalid={fieldState.invalid} />
+                <Input id="title" {...field} aria-invalid={fieldState.invalid} readOnly={!isLeader} />
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
@@ -90,7 +92,7 @@ export function MyTitle() {
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="desc">Short Description</FieldLabel>
-                <Input id="desc" {...field} aria-invalid={fieldState.invalid} />
+                <Input id="desc" {...field} aria-invalid={fieldState.invalid} readOnly={!isLeader} />
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
@@ -106,7 +108,8 @@ export function MyTitle() {
                   id="description"
                   {...field}
                   aria-invalid={fieldState.invalid}
-                  className="min-h-[100px] w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                  readOnly={!isLeader}
+                  className="min-h-[100px] w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none disabled:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
                 />
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
@@ -141,6 +144,7 @@ export function MyTitle() {
                   accept={{
                     'application/pdf': [],
                   }}
+                  disabled={!isLeader}
                   onDrop={(acceptedFiles) => {
                     onChange(acceptedFiles[0]);
                   }}
@@ -186,6 +190,7 @@ export function MyTitle() {
                   accept={{
                     'image/*': [],
                   }}
+                  disabled={!isLeader}
                   onDrop={(acceptedFiles) => {
                     onChange(acceptedFiles[0]);
                   }}
@@ -212,13 +217,20 @@ export function MyTitle() {
             >
               Cancel
             </Button>
-            <Button
-              type="submit"
-              className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-              disabled={mutation.isPending}
-            >
-              {mutation.isPending ? 'Saving...' : 'Save Changes'}
-            </Button>
+            {isLeader && (
+              <Button
+                type="submit"
+                className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                disabled={mutation.isPending}
+              >
+                {mutation.isPending ? 'Saving...' : 'Save Changes'}
+              </Button>
+            )}
+            {!isLeader && (
+              <div className="flex items-center text-sm text-gray-600">
+                <p>Only team leaders can edit this information</p>
+              </div>
+            )}
           </div>
         </form>
       </DialogContent>

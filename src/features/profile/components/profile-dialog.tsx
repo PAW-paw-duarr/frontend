@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '~/components/ui/dialog';
 import { ProfileDiri } from './profile-diri';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { LogoutButton } from '~/features/auth/logout-button';
 import { ProfileTim } from './profile-tim';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useNavigate } from '@tanstack/react-router';
@@ -24,7 +25,7 @@ export function DialogProfile() {
 
   return (
     <Dialog open={stateMyProfile} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-h-[80vh] overflow-y-auto bg-white sm:max-w-[600px]">
+      <DialogContent className="max-h-[85vh] overflow-y-auto bg-white sm:max-w-[600px]">
         <DialogHeader hidden>
           <DialogTitle className="text-xl font-semibold">Account</DialogTitle>
         </DialogHeader>
@@ -40,6 +41,9 @@ export function DialogProfile() {
             <ScrollArea className="h-[500px] rounded-md border p-4">
               <ProfileDiri />
             </ScrollArea>
+            <div className="mt-4 flex justify-end border-t border-gray-200 pt-4">
+              <LogoutButton />
+            </div>
           </TabsContent>
           <TabsContent value="team">
             <ScrollArea className="h-[500px] rounded-md border p-4">
