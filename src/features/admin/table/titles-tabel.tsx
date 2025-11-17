@@ -16,6 +16,7 @@ import { Spinner } from '~/components/ui/spinner';
 import { useQuery } from '@tanstack/react-query';
 import type { components } from '~/lib/api-schema';
 import { getAllTitlesQuery, getTitleByIdQuery, useDeleteTitle } from '~/lib/api/title';
+import { toast } from 'sonner';
 
 const createColumns = (
   onDelete: (id: string) => void,
@@ -114,13 +115,19 @@ export function TitlesTable() {
     enabled: !!selectedTitleId && isDetailsOpen,
   });
 
+  const onDelete = (id: string) => {
+    toast.promise(deleteMutation.mutateAsync(id), {
+      loading: 'Loading...',
+    });
+  };
+
   const handleDelete = (id: string) => {
-    deleteMutation.mutate(id);
+    onDelete(id);
   };
 
   const handleBulkDelete = (selectedIds: string[]) => {
     selectedIds.forEach((id) => {
-      deleteMutation.mutate(id);
+      onDelete(id);
     });
   };
 

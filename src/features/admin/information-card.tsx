@@ -63,7 +63,7 @@ export function InformationCard() {
   ];
 
   return (
-    <div className="grid gap-8 px-4 sm:px-8 lg:grid-cols-2 md:px-12">
+    <div className="grid gap-8 px-4 sm:px-8 md:px-12 lg:grid-cols-2">
       {cardsData.map((card) => (
         <div
           key={card.id}

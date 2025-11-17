@@ -20,6 +20,7 @@ import { ProfileOrangT } from '~/features/profile/profile-dialog-orang';
 import { MemberTeam } from '~/components/list/member-team';
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { Info } from 'lucide-react';
+import { toast } from 'sonner';
 
 export function SidebarTitle() {
   const uploadFile = useUploadFile();
@@ -120,7 +121,9 @@ export function SidebarTitle() {
                 team_target_id: dataTeam.id,
               };
 
-              mutation.mutate(finalData);
+              toast.promise(mutation.mutateAsync(finalData), {
+                loading: 'Loading...',
+              });
             })}
           >
             <div className="space-y-4 py-4 sm:space-y-5 sm:py-5 md:space-y-6 md:py-6">

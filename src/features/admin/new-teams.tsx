@@ -71,13 +71,18 @@ export function NewTeams() {
       toast.error('Please upload a CSV file with team data');
       return;
     }
-    mutation.mutate(data, {
-      onSuccess: () => {
-        setPreviewData([]);
-        setValue('team_data', []);
-        navigate({ to: '/admin/teams' });
-      },
-    });
+    toast.promise(
+      mutation.mutateAsync(data, {
+        onSuccess: () => {
+          setPreviewData([]);
+          setValue('team_data', []);
+          navigate({ to: '/admin/teams' });
+        },
+      }),
+      {
+        loading: 'Loading...',
+      }
+    );
   });
 
   const removeTeam = (index: number) => {

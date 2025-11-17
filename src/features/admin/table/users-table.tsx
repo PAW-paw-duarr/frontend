@@ -15,6 +15,7 @@ import { Badge } from '~/components/ui/badge';
 import { Spinner } from '~/components/ui/spinner';
 import { useQuery } from '@tanstack/react-query';
 import { getAllUsersQuery, getUserByIdQuery, useDeleteUser } from '~/lib/api/user';
+import { toast } from 'sonner';
 
 const createColumns = (
   onDelete: (id: string) => void,
@@ -91,13 +92,19 @@ export function UsersTable() {
     enabled: !!selectedUserId && isDetailsOpen,
   });
 
+  const onDelete = (id: string) => {
+    toast.promise(deleteMutation.mutateAsync(id), {
+      loading: 'Loading...',
+    });
+  };
+
   const handleDelete = (id: string) => {
-    deleteMutation.mutate(id);
+    onDelete(id);
   };
 
   const handleBulkDelete = (selectedIds: string[]) => {
     selectedIds.forEach((id) => {
-      deleteMutation.mutate(id);
+      onDelete(id);
     });
   };
 

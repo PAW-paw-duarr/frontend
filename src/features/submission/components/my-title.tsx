@@ -55,7 +55,9 @@ export function MyTitle() {
       return;
     }
 
-    mutation.mutate(data);
+    toast.promise(mutation.mutateAsync(data), {
+      loading: 'Loading...',
+    });
   });
 
   const handleOpenChange = (isOpen: boolean) => {

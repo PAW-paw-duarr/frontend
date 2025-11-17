@@ -6,6 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginWithEmailInputSchema, useLoginWithEmail } from '../../lib/api/auth';
 import GoogleIcon from '~/components/icon/google';
+import { toast } from 'sonner';
 
 export function LoginForm() {
   const { handleSubmit, control } = useForm({
@@ -27,7 +28,9 @@ export function LoginForm() {
         <CardContent>
           <form
             onSubmit={handleSubmit((data) => {
-              mutation.mutate(data);
+              toast.promise(mutation.mutateAsync(data), {
+                loading: 'Loading...',
+              });
             })}
           >
             <FieldGroup>

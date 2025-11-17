@@ -40,37 +40,35 @@ export const createSubmissionSchema = z.object({
 export function useCreateSubmission() {
   return useMutation({
     mutationFn: async (dataInput: z.infer<typeof createSubmissionSchema>) => {
-      return toast.promise(
-        (async () => {
-          if (dataInput.grand_design === null) {
-            throw new Error('Grand design file is required');
+      if (dataInput.grand_design === null) {
+        throw new Error('Grand design file is required');
+      }
+      const cleanData = {
+        ...dataInput,
+        grand_design: dataInput.grand_design,
+      };
+      const { data, error } = await ApiClient.POST('/submission/submit', {
+        body: cleanData,
+        bodySerializer(body) {
+          const fd = new FormData();
+          for (const name in body) {
+            // @ts-expect-error FormData accepts File
+            fd.append(name, body[name]);
           }
-          const cleanData = {
-            ...dataInput,
-            grand_design: dataInput.grand_design,
-          };
-          const { data, error } = await ApiClient.POST('/submission/submit', {
-            body: cleanData,
-            bodySerializer(body) {
-              const fd = new FormData();
-              for (const name in body) {
-                // @ts-expect-error FormData accepts File
-                fd.append(name, body[name]);
-              }
-              return fd;
-            },
-          });
-          if (error) {
-            throw new Error(error.message);
-          }
-          return data;
-        })(),
-        {
-          loading: 'Creating submission...',
-          success: 'Submission created successfully',
-          error: (err) => `Create submission failed: ${err.message}`,
-        }
-      );
+          return fd;
+        },
+      });
+      if (error) {
+        throw new Error(error.message || error.error || 'Failed to create submission');
+      }
+
+      return data;
+    },
+    onSuccess: async () => {
+      toast.success('Submission created successfully');
+    },
+    onError: (error) => {
+      toast.error(`Create submission failed: ${error.message}`);
     },
   });
 }
@@ -83,27 +81,22 @@ export function useAccOrRejectSubmission() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (dataInput: z.infer<typeof accOrRejectSubmissionSchema>) => {
-      return toast.promise(
-        (async () => {
-          const { data, error } = await ApiClient.POST('/submission/response', {
-            body: dataInput,
-          });
-          if (error) {
-            throw new Error(error.message);
-          }
-          return data;
-        })(),
-        {
-          loading: 'Submitting response...',
-          success: 'Response submitted successfully',
-          error: (err) => `Response submission failed: ${err.message}`,
-        }
-      );
+      const { data, error } = await ApiClient.POST('/submission/response', {
+        body: dataInput,
+      });
+      if (error) {
+        throw new Error(error.message || error.error || 'Failed to respond to submission');
+      }
+      return data;
     },
     onSuccess: async () => {
+      toast.success('Response submitted successfully');
       await queryClient.refetchQueries({
         queryKey: getAllSubmissionQuery().queryKey,
       });
+    },
+    onError: (error) => {
+      toast.error(`Response submission failed: ${error.message}`);
     },
   });
 }
@@ -112,29 +105,24 @@ export function useDeleteSubmission() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      return toast.promise(
-        (async () => {
-          const { data, error } = await ApiClient.DELETE('/submission/{id}', {
-            params: {
-              path: { id },
-            },
-          });
-          if (error) {
-            throw new Error(error.message);
-          }
-          return data;
-        })(),
-        {
-          loading: 'Deleting submission...',
-          success: 'Submission deleted successfully',
-          error: (err) => `Delete submission failed: ${err.message}`,
-        }
-      );
+      const { data, error } = await ApiClient.DELETE('/submission/{id}', {
+        params: {
+          path: { id },
+        },
+      });
+      if (error) {
+        throw new Error(error.message || error.error || 'Failed to delete submission');
+      }
+      return data;
     },
     onSuccess: async () => {
+      toast.success('Submission deleted successfully');
       await queryClient.refetchQueries({
         queryKey: getAllSubmissionQuery().queryKey,
       });
+    },
+    onError: (error) => {
+      toast.error(`Delete submission failed: ${error.message}`);
     },
   });
 }

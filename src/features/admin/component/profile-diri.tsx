@@ -5,6 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Field, FieldError, FieldLabel } from '~/components/ui/field';
 import { Button } from '~/components/ui/button';
+import { toast } from 'sonner';
 
 export function ProfileDiri() {
   const { data: accountData } = useQuery(getCurrentUserQuery());
@@ -19,7 +20,9 @@ export function ProfileDiri() {
   const mutation = useUpdateMyProfile();
 
   const onSubmit = handleSubmit((data) => {
-    mutation.mutate(data);
+    toast.promise(mutation.mutateAsync(data), {
+      loading: 'Loading...',
+    });
   });
 
   if (!accountData) {

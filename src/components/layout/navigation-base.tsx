@@ -10,6 +10,7 @@ import { getTeamByIdQuery } from '~/lib/api/team';
 import { useMyProfileDialogStore } from '~/hooks/global';
 import { DialogProfile } from '~/features/profile/profile-dialog';
 import { useLogout } from '~/lib/api/auth';
+import { toast } from 'sonner';
 
 interface NavigationBaseProps {
   className?: string;
@@ -52,6 +53,12 @@ export function NavigationBase({
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onSearchChange(e.target.value);
+  };
+
+  const onLogout = () => {
+    toast.promise(logoutMutation.mutateAsync(), {
+      loading: 'Loading...',
+    });
   };
 
   return (
@@ -147,7 +154,7 @@ export function NavigationBase({
           </button>
 
           <button
-            onClick={() => logoutMutation.mutate()}
+            onClick={onLogout}
             className={cn(
               'glass flex h-12 w-12 items-center justify-center rounded-lg shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-105',
               isScrolled ? 'bg-gray-200/60 hover:bg-gray-300/60' : 'bg-gray-50/30 hover:bg-gray-50/40'

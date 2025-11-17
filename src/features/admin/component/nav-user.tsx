@@ -8,11 +8,17 @@ import { useLogout } from '~/lib/api/auth';
 import { getCurrentUserQuery } from '~/lib/api/user';
 import { getAlias } from '~/lib/utils';
 import { ProfileDiri } from './profile-diri';
+import { toast } from 'sonner';
 
 export function NavUser() {
   const { data: user } = useQuery(getCurrentUserQuery());
   const mutation = useLogout();
   const [stateMyProfile, setStateMyProfile] = useState(false);
+  const onLogout = () => {
+    toast.promise(mutation.mutateAsync(), {
+      loading: 'Loading...',
+    });
+  };
 
   return (
     <>
@@ -34,7 +40,7 @@ export function NavUser() {
         <SidebarMenuItem>
           <SidebarMenuButton
             tooltip="Logout"
-            onClick={() => mutation.mutate()}
+            onClick={onLogout}
             className="text-red-600 hover:bg-red-50 hover:text-red-700"
           >
             <LogOut />

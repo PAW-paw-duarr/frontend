@@ -13,6 +13,7 @@ import {
 import { Button } from '~/components/ui/button';
 import { X } from 'lucide-react';
 import { useAccOrRejectSubmission } from '~/lib/api/submission';
+import { toast } from 'sonner';
 
 interface RejectSubmissionProps {
   submissionId: string;
@@ -22,7 +23,9 @@ export function RejectSubmission({ submissionId }: RejectSubmissionProps) {
   const mutation = useAccOrRejectSubmission();
 
   const handleReject = () => {
-    mutation.mutate({ id: submissionId, accept: false });
+    toast.promise(mutation.mutateAsync({ id: submissionId, accept: false }), {
+      loading: 'Loading...',
+    });
     setOpen(false);
   };
 

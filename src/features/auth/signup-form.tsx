@@ -6,6 +6,7 @@ import { Input } from 'src/components/ui/input';
 import { SignUpWithEmailInputSchema, useSignUpWithEmail } from '../../lib/api/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import GoogleIcon from '~/components/icon/google';
+import { toast } from 'sonner';
 
 export function SignupForm() {
   const {
@@ -32,7 +33,9 @@ export function SignupForm() {
       <CardContent>
         <form
           onSubmit={handleSubmit((data) => {
-            mutation.mutate(data);
+            toast.promise(mutation.mutateAsync(data), {
+              loading: 'Loading...',
+            });
           })}
         >
           <FieldGroup>

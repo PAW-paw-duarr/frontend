@@ -22,7 +22,9 @@ export function ProfileDiri() {
   const mutation = useUpdateMyProfile();
 
   const onSubmit = handleSubmit((data) => {
-    mutation.mutate(data);
+    toast.promise(mutation.mutateAsync(data), {
+      loading: 'Loading...',
+    });
   });
 
   if (!accountData) {

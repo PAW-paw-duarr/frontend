@@ -48,8 +48,6 @@ export function DataTable<TData, TValue>({
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
 
-  console.log('DataTable render with data:', data);
-
   const fuse = useMemo(() => {
     if (!Array.isArray(data) || data.length === 0) return null;
     const options = {

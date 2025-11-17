@@ -51,7 +51,8 @@ export const Route = createRootRouteWithContext<{
       },
       {
         name: 'twitter:card',
-        content: 'The official platform for documentation, collaboration, and publication of final projects by DTETI UGM students',
+        content:
+          'The official platform for documentation, collaboration, and publication of final projects by DTETI UGM students',
       },
       {
         name: 'twitter:title',

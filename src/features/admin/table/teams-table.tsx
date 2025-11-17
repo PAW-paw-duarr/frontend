@@ -17,6 +17,7 @@ import { Spinner } from '~/components/ui/spinner';
 import { useQuery } from '@tanstack/react-query';
 import { getAllTeamQuery, getTeamByIdQuery, useDeleteTeam } from '~/lib/api/team';
 import type { components } from '~/lib/api-schema';
+import { toast } from 'sonner';
 
 const createColumns = (
   onDelete: (id: string) => void,
@@ -109,13 +110,19 @@ export function TeamsTable() {
     enabled: !!selectedTeamId && isDetailsOpen,
   });
 
+  const onDelete = (id: string) => {
+    toast.promise(deleteMutation.mutateAsync(id), {
+      loading: 'Loading...',
+    });
+  };
+
   const handleDelete = (id: string) => {
-    deleteMutation.mutate(id);
+    onDelete(id);
   };
 
   const handleBulkDelete = (selectedIds: string[]) => {
     selectedIds.forEach((id) => {
-      deleteMutation.mutate(id);
+      onDelete(id);
     });
   };
 

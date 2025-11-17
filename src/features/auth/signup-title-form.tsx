@@ -20,6 +20,11 @@ export function SignupTitleForm() {
   });
   const mutation = useCreateTitle();
   const logoutMutation = useLogout();
+  const onLogout = () => {
+    toast.promise(logoutMutation.mutateAsync(), {
+      loading: 'Loading...',
+    });
+  };
 
   return (
     <div>
@@ -31,7 +36,9 @@ export function SignupTitleForm() {
         <CardContent>
           <form
             onSubmit={handleSubmit((data) => {
-              mutation.mutate(data);
+              toast.promise(mutation.mutateAsync(data), {
+                loading: 'Loading...',
+              });
             })}
           >
             <FieldGroup>
@@ -170,7 +177,7 @@ export function SignupTitleForm() {
         Want to use a different account?{' '}
         <button
           type="button"
-          onClick={() => logoutMutation.mutate()}
+          onClick={onLogout}
           className="hover:text-foreground underline underline-offset-4"
           disabled={logoutMutation.isPending}
         >

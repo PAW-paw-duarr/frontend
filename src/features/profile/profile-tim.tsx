@@ -9,6 +9,7 @@ import { Field, FieldLabel } from '~/components/ui/field';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
 import { Badge } from '~/components/ui/badge';
+import { toast } from 'sonner';
 
 export function ProfileTim() {
   const { data: accountData } = useQuery(getCurrentUserQuery());
@@ -18,7 +19,9 @@ export function ProfileTim() {
   const mutation = useKickMember(teamData?.id || '');
 
   const handleKickMember = (memberId: string) => {
-    mutation.mutate(memberId);
+    toast.promise(mutation.mutateAsync(memberId), {
+      loading: 'Loading...',
+    });
   };
 
   if (!accountData?.team_id) {
@@ -137,7 +140,9 @@ function SubmissionDetails({ submissionId }: { submissionId: string }) {
   const isCaptain = teamData?.leader_email === accountData?.email;
 
   const handleDelete = () => {
-    deleteSubmissionMutation.mutate(submissionId);
+    toast.promise(deleteSubmissionMutation.mutateAsync(submissionId), {
+      loading: 'Loading...',
+    });
   };
 
   const getStatusBadge = (accepted: boolean | undefined) => {

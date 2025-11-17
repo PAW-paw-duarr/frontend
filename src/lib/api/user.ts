@@ -95,42 +95,37 @@ export function useUpdateMyProfile() {
 
   return useMutation({
     mutationFn: async (dataInput: z.infer<typeof updateMyProfileSchema>) => {
-      return toast.promise(
-        (async () => {
-          const { data, error } = await ApiClient.PATCH('/user', {
-            body: dataInput,
-            bodySerializer(body) {
-              const fd = new FormData();
-              if (body) {
-                if (body.name !== undefined) {
-                  fd.append('name', body.name);
-                }
-                if (body.password !== undefined && body.password !== '') {
-                  fd.append('password', body.password);
-                }
-                if (body.cv_file !== undefined) {
-                  fd.append('cv_file', body.cv_file);
-                }
-              }
-              return fd;
-            },
-          });
-          if (error) {
-            throw new Error(error.message);
+      const { data, error } = await ApiClient.PATCH('/user', {
+        body: dataInput,
+        bodySerializer(body) {
+          const fd = new FormData();
+          if (body) {
+            if (body.name !== undefined) {
+              fd.append('name', body.name);
+            }
+            if (body.password !== undefined && body.password !== '') {
+              fd.append('password', body.password);
+            }
+            if (body.cv_file !== undefined) {
+              fd.append('cv_file', body.cv_file);
+            }
           }
-          return data;
-        })(),
-        {
-          loading: 'Updating profile...',
-          success: 'Profile updated successfully',
-          error: (err) => `Update profile failed: ${err.message}`,
-        }
-      );
+          return fd;
+        },
+      });
+      if (error) {
+        throw new Error(error.message || error.error || 'Failed to update profile');
+      }
+      return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
+      toast.success('Profile updated successfully');
+      queryClient.refetchQueries({
         queryKey: getCurrentUserQuery().queryKey,
       });
+    },
+    onError: (error) => {
+      toast.error(`Update profile failed: ${error.message}`);
     },
   });
 }
@@ -139,29 +134,24 @@ export function useDeleteUser() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      return toast.promise(
-        (async () => {
-          const { data, error } = await ApiClient.DELETE('/user/{id}', {
-            params: {
-              path: { id },
-            },
-          });
-          if (error) {
-            throw new Error(error.message);
-          }
-          return data;
-        })(),
-        {
-          loading: 'Deleting user...',
-          success: 'User deleted successfully',
-          error: (err) => `Delete user failed: ${err.message}`,
-        }
-      );
+      const { data, error } = await ApiClient.DELETE('/user/{id}', {
+        params: {
+          path: { id },
+        },
+      });
+      if (error) {
+        throw new Error(error.message || error.error || 'Failed to delete user');
+      }
+      return data;
     },
     onSuccess: async () => {
+      toast.success('User deleted successfully');
       await queryClient.refetchQueries({
         queryKey: getAllUsersQuery().queryKey,
       });
+    },
+    onError: (error) => {
+      toast.error(`Delete user failed: ${error.message}`);
     },
   });
 }

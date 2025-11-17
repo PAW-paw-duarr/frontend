@@ -6,6 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { joinTeamSchema, useJoinTeam } from '~/lib/api/team';
 import { useLogout } from '~/lib/api/auth';
+import { toast } from 'sonner';
 
 export function JoinTeam() {
   const { handleSubmit, control } = useForm({
@@ -15,8 +16,16 @@ export function JoinTeam() {
   const logoutMutation = useLogout();
 
   const onSubmit = handleSubmit((data) => {
-    mutation.mutate(data);
+    toast.promise(mutation.mutateAsync(data), {
+      loading: 'Loading...',
+    });
   });
+
+  const onLogout = () => {
+    toast.promise(logoutMutation.mutateAsync(), {
+      loading: 'Loading...',
+    });
+  };
 
   return (
     <div className="flex flex-col gap-6">
@@ -55,7 +64,7 @@ export function JoinTeam() {
         Want to use a different account?{' '}
         <button
           type="button"
-          onClick={() => logoutMutation.mutate()}
+          onClick={onLogout}
           className="hover:text-foreground underline underline-offset-4"
           disabled={logoutMutation.isPending}
         >
