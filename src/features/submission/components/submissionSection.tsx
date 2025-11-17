@@ -42,10 +42,10 @@ export function SubmissionSection() {
       <div className="mx-auto max-w-7xl px-4 py-8">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-3xl font-bold">
-            {filteredData.length} Tim - Mengajukan Penerusan {searchQuery && `untuk "${searchQuery}"`}
+            {filteredData.length} Team - Submitting Forward {searchQuery && `for "${searchQuery}"`}
           </h1>
           <Button className="rounded-lg bg-black py-4 text-sm text-white hover:bg-gray-800 sm:py-5 sm:text-base md:py-6" onClick={() => setStateMyTitle(true)} size={"lg"}>
-            Capstone saya
+            My Capstone
           </Button>
         </div>
 
@@ -67,7 +67,7 @@ export function SubmissionSection() {
               className="flex items-center gap-1"
             >
               <ChevronLeft className="h-4 w-4" />
-              Sebelumnya
+              Previous
             </Button>
 
             <div className="flex gap-1">
@@ -96,7 +96,7 @@ export function SubmissionSection() {
               disabled={!canGoNext}
               className="flex items-center gap-1"
             >
-              Selanjutnya
+              Next
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
