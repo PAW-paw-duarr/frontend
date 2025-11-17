@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '~/components/ui/dialog';
-import { Badge } from '~/components/ui/badge';
 import { Spinner } from '~/components/ui/spinner';
 import { useQuery } from '@tanstack/react-query';
 import { getAllUsersQuery, getUserByIdQuery, useDeleteUser } from '~/lib/api/user';
@@ -177,14 +176,6 @@ export function UsersTable() {
                       <span className="break-all">{selectedUserData.cv_url.replace('/file/cv/', '')}</span>
                       <ExternalLink className="h-3 w-3 shrink-0 transition-transform group-hover:translate-x-0.5" />
                     </a>
-                  </div>
-                )}
-                {selectedUserData.is_admin !== undefined && (
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">Admin Status</p>
-                    <Badge variant={selectedUserData.is_admin ? 'default' : 'secondary'} className="mt-1">
-                      {selectedUserData.is_admin ? 'Admin' : 'User'}
-                    </Badge>
                   </div>
                 )}
               </div>
