@@ -9,8 +9,7 @@ import {
   PaginationPrevious,
 } from '~/components/ui/pagination';
 import { usePagination } from '../hooks/usePagination';
-import { useEffect, useState, useMemo } from 'react';
-import { SubmissionMe } from './submissionMe';
+import { useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getAllTitlesQuery } from '~/lib/api/title';
 import { FILE_BASE_URL } from '~/lib/constant';
@@ -20,9 +19,8 @@ import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useTitleSidebarStore } from '~/hooks/global';
 
 export function Title() {
-  const [isSubmissionOpen, setIsSubmissionOpen] = useState(false);
   const allData = useQuery(getAllTitlesQuery()).data || [];
-  const searchParams = useSearch({ from: '/_auth/' });
+  const searchParams = useSearch({ from: '/_auth/t' });
   const searchQuery = searchParams?.q || '';
   const navigate = useNavigate();
 
@@ -130,9 +128,6 @@ export function Title() {
           </Pagination>
         )}
       </section>
-
-      {/* Submission Sidebar */}
-      <SubmissionMe isOpen={isSubmissionOpen} onClose={() => setIsSubmissionOpen(false)} />
     </>
   );
 }

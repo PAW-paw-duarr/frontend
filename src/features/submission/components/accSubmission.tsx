@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,27 +9,27 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "~/components/ui/alert-dialog"
-import { Button } from "~/components/ui/button"
-import { X } from "lucide-react"
+} from '~/components/ui/alert-dialog';
+import { Button } from '~/components/ui/button';
+import { X } from 'lucide-react';
+import { useAccOrRejectSubmission } from '~/lib/api/submission';
 
 interface AcceptSubmissionProps {
-  onAccept: () => void
-  trigger?: React.ReactNode
+  submissionId: string;
 }
-
-export function AcceptSubmission({ onAccept, trigger }: AcceptSubmissionProps) {
-  const [open, setOpen] = React.useState(false)
+export function AcceptSubmission({ submissionId }: AcceptSubmissionProps) {
+  const [open, setOpen] = React.useState(false);
+  const mutation = useAccOrRejectSubmission();
 
   const handleAccept = () => {
-    onAccept()
-    setOpen(false)
-  }
+    mutation.mutate({ id: submissionId, accept: true });
+    setOpen(false);
+  };
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        {trigger || <Button variant="destructive">Tolak</Button>}
+        <Button className="flex-1 bg-black text-white hover:bg-black/90">Terima</Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="max-w-md">
         <AlertDialogHeader className="relative">
@@ -37,20 +37,18 @@ export function AcceptSubmission({ onAccept, trigger }: AcceptSubmissionProps) {
             <AlertDialogTitle className="text-xl">Konfirmasi</AlertDialogTitle>
             <AlertDialogCancel asChild>
               <button className="absolute -top-1 right-0 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none">
-                <X className="h-5 w-5 text-muted-foreground" />
+                <X className="text-muted-foreground h-5 w-5" />
                 <span className="sr-only">Close</span>
               </button>
             </AlertDialogCancel>
           </div>
           <div className="flex justify-center py-6">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-foreground">
+            <div className="border-foreground flex h-16 w-16 items-center justify-center rounded-full border-2">
               <span className="text-4xl font-bold">!</span>
             </div>
           </div>
           <div className="space-y-2 text-center">
-            <h2 className="text-lg font-semibold">
-              Yakin Ingin Menerima Pengajuan Ini?
-            </h2>
+            <h2 className="text-lg font-semibold">Yakin Ingin Menerima Pengajuan Ini?</h2>
             <AlertDialogDescription className="text-muted-foreground">
               Menerima pengajuan akan memberikan project capstone anda kepada tim yang diterima.
             </AlertDialogDescription>
@@ -74,5 +72,5 @@ export function AcceptSubmission({ onAccept, trigger }: AcceptSubmissionProps) {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }

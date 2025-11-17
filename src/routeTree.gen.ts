@@ -13,6 +13,8 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AuthIndexRouteImport } from './routes/_auth/index'
+import { Route as AuthTRouteImport } from './routes/_auth/t'
+import { Route as AuthSRouteImport } from './routes/_auth/s'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -33,15 +35,29 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthTRoute = AuthTRouteImport.update({
+  id: '/t',
+  path: '/t',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthSRoute = AuthSRouteImport.update({
+  id: '/s',
+  path: '/s',
+  getParentRoute: () => AuthRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/s': typeof AuthSRoute
+  '/t': typeof AuthTRoute
   '/': typeof AuthIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/s': typeof AuthSRoute
+  '/t': typeof AuthTRoute
   '/': typeof AuthIndexRoute
 }
 export interface FileRoutesById {
@@ -49,14 +65,23 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/_auth/s': typeof AuthSRoute
+  '/_auth/t': typeof AuthTRoute
   '/_auth/': typeof AuthIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/signup' | '/'
+  fullPaths: '/login' | '/signup' | '/s' | '/t' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/signup' | '/'
-  id: '__root__' | '/_auth' | '/login' | '/signup' | '/_auth/'
+  to: '/login' | '/signup' | '/s' | '/t' | '/'
+  id:
+    | '__root__'
+    | '/_auth'
+    | '/login'
+    | '/signup'
+    | '/_auth/s'
+    | '/_auth/t'
+    | '/_auth/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,14 +120,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/t': {
+      id: '/_auth/t'
+      path: '/t'
+      fullPath: '/t'
+      preLoaderRoute: typeof AuthTRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/s': {
+      id: '/_auth/s'
+      path: '/s'
+      fullPath: '/s'
+      preLoaderRoute: typeof AuthSRouteImport
+      parentRoute: typeof AuthRoute
+    }
   }
 }
 
 interface AuthRouteChildren {
+  AuthSRoute: typeof AuthSRoute
+  AuthTRoute: typeof AuthTRoute
   AuthIndexRoute: typeof AuthIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthSRoute: AuthSRoute,
+  AuthTRoute: AuthTRoute,
   AuthIndexRoute: AuthIndexRoute,
 }
 

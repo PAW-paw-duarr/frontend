@@ -1,48 +1,33 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import { Navigation } from '~/features/home/components/navigation';
-import { Footer } from '~/features/home/components/footer';
-import { Header } from '~/features/home/components/header';
-import { Title } from '~/features/home/components/title';
 import { getTeamByIdQuery } from '~/lib/api/team';
-import { getTitleByIdQuery } from '~/lib/api/title';
 import { z } from 'zod';
+import { getCurrentPeriod } from '~/lib/api/config';
+import { getCurrentUserQuery } from '~/lib/api/user';
+import { Layout } from 'lucide-react';
 
 export const Route = createFileRoute('/_auth/')({
   validateSearch: z.object({
     q: z.string().optional(), // query
     p: z.string().optional(), // profile
     t: z.string().optional(), // title
+    s: z.string().optional(), // submission
   }),
-  loader: async ({ context: { queryClient }, location: { hash } }) => {
-    if (!hash.startsWith('#title/')) {
-      return;
-    }
-    const titleId = hash.replace('#title/', '');
+  loader: async ({ context: { queryClient } }) => {
+    const currentUser = await queryClient.ensureQueryData(getCurrentUserQuery());
+    const currentPeriod = await queryClient.ensureQueryData(getCurrentPeriod());
+    const currentTeam = await queryClient.ensureQueryData(getTeamByIdQuery(currentUser?.team_id ?? ''));
 
-    if (!titleId || titleId.trim() === '') {
-      return redirect({ to: '.', hash: '' });
-    }
+    const isOldPeriod = currentPeriod?.current_period != currentTeam?.period;
 
-    try {
-      const titleData = await queryClient.ensureQueryData(getTitleByIdQuery(titleId));
-      if (!titleData) {
-        return redirect({ to: '.', hash: '' });
-      }
-      await queryClient.ensureQueryData(getTeamByIdQuery(titleData.team_id ?? ''));
-    } catch {
-      return redirect({ to: '.', hash: '' });
+    if (isOldPeriod) {
+      return redirect({ to: '/s' });
+    } else {
+      return redirect({ to: '/t' });
     }
   },
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return (
-    <>
-      <Navigation />
-      <Header />
-      <Title />
-      <Footer />
-    </>
-  );
+  return <Layout />;
 }
