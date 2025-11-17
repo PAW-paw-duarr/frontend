@@ -1,6 +1,7 @@
 import { FileText, ExternalLink } from 'lucide-react';
 import { AcceptSubmission } from './accSubmission';
 import { RejectSubmission } from './rejectSubmission';
+import { Button } from '~/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { getSubmissionByIdQuery } from '~/lib/api/submission';
 import { getTeamByIdQuery } from '~/lib/api/team';
@@ -34,27 +35,30 @@ export function SubmissionCard({ submissionId }: SubmissionCardProps) {
       {stateProfile && <ProfileOrangS />}
       <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
         <div className="mb-4 flex items-start justify-between">
-          <h3 className="text-xl font-bold">{teamData?.id}</h3>
+          <h3 className="text-xl font-bold">{submission?.id}</h3>
         </div>
 
-        <div className="mb-4 space-y-2">
+        <div className="mb-4 flex flex-wrap gap-2">
           <MemberTeam
             dataMember={teamData?.member || []}
             leaderEmail={teamData?.leader_email}
             toggleProfileDialog={toggleProfileDialog}
+            variant="compact"
           />
         </div>
 
-        <a
-          href={submission?.grand_design_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mb-4 flex items-center gap-2 text-sm text-blue-600 hover:underline"
-        >
-          <FileText className="h-4 w-4" />
-          <span className="flex-1 truncate">{submission?.grand_design_url}</span>
-          <ExternalLink className="h-4 w-4" />
-        </a>
+        <div className="mb-4">
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full gap-2 border-2 border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 hover:text-blue-800"
+            onClick={() => window.open(submission?.grand_design_url, '_blank')}
+          >
+            <FileText className="h-5 w-5" />
+            View Grand Design Document
+            <ExternalLink className="h-4 w-4" />
+          </Button>
+        </div>
 
         {submission?.accepted === true ? (
           <div className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-green-800">
