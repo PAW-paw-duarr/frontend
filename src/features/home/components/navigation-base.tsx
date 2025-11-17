@@ -1,41 +1,68 @@
-import { Avatar, AvatarImage } from './avatar';
+import { Avatar } from '~/components/ui/avatar';
 import { Input } from '~/components/ui/input';
 import { Search } from 'lucide-react';
-import { cn } from '~/lib/utils';
+import { cn, getAlias } from '~/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { getCurrentUserQuery } from '~/lib/api/user';
 import { useState, useEffect } from 'react';
-import { Link } from '@tanstack/react-router';
+import { AvatarFallback } from '@radix-ui/react-avatar';
+import { getTeamByIdQuery } from '~/lib/api/team';
+import { useMyProfileDialogStore } from '~/hooks/global';
+import { DialogProfile } from '~/features/profile/components/profile-dialog';
 
-export function Navigation({ className }: React.ComponentProps<'input'>) {
+interface NavigationBaseProps {
+  className?: string;
+  searchValue: string;
+  isOpen: boolean;
+  onSearchChange: (value: string) => void;
+  onProfileClick: () => void;
+  textSearch: string;
+}
+
+export function NavigationBase({
+  className,
+  searchValue,
+  isOpen,
+  onSearchChange,
+  onProfileClick,
+  textSearch,
+}: NavigationBaseProps) {
   const user = useQuery(getCurrentUserQuery());
+  const { data: teamData } = useQuery(getTeamByIdQuery(user?.data?.team_id || ''));
   const [isScrolled, setIsScrolled] = useState(false);
+  const stateMyProfile = useMyProfileDialogStore((state) => state.state);
+  const setStateMyProfile = useMyProfileDialogStore((state) => state.setState);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Ubah threshold sesuai kebutuhan (misal 100px atau height dari hero section)
-      const scrollThreshold = 580; // Adjust ini sesuai tinggi hero section
+      const scrollThreshold = 580;
       setIsScrolled(window.scrollY > scrollThreshold);
     };
 
-    // Tambahkan event listener
     window.addEventListener('scroll', handleScroll);
 
-    // Cleanup
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    setStateMyProfile(isOpen);
+  }, [isOpen, setStateMyProfile]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onSearchChange(e.target.value);
+  };
 
   return (
     <nav
       className={cn('fixed top-0 right-0 left-0 z-50 bg-transparent px-6 py-6 md:px-20 lg:px-24 xl:px-36', className)}
     >
+      {stateMyProfile && <DialogProfile />}
       <div
         className={cn(
           'glass flex w-full items-center justify-between gap-6 rounded-2xl p-1 shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out md:rounded-3xl md:p-4',
-          isScrolled ? 'outline outline-gray-200' : 'border-none' // Tambah background putih saat scroll
+          isScrolled ? 'outline outline-gray-200' : 'border-none'
         )}
       >
-        {/* Logo Section - Fixed Width */}
         <div className="flex items-center space-x-4 px-3.5 py-3">
           <img
             src="/logo.svg"
@@ -52,7 +79,6 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
           </div>
         </div>
 
-        {/* Search Section - Centered */}
         <div className="hidden flex-1 justify-center md:flex">
           <div className="relative w-full max-w-[850px] text-white">
             <Search
@@ -62,7 +88,9 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
               )}
             />
             <Input
-              placeholder="Cari Capstone Project..."
+              placeholder={textSearch}
+              value={searchValue}
+              onChange={handleSearchChange}
               className={cn(
                 'h-[50px] rounded-[12px] border-white pl-12 transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-blue-500 2xl:w-full',
                 isScrolled
@@ -73,15 +101,14 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
           </div>
         </div>
 
-        {/* User Profile Section - Fixed Width with Link */}
-        <Link
-          // to="/profile"
+        <button
           className="flex cursor-pointer items-center justify-end space-x-3 rounded-lg transition-all duration-200 md:px-4"
-          to={'/title'}
+          onClick={onProfileClick}
         >
-          <Avatar className="h-12 w-12 border-2 border-blue-500">
-            <AvatarImage src="/logo.svg" alt="User Avatar" />
+          <Avatar className="flex h-12 w-12 items-center justify-center border-2 border-blue-500 bg-blue-100">
+            <AvatarFallback className="text-blue-700">{getAlias(user?.data?.name ?? '')}</AvatarFallback>
           </Avatar>
+
           <div className="hidden md:flex md:flex-col">
             <div
               className={cn(
@@ -97,12 +124,12 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
                 isScrolled ? 'text-primary' : 'text-white'
               )}
             >
-              <span>Anggota</span>
+              <span>{teamData?.leader_email === user?.data?.email ? 'Ketua' : 'Anggota'}</span>
               <span>•</span>
-              <span>Nama_Kelompok</span>
+              <span>{teamData?.name}</span>
             </div>
           </div>
-        </Link>
+        </button>
       </div>
       <div className="relative mt-3 flex w-full md:hidden">
         <Search
@@ -113,6 +140,8 @@ export function Navigation({ className }: React.ComponentProps<'input'>) {
         />
         <Input
           placeholder="Cari Capstone Project..."
+          value={searchValue}
+          onChange={handleSearchChange}
           className={cn(
             'glass h-[50px] rounded-[12px] border-white pl-12 transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-blue-500 2xl:w-full',
             isScrolled

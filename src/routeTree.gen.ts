@@ -13,7 +13,8 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AuthIndexRouteImport } from './routes/_auth/index'
-import { Route as AuthTitleRouteImport } from './routes/_auth/title'
+import { Route as AuthTRouteImport } from './routes/_auth/t'
+import { Route as AuthSRouteImport } from './routes/_auth/s'
 import { Route as AuthAdminRouteImport } from './routes/_auth/admin'
 import { Route as AuthAdminIndexRouteImport } from './routes/_auth/admin/index'
 import { Route as AuthAdminUsersRouteImport } from './routes/_auth/admin/users'
@@ -40,9 +41,14 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthRoute,
 } as any)
-const AuthTitleRoute = AuthTitleRouteImport.update({
-  id: '/title',
-  path: '/title',
+const AuthTRoute = AuthTRouteImport.update({
+  id: '/t',
+  path: '/t',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthSRoute = AuthSRouteImport.update({
+  id: '/s',
+  path: '/s',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthAdminRoute = AuthAdminRouteImport.update({
@@ -80,7 +86,8 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/admin': typeof AuthAdminRouteWithChildren
-  '/title': typeof AuthTitleRoute
+  '/s': typeof AuthSRoute
+  '/t': typeof AuthTRoute
   '/': typeof AuthIndexRoute
   '/admin/submissions': typeof AuthAdminSubmissionsRoute
   '/admin/teams': typeof AuthAdminTeamsRoute
@@ -91,7 +98,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/title': typeof AuthTitleRoute
+  '/s': typeof AuthSRoute
+  '/t': typeof AuthTRoute
   '/': typeof AuthIndexRoute
   '/admin/submissions': typeof AuthAdminSubmissionsRoute
   '/admin/teams': typeof AuthAdminTeamsRoute
@@ -105,7 +113,8 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/_auth/admin': typeof AuthAdminRouteWithChildren
-  '/_auth/title': typeof AuthTitleRoute
+  '/_auth/s': typeof AuthSRoute
+  '/_auth/t': typeof AuthTRoute
   '/_auth/': typeof AuthIndexRoute
   '/_auth/admin/submissions': typeof AuthAdminSubmissionsRoute
   '/_auth/admin/teams': typeof AuthAdminTeamsRoute
@@ -119,7 +128,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/admin'
-    | '/title'
+    | '/s'
+    | '/t'
     | '/'
     | '/admin/submissions'
     | '/admin/teams'
@@ -130,7 +140,8 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/signup'
-    | '/title'
+    | '/s'
+    | '/t'
     | '/'
     | '/admin/submissions'
     | '/admin/teams'
@@ -143,7 +154,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/_auth/admin'
-    | '/_auth/title'
+    | '/_auth/s'
+    | '/_auth/t'
     | '/_auth/'
     | '/_auth/admin/submissions'
     | '/_auth/admin/teams'
@@ -188,11 +200,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/_auth/title': {
-      id: '/_auth/title'
-      path: '/title'
-      fullPath: '/title'
-      preLoaderRoute: typeof AuthTitleRouteImport
+    '/_auth/t': {
+      id: '/_auth/t'
+      path: '/t'
+      fullPath: '/t'
+      preLoaderRoute: typeof AuthTRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/s': {
+      id: '/_auth/s'
+      path: '/s'
+      fullPath: '/s'
+      preLoaderRoute: typeof AuthSRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/admin': {
@@ -262,13 +281,15 @@ const AuthAdminRouteWithChildren = AuthAdminRoute._addFileChildren(
 
 interface AuthRouteChildren {
   AuthAdminRoute: typeof AuthAdminRouteWithChildren
-  AuthTitleRoute: typeof AuthTitleRoute
+  AuthSRoute: typeof AuthSRoute
+  AuthTRoute: typeof AuthTRoute
   AuthIndexRoute: typeof AuthIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthAdminRoute: AuthAdminRouteWithChildren,
-  AuthTitleRoute: AuthTitleRoute,
+  AuthSRoute: AuthSRoute,
+  AuthTRoute: AuthTRoute,
   AuthIndexRoute: AuthIndexRoute,
 }
 

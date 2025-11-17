@@ -36,7 +36,7 @@ export function getTeamByIdQuery(id: string) {
 export const joinTeamSchema = z.object({
     code: z.string(),
 });
-export function useCreateSubmission() {
+export function useJoinTeam() {
     return useMutation({
         mutationFn: async (dataInput: z.infer<typeof joinTeamSchema>) => {
             const { data, error } = await ApiClient.POST("/team/join", {
@@ -57,7 +57,8 @@ export function useCreateSubmission() {
     });
 }
 
-export function useAccOrRejectSubmission() {
+export function useKickMember(teamdId: string) {
+    const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async (id: string) => {
             const { data, error } = await ApiClient.DELETE("/team/kick/{id}", {
@@ -70,6 +71,7 @@ export function useAccOrRejectSubmission() {
         },
         onSuccess: async () => {
             toast.success("Member kicked successfully");
+            await queryClient.refetchQueries(getTeamByIdQuery(teamdId));
         },
         onError: (error) => {
             toast.error(`Kick member failed: ${error.message}`);

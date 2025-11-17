@@ -1,14 +1,12 @@
-import * as React from 'react';
-import { cn } from 'src/lib/utils';
-import { Button } from '../../../components/ui/button';
-import { Avatar, AvatarImage } from '../../../components/ui/avatar';
+import { cn } from '~/lib/utils';
+import { Button } from '~/components/ui/button';
 
 function Card({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="card"
       className={cn(
-        'bg-card text-card-foreground flex flex-col overflow-hidden rounded-3xl border-2 border-gray-200 shadow-sm',
+        'bg-card text-card-foreground flex h-full flex-col overflow-hidden rounded-3xl border-2 border-gray-200 shadow-sm',
         className
       )}
       {...props}
@@ -53,37 +51,25 @@ function CardDescription({ className, ...props }: React.ComponentProps<'p'>) {
 }
 
 function CardContent({ className, ...props }: React.ComponentProps<'div'>) {
-  return <div data-slot="card-content" className={cn('space-y-2 p-5', className)} {...props} />;
+  return <div data-slot="card-content" className={cn('grow space-y-2 p-5', className)} {...props} />;
 }
 
 function CardFooter({
   className,
-  avatarSrc,
-  userName,
-  userEmail,
-  onClick, // <-- Tambahkan parameter ini
   ...props
 }: React.ComponentProps<'div'> & {
-  avatarSrc?: string;
-  userName?: string;
-  userEmail?: string;
-  onClick?: () => void; // <-- Tambahkan type ini
+  onClick: () => void;
 }) {
   return (
-    <div data-slot="card-footer" className={cn('flex items-center justify-between px-5 pb-5', className)} {...props}>
-      <div className="flex items-center gap-3">
-        <Avatar className="h-10 w-10">
-          <AvatarImage src={avatarSrc || '/logo.svg'} alt={userName || 'User'} />
-        </Avatar>
-        <div className="flex flex-col">
-          <span className="text-sm font-semibold">{userName || 'Ketua1'}</span>
-          <span className="text-xs text-gray-500">{userEmail || 'ketua1@gmail.com'}</span>
-        </div>
-      </div>
+    <div
+      data-slot="card-footer"
+      className={cn('mt-auto flex items-center justify-end px-5 pb-5', className)}
+      {...props}
+    >
       <Button
-        onClick={onClick} // <-- Tambahkan onClick handler ini
         className="rounded-xl bg-black px-6 py-6 text-white hover:bg-gray-800"
         size={'lg'}
+        onClick={props.onClick}
       >
         Detail →
       </Button>

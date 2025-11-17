@@ -1,6 +1,7 @@
-import { queryOptions, useMutation } from "@tanstack/react-query";
+import { queryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiClient } from "../api-client";
 import { z } from "zod";
+import { toast } from "sonner";
 
 export function getCurrentUserQuery() {
     return queryOptions({
@@ -46,28 +47,65 @@ export function getAllUsersQuery() {
     });
 }
 
-export const updateMyProfile = z.object({
-    name: z.string().optional(),
-    email: z.email('Invalid email address').optional(),
-    password: z
-        .string()
-        .min(8)
-        .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-        .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-        .regex(/[0-9]/, 'Password must contain at least one number')
-        .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character').optional(),
-    cv_file: z.instanceof(File).optional(),
-});
+export const updateMyProfileSchema = z
+    .object({
+        name: z.string().min(1, 'Name cannot be empty').max(100).optional(),
+        password: z.string().optional(),
+        cv_file: z.instanceof(File).optional(),
+        confirmPassword: z.string({
+            error: (issue) =>
+                issue.input === undefined ? 'Confirm Password is required' : 'Confirm Password must be a string',
+        }).optional(),
+    }).superRefine((data, ctx) => {
+        const { password, confirmPassword } = data;
+        const add = (path: (string | number)[], message: string) =>
+            ctx.addIssue({ code: z.ZodIssueCode.custom, message, path });
+        if (password) {
+            if (!confirmPassword) {
+                add(['confirmPassword'], 'Please confirm your new password');
+            } else if (password !== confirmPassword) {
+                add(['confirmPassword'], 'Passwords do not match');
+            }
+
+            if (password.length < 8) {
+                add(['password'], 'Password must be at least 8 characters long');
+            }
+            if (!/[A-Z]/.test(password)) {
+                add(['password'], 'Password must contain at least one uppercase letter');
+            }
+            if (!/[a-z]/.test(password)) {
+                add(['password'], 'Password must contain at least one lowercase letter');
+            }
+            if (!/[0-9]/.test(password)) {
+                add(['password'], 'Password must contain at least one number');
+            }
+            if (!/[^A-Za-z0-9]/.test(password)) {
+                add(['password'], 'Password must contain at least one special character');
+            }
+        } else if (confirmPassword) {
+            add(['password'], 'Password is required when confirming password');
+        }
+    });
+
 export function useUpdateMyProfile() {
+    const queryClient = useQueryClient();
+
     return useMutation({
-        mutationFn: async (dataInput: z.infer<typeof updateMyProfile>) => {
+        mutationFn: async (dataInput: z.infer<typeof updateMyProfileSchema>) => {
             const { data, error } = await ApiClient.PATCH("/user", {
                 body: dataInput,
                 bodySerializer(body) {
                     const fd = new FormData();
-                    for (const name in body) {
-                        // @ts-expect-error FormData accepts File
-                        fd.append(name, body[name]);
+                    if (body) {
+                        if (body.name !== undefined) {
+                            fd.append('name', body.name);
+                        }
+                        if (body.password !== undefined && body.password !== "") {
+                            fd.append('password', body.password);
+                        }
+                        if (body.cv_file !== undefined) {
+                            fd.append('cv_file', body.cv_file);
+                        }
                     }
                     return fd;
                 },
@@ -76,6 +114,15 @@ export function useUpdateMyProfile() {
                 throw new Error(error.message);
             }
             return data;
+        },
+        onSuccess: () => {
+            toast.success("Profile updated successfully");
+            queryClient.invalidateQueries({
+                queryKey: getCurrentUserQuery().queryKey,
+            });
+        },
+        onError: (error) => {
+            toast.error(`Update profile failed: ${error.message}`);
         },
     });
 }
