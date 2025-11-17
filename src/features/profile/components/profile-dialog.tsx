@@ -4,12 +4,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { ProfileTim } from './profile-tim';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useNavigate } from '@tanstack/react-router';
-import { useMyProfileDialogStore } from '~/hooks/global';
+import { useProfileDialogStore } from '~/hooks/global';
 
 export function DialogProfile() {
   const navigate = useNavigate();
-  const stateMyProfile = useMyProfileDialogStore((state) => state.state);
-  const setStateMyProfile = useMyProfileDialogStore((state) => state.setState);
+  const stateMyProfile = useProfileDialogStore((state) => state.state);
+  const setStateMyProfile = useProfileDialogStore((state) => state.setState);
 
   function onClose() {
     navigate({ to: '.', search: (old) => ({ ...old, p: undefined }), resetScroll: false });
