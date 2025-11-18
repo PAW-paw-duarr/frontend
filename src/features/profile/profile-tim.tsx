@@ -18,6 +18,8 @@ export function ProfileTim() {
   const isCaptain = teamData?.leader_email === accountData?.email;
   const mutation = useKickMember(teamData?.id || '');
 
+  const filteredSubmissions = submissions?.filter((submission) => submission.team_id === teamData?.id) || [];
+
   const handleKickMember = (memberId: string) => {
     toast.promise(mutation.mutateAsync(memberId), {
       loading: 'Loading...',
@@ -105,9 +107,9 @@ export function ProfileTim() {
 
       <Field>
         <FieldLabel>Submissions</FieldLabel>
-        {submissions && submissions.length > 0 ? (
+        {filteredSubmissions && filteredSubmissions.length > 0 ? (
           <Accordion type="single" collapsible className="w-full">
-            {submissions.map((submission, index) => (
+            {filteredSubmissions.map((submission, index) => (
               <AccordionItem key={submission.id} value={`submission-${index}`}>
                 <AccordionTrigger className="hover:no-underline">
                   <div className="flex items-center gap-2">

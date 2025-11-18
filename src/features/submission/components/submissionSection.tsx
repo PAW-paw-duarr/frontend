@@ -2,16 +2,21 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '~/components/ui/button';
 import { SubmissionCard } from './submissionCard';
 import { usePagination } from '~/features/title/hooks/usePagination';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getAllSubmissionQuery } from '~/lib/api/submission';
 import { useSearch } from '@tanstack/react-router';
 import { useEffect, useMemo } from 'react';
 import { useSearchSubmissions } from '../hooks/useSearchSubmissions';
 import { useMyTitleDialogStore, useProfileDialogStore } from '~/hooks/global';
 import { MyTitle } from './my-title';
+import { getCurrentUserQuery } from '~/lib/api/user';
+import { getTeamByIdQuery } from '~/lib/api/team';
 
 export function SubmissionSection() {
-  const { data: submissionsData } = useSuspenseQuery(getAllSubmissionQuery());
+  const { data: accountData } = useQuery(getCurrentUserQuery());
+  const { data: teamData } = useQuery(getTeamByIdQuery(accountData?.team_id || ''));
+  const { data: submissionsData } = useQuery(getAllSubmissionQuery());
+  const filteredSubmissions = submissionsData?.filter((submission) => submission.team_target_id === teamData?.id) || [];
   const searchParams = useSearch({ from: '/_auth/s' });
   const searchQuery = searchParams?.q || '';
   const isOpen = searchParams?.p !== '' && searchParams?.p !== undefined && searchParams?.p !== 'me';
@@ -20,7 +25,7 @@ export function SubmissionSection() {
 
   const setStateProfile = useProfileDialogStore((state) => state.setState);
 
-  const { search } = useSearchSubmissions(submissionsData);
+  const { search } = useSearchSubmissions(filteredSubmissions || []);
   const filteredData = useMemo(() => search(searchQuery), [search, searchQuery]);
 
   useEffect(() => {
