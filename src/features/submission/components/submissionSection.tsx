@@ -14,7 +14,7 @@ export function SubmissionSection() {
   const { data: submissionsData } = useSuspenseQuery(getAllSubmissionQuery());
   const searchParams = useSearch({ from: '/_auth/s' });
   const searchQuery = searchParams?.q || '';
-  const isOpen = searchParams?.p !== '' && searchParams?.p !== undefined;
+  const isOpen = searchParams?.p !== '' && searchParams?.p !== undefined && searchParams?.p !== 'me';
   const stateMyTitle = useMyTitleDialogStore((state) => state.state);
   const setStateMyTitle = useMyTitleDialogStore((state) => state.setState);
 
