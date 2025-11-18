@@ -48,9 +48,7 @@ export function SubmissionSection() {
       {stateMyTitle && <MyTitle />}
       <div className="mx-auto max-w-7xl px-4 py-8">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-3xl font-bold">
-            {filteredData.length} Team - Submitting Continuation
-          </h1>
+          <h1 className="text-3xl font-bold">{filteredData.length} Team - Submitting Continuation</h1>
           <Button
             className="rounded-lg bg-black py-4 text-sm text-white hover:bg-gray-800 sm:py-5 sm:text-base md:py-6"
             onClick={() => setStateMyTitle(true)}
@@ -62,9 +60,7 @@ export function SubmissionSection() {
 
         <div ref={gridRef} className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {currentData.map((submission) => (
-            <button key={submission.id}>
-              <SubmissionCard submissionId={submission.id} />
-            </button>
+            <SubmissionCard key={submission.id} submissionId={submission.id} />
           ))}
         </div>
 

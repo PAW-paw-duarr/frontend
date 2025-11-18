@@ -17,11 +17,12 @@ interface SubmissionCardProps {
 export function SubmissionCard({ submissionId }: SubmissionCardProps) {
   const { data: submission } = useQuery(getSubmissionByIdQuery(submissionId));
   const { data: teamData } = useQuery(getTeamByIdQuery(submission?.team_id || ''));
+  const { data: targetTeamData } = useQuery(getTeamByIdQuery(submission?.team_target_id || ''));
   const { data: currentUser } = useQuery(getCurrentUserQuery());
   const navigate = useNavigate();
   const stateProfile = useProfileDialogStore((state) => state.state);
   const setStateProfile = useProfileDialogStore((state) => state.setState);
-  const isLeader = currentUser?.email === teamData?.leader_email;
+  const isLeader = currentUser?.email === targetTeamData?.leader_email;
 
   function toggleProfileDialog(profileId: string) {
     navigate({
@@ -36,7 +37,7 @@ export function SubmissionCard({ submissionId }: SubmissionCardProps) {
   return (
     <>
       {stateProfile && <ProfileOrangS />}
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="flex h-full flex-col rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
         <div className="mb-4 flex items-start justify-between">
           <h3 className="text-xl font-bold">{submission?.id}</h3>
         </div>
@@ -50,7 +51,7 @@ export function SubmissionCard({ submissionId }: SubmissionCardProps) {
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mt-auto space-y-4">
           <Button
             type="button"
             variant="outline"
@@ -61,22 +62,22 @@ export function SubmissionCard({ submissionId }: SubmissionCardProps) {
             View Grand Design Document
             <ExternalLink className="h-4 w-4" />
           </Button>
-        </div>
 
-        {submission?.accepted === true ? (
-          <div className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-green-800">
-            <p className="text-sm font-medium">✓ Submission accepted</p>
-          </div>
-        ) : submission?.accepted === false ? (
-          <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-red-800">
-            <p className="text-sm font-medium">✗ Submission rejected</p>
-          </div>
-        ) : (
-          <div className="flex gap-2">
-            <RejectSubmission submissionId={submissionId} disabled={!isLeader} />
-            <AcceptSubmission submissionId={submissionId} disabled={!isLeader} />
-          </div>
-        )}
+          {submission?.accepted === true ? (
+            <div className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-green-800">
+              <p className="text-sm font-medium">✓ Submission accepted</p>
+            </div>
+          ) : submission?.accepted === false ? (
+            <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-red-800">
+              <p className="text-sm font-medium">✗ Submission rejected</p>
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              <RejectSubmission submissionId={submissionId} disabled={!isLeader} />
+              <AcceptSubmission submissionId={submissionId} disabled={!isLeader} />
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
