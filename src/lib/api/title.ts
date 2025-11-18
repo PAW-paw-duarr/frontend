@@ -2,6 +2,7 @@ import { queryOptions, useMutation, useQueryClient } from '@tanstack/react-query
 import { ApiClient } from '../api-client';
 import { z } from 'zod';
 import { toast } from 'sonner';
+import { useNavigate } from '@tanstack/react-router';
 
 export function getAllTitlesQuery() {
   return queryOptions({
@@ -42,6 +43,7 @@ export const createTitleSchema = z.object({
 });
 export function useCreateTitle() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: async (dataInput: z.infer<typeof createTitleSchema>) => {
@@ -67,6 +69,7 @@ export function useCreateTitle() {
       await queryClient.refetchQueries({
         queryKey: getAllTitlesQuery().queryKey,
       });
+      navigate({ to: '.', reloadDocument: true });
     },
     onError: (error) => {
       toast.error(`Create title failed: ${error.message}`);

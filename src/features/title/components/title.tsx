@@ -70,7 +70,7 @@ export function Title() {
         <div className="flex w-full flex-row items-center justify-between gap-4">
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:gap-2">
             <h1 className="text-4xl leading-0 font-bold md:text-5xl lg:text-6xl">
-              {data.length} Title {searchQuery && `for "${searchQuery}"`}
+              {data.length} Title
             </h1>
             <span className="hidden text-4xl font-semibold md:inline">-</span>
             <p className="text-2xl font-semibold md:text-3xl lg:text-4xl">Capstone Project</p>

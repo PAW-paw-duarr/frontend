@@ -24,26 +24,30 @@ export function DialogProfile() {
 
   return (
     <Dialog open={stateMyProfile} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-h-[85vh] overflow-y-auto bg-white sm:max-w-[600px]">
+      <DialogContent className="flex max-h-[85vh] flex-col bg-white sm:max-w-[600px]">
         <DialogHeader hidden>
           <DialogTitle className="text-xl font-semibold">Account</DialogTitle>
         </DialogHeader>
-        <Tabs defaultValue="account">
-          <div className="flex justify-center">
+        <Tabs defaultValue="account" className="flex flex-1 flex-col overflow-hidden">
+          <div className="flex shrink-0 justify-center">
             <TabsList>
               <TabsTrigger value="account">Account</TabsTrigger>
               <TabsTrigger value="team">Team</TabsTrigger>
             </TabsList>
           </div>
 
-          <TabsContent value="account">
-            <ScrollArea className="h-[500px] rounded-md border p-4">
-              <ProfileDiri />
+          <TabsContent value="account" className="mt-4 flex-1 overflow-hidden">
+            <ScrollArea className="h-[calc(85vh-180px)]">
+              <div className="px-4 pb-4">
+                <ProfileDiri />
+              </div>
             </ScrollArea>
           </TabsContent>
-          <TabsContent value="team">
-            <ScrollArea className="h-[500px] rounded-md border p-4">
-              <ProfileTim />
+          <TabsContent value="team" className="mt-4 flex-1 overflow-hidden">
+            <ScrollArea className="h-[calc(85vh-180px)]">
+              <div className="px-4 pb-4">
+                <ProfileTim />
+              </div>
             </ScrollArea>
           </TabsContent>
         </Tabs>

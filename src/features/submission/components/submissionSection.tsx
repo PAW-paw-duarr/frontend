@@ -49,7 +49,7 @@ export function SubmissionSection() {
       <div className="mx-auto max-w-7xl px-4 py-8">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-3xl font-bold">
-            {filteredData.length} Team - Submitting Forward {searchQuery && `for "${searchQuery}"`}
+            {filteredData.length} Team - Submitting Continuation
           </h1>
           <Button
             className="rounded-lg bg-black py-4 text-sm text-white hover:bg-gray-800 sm:py-5 sm:text-base md:py-6"
